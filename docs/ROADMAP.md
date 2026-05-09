@@ -1,15 +1,22 @@
-# ROADMAP
+﻿# ROADMAP
 
-Planned passes:
+Pass status:
 
-1. PASS 00 — repo bootstrap docs
-2. PASS 01 — Android architecture docs
-3. PASS 02 — repo skeleton and build
-4. PASS 03 — GTFS source discovery
-5. PASS 04 — core GTFS parser
-6. PASS 05 — core domain model
-7. PASS 06 — ServiceCalendarResolver
-8. PASS 07 — Room schema
-9. PASS 08 — Rakvere adapter and GTFS ingest
-10. PASS 09 — Direct route engine
-11. PASS 10 — Android Compose skeleton with stop board
+1. PASS 00 - REPO_BOOTSTRAP_DOCS: completed
+2. PASS 01 - ANDROID_APP_ARCHITECTURE_DOCS: current
+
+Next likely pass:
+
+3. PASS 02 - REPO_SKELETON_AND_BUILD
+
+Planned following passes:
+
+4. PASS 03 - GTFS_SOURCE_DISCOVERY
+5. PASS 04 - CORE_GTFS_PARSER
+6. PASS 05 - CORE_DOMAIN_MODEL
+7. PASS 06 - CALENDAR_RESOLVER
+8. PASS 07 - ROOM_SCHEMA
+9. PASS 08 - RAKVERE_ADAPTER_AND_GTFS_INGEST
+10. PASS 09 - DIRECT_ROUTE_ENGINE
+11. PASS 10 - ANDROID_COMPOSE_SKELETON_WITH_STOP_BOARD
+
