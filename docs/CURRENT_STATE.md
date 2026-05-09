@@ -4,7 +4,7 @@
 
 - Expected repo root: `C:\Users\Kasutaja\Desktop\ANDROBUSS`.
 - Expected branch: `main`.
-- Last accepted runtime pass HEAD: `d8d91b0` (`PASS 08`).
+- Last accepted docs/runtime HEAD before this pass: `31256f0` (`PASS 08B`).
 - Working tree should be clean before starting a new pass.
 
 ## Accepted Passes
@@ -19,6 +19,7 @@
 - PASS 06: `ServiceCalendarResolver` spec + tests.
 - PASS 07: minimal GTFS fixture parser.
 - PASS 08: direct-route search core.
+- PASS 08B: docs/diagrams sync.
 
 ## Implemented Core Stack
 
@@ -33,11 +34,15 @@
 - `core-routing`:
   - Direct-route models and `DirectRouteSearch`.
   - Executable direct-route tests, including duplicate-stop loop cases.
+- `city-adapters`:
+  - Pure Kotlin metadata contract.
+  - Rakvere metadata provider and city adapter registry.
+  - Executable metadata tests.
 
 ## Not Implemented Yet
 
 - Room entities/DAO/AppDatabase and offline cache persistence.
-- City adapter runtime implementation.
+- City adapter runtime integration beyond metadata.
 - Production GTFS downloader/sync orchestration.
 - Realtime ingestion.
 - Transfer routing.
@@ -45,8 +50,8 @@
 
 ## Current Pass
 
-`PASS 08B — DOCS_AND_DIAGRAMS_SYNC`
+`PASS 09 — RAKVERE_CITY_ADAPTER_METADATA`
 
 ## Next Pass
 
-`PASS 09 — RAKVERE_CITY_ADAPTER_METADATA`
+`PASS 10 — DESTINATION_TARGET_MODEL_AND_PLACE_RESOLVER_SPEC`

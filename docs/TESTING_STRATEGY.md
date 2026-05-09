@@ -6,6 +6,7 @@
 - `ServiceCalendarResolver` semantics are tested with explicit `LocalDate` inputs.
 - `core-gtfs` CSV/parser/mapper tests exist and run.
 - `core-routing` direct-route tests exist and run.
+- `city-adapters` metadata tests now exist and run.
 - CI baseline runs Gradle build/lint.
 
 ## Core-Domain Coverage Focus
@@ -32,9 +33,20 @@
 - Ordered segment extraction.
 - StopPointId-only identity behavior.
 
+## City-Adapters Metadata Coverage Focus (PASS 09)
+
+- Rakvere metadata presence and city identity.
+- Wave assignment (`WAVE_0`).
+- Primary and context feed mapping presence.
+- Conservative legal status (no overclaim).
+- Alias presence for basic Rakvere variants.
+- POI seed non-empty with conservative coordinate policy.
+- Registry lookup and duplicate city-id protection.
+- Android-free API guard.
+
 ## Near-Term Test Gaps
 
-- City adapter metadata contract tests (planned for PASS 09).
+- Destination-target resolver behavior tests (planned for PASS 10).
 - Parser-to-routing integration coverage beyond minimal unit boundaries.
 - Room persistence/invalidation tests (future).
 - UI and end-to-end flow tests (future).
