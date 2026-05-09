@@ -17,6 +17,9 @@ Canonical truths for this repository:
 - One public stop name may map to multiple directional `stop_id` / stop point values.
 - Routing must resolve the correct `stop_id` using direction and service pattern context.
 - UI may present a single rider-friendly stop label while backend logic preserves directional stop-point precision.
+- `StopGroup.displayName` is the rider-facing shared/group name.
+- `StopPoint.displayName` may be platform- or direction-specific.
+- Routing identity remains `StopPointId`, never `displayName`.
 
 ## Service Calendar Resolution Priority
 

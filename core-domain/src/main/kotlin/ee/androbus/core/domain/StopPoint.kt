@@ -1,4 +1,4 @@
-package ee.fuuduu.androbuss.core.domain
+package ee.androbus.core.domain
 
 data class StopPoint(
     val id: StopPointId,

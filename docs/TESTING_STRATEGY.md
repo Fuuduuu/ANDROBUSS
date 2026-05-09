@@ -67,6 +67,11 @@ Potential future fixture paths (proposal only, not created in PASS 04):
 
 - `ServiceCalendarResolver` target: 100% branch coverage.
 
+## PASS 05 Test Infra Note
+
+- PASS 05 intentionally shipped without executable `core-domain` tests because minimal test dependency wiring was missing and build-file changes were out of scope for that pass.
+- PASS 06 must begin by adding minimal pure Kotlin test dependency support and executable tests for calendar semantics.
+
 ## Risk Focus
 
 - Calendar edge cases (holidays, exceptions, overnight service).

@@ -89,17 +89,19 @@ flowchart TD
 
 ```mermaid
 flowchart LR
-    P00[PASS 00 Repo Bootstrap Docs done] --> P01[PASS 01 Android App Architecture Docs done]
-    P01 --> P01B[PASS 01B Architecture Review Fixes current]
-    P01B --> P02[PASS 02 Repo Skeleton and Build]
-    P02 --> P03[PASS 03 GTFS Source Discovery]
-    P03 --> P04[PASS 04 Core GTFS Parser]
-    P04 --> P05[PASS 05 Core Domain Model]
-    P05 --> P06[PASS 06 Calendar Resolver]
-    P06 --> P07[PASS 07 Room Schema]
-    P07 --> P08[PASS 08 Rakvere Adapter and GTFS Ingest]
-    P08 --> P09[PASS 09 Direct Route Engine]
-    P09 --> P10[PASS 10 Android Compose Skeleton with Stop Board]
+    P00[PASS 00 REPO_BOOTSTRAP_DOCS completed] --> P01[PASS 01 ANDROID_APP_ARCHITECTURE_DOCS completed]
+    P01 --> P01B[PASS 01B ANDROBUSS_ARCHITECTURE_REVIEW_FIXES completed]
+    P01B --> P02[PASS 02 REPO_SKELETON_AND_BUILD completed]
+    P02 --> P03[PASS 03 GTFS_SOURCE_DISCOVERY completed]
+    P03 --> P04[PASS 04 GTFS_FIXTURE_STRATEGY_AND_CITY_MAPPING completed]
+    P04 --> P05[PASS 05 CORE_DOMAIN_STOP_AND_PATTERN_MODELS completed]
+    P05 --> P05B[PASS 05B DOMAIN_NAMESPACE_AND_GUARDRAIL_CLEANUP current]
+    P05B --> P06[PASS 06 SERVICE_CALENDAR_RESOLVER_SPEC_AND_TESTS next]
+    P06 --> P07[PASS 07 CORE_GTFS_PARSER]
+    P07 --> P08[PASS 08 ROOM_SCHEMA]
+    P08 --> P09[PASS 09 RAKVERE_ADAPTER_AND_GTFS_INGEST]
+    P09 --> P10[PASS 10 DIRECT_ROUTE_ENGINE]
+    P10 --> P11[PASS 11 ANDROID_COMPOSE_SKELETON_WITH_STOP_BOARD]
 ```
 
 ## Protected Surfaces Diagram

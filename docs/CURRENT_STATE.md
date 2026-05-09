@@ -16,6 +16,7 @@
 - PASS 03 GTFS source discovery completed (docs/audit only).
 - PASS 04 GTFS fixture strategy and city mapping completed (docs/audit only).
 - PASS 05 core-domain stop/pattern model pass completed.
+- PASS 05B domain namespace and guardrail cleanup completed.
 
 ## Architecture Audit Artifacts
 
@@ -25,10 +26,11 @@
 - `docs/audit/PASS_03_GTFS_SOURCE_DISCOVERY.md`
 - `docs/audit/PASS_04_GTFS_FIXTURE_STRATEGY_AND_CITY_MAPPING.md`
 - `docs/audit/PASS_05_CORE_DOMAIN_STOP_AND_PATTERN_MODELS.md`
+- `docs/audit/PASS_05B_DOMAIN_NAMESPACE_AND_GUARDRAIL_CLEANUP.md`
 
 ## Current Pass
 
-`PASS 05 — CORE_DOMAIN_STOP_AND_PATTERN_MODELS`
+`PASS 06 — SERVICE_CALENDAR_RESOLVER_SPEC_AND_TESTS`
 
 ## PASS 05 Snapshot
 
@@ -46,6 +48,13 @@
 - No routing engine implementation.
 - No feature UI screens or ViewModels.
 - No Map SDK dependency.
+
+## PASS 05B Snapshot
+
+- Core-domain package namespace is being normalized to project-wide style.
+- Core-domain package namespace is normalized to `ee.androbus.core.domain`.
+- GTFS ZIP guardrail is enforced in `.gitignore`.
+- No product logic expansion is included in this pass.
 
 ## Next Likely Pass
 

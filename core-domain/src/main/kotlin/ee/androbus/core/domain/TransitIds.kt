@@ -1,4 +1,4 @@
-package ee.fuuduu.androbuss.core.domain
+package ee.androbus.core.domain
 
 @JvmInline
 value class StopGroupId(val value: String) {
