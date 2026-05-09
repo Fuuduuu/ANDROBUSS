@@ -3,8 +3,7 @@
 ## Repository State
 
 - Repository initialized for ANDROBUSS planning work.
-- Gradle skeleton now exists.
-- Android module structure now exists.
+- Gradle skeleton and Android module structure exist (from PASS 02).
 - No product logic implementation exists yet.
 
 ## Documentation State
@@ -13,22 +12,25 @@
 - PASS 01 architecture baseline completed.
 - PASS 01B architecture review fixes completed.
 - PASS 02 skeleton and build setup completed.
-- PASS 02 validation attempted; local Java/SDK environment is missing.
+- PASS 03 GTFS source discovery completed (docs/audit only).
 
 ## Architecture Audit Artifacts
 
 - `docs/audit/standalone-bus-app-architecture.md`
 - `docs/audit/PASS_01B_AUDIT.md`
 - `docs/audit/PASS_02_AUDIT.md`
+- `docs/audit/PASS_03_GTFS_SOURCE_DISCOVERY.md`
 
 ## Current Pass
 
-`PASS 02 — REPO_SKELETON_AND_BUILD`
+`PASS 03 — GTFS_SOURCE_DISCOVERY`
 
-## Validation Status
+## PASS 03 Discovery Snapshot
 
-- `./gradlew build`, `lint`, `projects`, and `dependencies` are blocked locally because `JAVA_HOME` is not set and Java is not on PATH.
-- CI workflow is configured to run with Java 17 for build and lint validation.
+- Official authority remains Regionaal- ja Põllumajandusministeerium / Ühistranspordiregistri avaandmed.
+- Legacy `peatus.ee/gtfs/gtfs.zip` path did not behave as a live ZIP source in this pass.
+- Live downloadable ZIP feeds were verified on `eu-gtfs.remix.com` object URLs.
+- Unified and split feeds both exist; city mapping must be feed-aware.
 
 ## Guardrails Still Active
 
@@ -40,4 +42,4 @@
 
 ## Next Likely Pass
 
-`PASS 03 — GTFS_SOURCE_DISCOVERY`
+`PASS 04 — GTFS_FIXTURE_STRATEGY_AND_CITY_MAPPING`

@@ -4,15 +4,18 @@ Planned ingest/cache/diff flow only. No parser implementation exists yet.
 
 ## Planned Stages
 
-1. Source fetch from canonical national static GTFS.
-2. Integrity checks (availability, schema sanity, checksum/hash).
-3. Dataset diff detection versus cached snapshot.
-4. Parse and normalize into canonical domain entities.
-5. Persist to Room with migration-safe schema versioning.
-6. Expose offline-first query surfaces to app features.
-7. Optionally layer city realtime where adapter supports it.
+1. Source registry resolution (city -> primary feed + optional supplemental feed).
+2. Source fetch from selected static GTFS feed set (unified and/or split feeds).
+3. Integrity checks (HTTP status, content-type, schema sanity, checksum/hash).
+4. Dataset diff detection versus cached snapshot per feed.
+5. Parse and normalize into canonical domain entities.
+6. Persist to Room with migration-safe schema versioning.
+7. Expose offline-first query surfaces to app features.
+8. Optionally layer city realtime where adapter supports it.
 
 ## Notes
 
 - Static GTFS is canonical.
 - Realtime is optional per city.
+- PASS 03 discovery indicates multi-feed reality; pipeline must not assume one immutable national ZIP.
+- Route/authority-level filtering is required for city mapping because split feeds may still include a broad stop table.
