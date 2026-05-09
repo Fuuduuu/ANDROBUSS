@@ -4,30 +4,55 @@
 
 - Wave 0: Rakvere.
 - Wave 1: Võru, Viljandi, Pärnu, Kuressaare.
-- Wave 2: Ida-Viru cluster.
+- Wave 2: Narva, Kohtla-Järve, Sillamäe.
+- Later: Haapsalu, Paide.
 
 ## Future-Only Adapters
 
 - Tallinn and Tartu are future adapters and not initial priorities.
 
-## PASS 03 Feed Mapping Snapshot (2026-05-09)
+## PASS 04 City/Feed Mapping Baseline (2026-05-09)
 
-| City | Primary feed candidate(s) | Signal | Confidence |
-| --- | --- | --- | --- |
-| Rakvere | `rakvere.zip` (+ optional `laane_virumaa.zip`) | Route competent authority: `Rakvere linn` in city feed; `Lääne-Virumaa` in county feed | CONFIRMED |
-| Võru | `vorumaa.zip` | Route competent authority: `Võrumaa`; no `voru.zip` resolved in checks | CONFIRMED |
-| Viljandi | `viljandimaa.zip` | Route competent authority: `Viljandimaa`; no `viljandi.zip` resolved in checks | CONFIRMED |
-| Pärnu | `parnu.zip` (+ optional `parnumaa.zip`) | Route competent authority: `Pärnu linn` in city feed; `Pärnumaa` in county feed | CONFIRMED |
-| Kuressaare | `saaremaa.zip` | County feed signal; direct `kuressaare.zip` not resolved in checks | PARTIAL |
+| City | Wave | Primary feed | Secondary/context feed | Mapping confidence | Notes |
+| --- | --- | --- | --- | --- | --- |
+| Rakvere | Wave 0 | `rakvere.zip` | `laane_virumaa.zip` | CONFIRMED | Dedicated city feed plus county context. |
+| Võru | Wave 1 | `vorumaa.zip` | `estonia_unified_gtfs.zip` (fallback only) | CONFIRMED | No dedicated `voru.zip` resolved in PASS 03. |
+| Viljandi | Wave 1 | `viljandimaa.zip` | `estonia_unified_gtfs.zip` (fallback only) | CONFIRMED | No dedicated `viljandi.zip` resolved in PASS 03. |
+| Pärnu | Wave 1 | `parnu.zip` | `parnumaa.zip` | CONFIRMED | City and county feeds both resolved. |
+| Kuressaare | Wave 1 | `saaremaa.zip` | `estonia_unified_gtfs.zip` (fallback only) | PARTIAL | No dedicated `kuressaare.zip` resolved in PASS 03. |
+| Narva | Wave 2 | `narva.zip` | `ida_viru.zip` | PARTIAL | URL reachable in PASS 03, but not deeply profiled yet. |
+| Kohtla-Järve | Wave 2 | `ida_viru.zip` | `estonia_unified_gtfs.zip` (fallback only) | PARTIAL | City-specific ZIP unresolved; county feed carries Ida-Viru context. |
+| Sillamäe | Wave 2 | `ida_viru.zip` | `estonia_unified_gtfs.zip` (fallback only) | PARTIAL | PASS 03 authority signal found in `ida_viru` route metadata. |
+| Haapsalu | Later | `laanemaa.zip` | `estonia_unified_gtfs.zip` (fallback only) | UNCLEAR | URL pattern reachable; city-level mapping not verified yet. |
+| Paide | Later | `jarvamaa.zip` | `estonia_unified_gtfs.zip` (fallback only) | UNCLEAR | URL pattern reachable; city-level mapping not verified yet. |
+| Tallinn | Future-only | `tallinn.zip` | `harjumaa.zip` | PARTIAL | Future adapter only, not initial scope. |
+| Tartu | Future-only | `tartu.zip` | `tartumaa.zip` | PARTIAL | Future adapter only, not initial scope. |
 
-## Adapter Strategy
+## CityFeedMapping Metadata (Conceptual, Docs-Only)
+
+Required fields for future `CityFeedMapping` / `CitySourceMapping`:
+
+- `cityId`
+- `displayName`
+- `wave`
+- `primaryFeedId`
+- `secondaryFeedIds`
+- `sourceUrl`
+- `sourceAuthority`
+- `hostingUrl`
+- `feedScope` (`CITY`, `COUNTY`, `REGION`, `NATIONAL`, `MIXED`)
+- `mappingConfidence` (`CONFIRMED`, `PARTIAL`, `UNCLEAR`, `NOT_FOUND`)
+- `stopPointPrecisionRequired` (must be true for ANDROBUSS)
+- `preferredFixtureScope`
+- `notes`
+- `lastVerifiedAt`
+- `hashFromDiscoveryPass`
+- `legalStatus`
+
+## Adapter Strategy Rules
 
 - Keep transit core city-agnostic.
-- Keep city adapter metadata explicit:
-  - `primary_feed`
-  - `supplemental_feeds`
-  - expected competent authority tags
-  - confidence level
-- Avoid city inference based only on `stops.txt` counts, because many split feeds still include a broad stop table.
+- Keep mapping metadata explicit and versionable.
+- Avoid city inference from `stops.txt` row count alone because many feeds carry broad stop tables.
+- Use route/authority/service context for city validity.
 - Realtime remains optional per city adapter.
-
