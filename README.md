@@ -1,25 +1,35 @@
 # ANDROBUSS
 
-ANDROBUSS is a new standalone Android bus application focused on practical public transit use across Estonian cities.
+ANDROBUSS is a standalone Android bus app for practical public transit use in Estonian cities.
 
-## Purpose
+## Direction
 
-Build a city-agnostic transit app with a modular core that can support multiple cities through adapters, starting with underserved regions.
-
-## Scope Clarification
-
-- This is a standalone Android bus app.
-- This is not an AnniVibe UI clone.
-- This repository is separate from `AnniVibez_clean`.
+- Standalone Android app (not an AnniVibe UI clone).
+- Modular, city-agnostic transit core.
+- Destination-first UX.
+- Offline-first behavior.
+- Static GTFS as canonical base, realtime optional later.
 
 ## Current Status
 
-Planning and pre-implementation only. No Android app source or Gradle/Compose project is created yet.
+The project is beyond planning-only stage.
+
+Implemented and tested core modules:
+- `core-domain`: canonical stop/pattern/service models and `ServiceCalendarResolver`.
+- `core-gtfs`: minimal GTFS fixture parser, CSV reader, and domain mapper.
+- `core-routing`: minimal direct-route search core.
+
+Not implemented yet:
+- Room cache/schema.
+- City adapter runtime implementation.
+- Production feed downloader/sync.
+- Compose feature UI flows.
+- Transfer routing and realtime logic.
 
 ## Process
 
-The project follows a docs-first, pass-based, sniper-prompt workflow.
+Docs-first, pass-based, sniper-prompt workflow.
 
 ## Next Pass
 
-`PASS 01 — ANDROID_APP_ARCHITECTURE_DOCS`
+`PASS 09 — RAKVERE_CITY_ADAPTER_METADATA`

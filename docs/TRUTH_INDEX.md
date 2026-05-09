@@ -2,47 +2,40 @@
 
 Canonical truths for this repository:
 
-- Tallinn and Tartu are future adapters, not initial targets.
-- Wave 0 target city is Rakvere.
-- Wave 1 targets underserved cities (for example Võru, Viljandi, Pärnu, Kuressaare).
-- National GTFS is the static canonical base data source.
-- Realtime is optional per city adapter.
-- `Stop` versus `StopPoint` distinction is canonical and must not be collapsed.
-- `ServiceCalendarResolver` is high-risk, protected, and must be heavily tested.
-- Ticketing is out of scope without legal and partner basis.
-- Android code does not exist yet.
+- `StopPointId` is routing identity.
+- `StopGroup` is display/search grouping.
+- Stop names and display names are never routing identity.
+- Same-name stops may map to separate directional/platform stop points.
+- `RoutePattern` is an ordered sequence of `PatternStop` values.
+- Duplicate `StopPointId` values inside one `RoutePattern` are allowed for loop/circular patterns.
+- Direct route validity requires origin and destination in the same `RoutePattern` and destination after origin.
+- `calendar_dates` overrides base `calendar` semantics.
+- GTFS `exception_type 1` maps to add service.
+- GTFS `exception_type 2` maps to remove service.
+- `ServiceCalendarResolver` takes explicit `LocalDate` input and must not compute "today" internally.
+- Data confidence levels are `STATIC`, `FORECAST`, `REALTIME`.
+- Static GTFS is canonical base data.
+- Realtime is optional and adapter-specific.
+- Destination-first UX remains product direction.
+- Map is an input aid, not the routing engine.
+- Wave 0 is Rakvere.
+- Wave 1 is Võru, Viljandi, Pärnu, Kuressaare.
+- Wave 2 is Narva, Kohtla-Järve, Sillamäe.
+- Later cities are Haapsalu and Paide.
+- Tallinn and Tartu are future-only adapters.
+- Ticketing is out of scope without legal/partner basis.
 
-## Stop vs StopPoint Canonical Definition
+## StopGroup vs StopPoint Semantics
 
-- One public stop name may map to multiple directional `stop_id` / stop point values.
-- Routing must resolve the correct `stop_id` using direction and service pattern context.
-- UI may present a single rider-friendly stop label while backend logic preserves directional stop-point precision.
-- `StopGroup.displayName` is the rider-facing shared/group name.
-- `StopPoint.displayName` may be platform- or direction-specific.
-- Routing identity remains `StopPointId`, never `displayName`.
+- `StopGroup.displayName` is the rider-facing shared stop name.
+- `StopPoint.displayName` may be direction/platform-specific.
+- Routing and pattern order logic must use `StopPointId`, not `displayName`.
 
-## Service Calendar Resolution Priority
+## Direct Route Determinism
 
-- `calendar_dates` exceptions override base `calendar` rules for matching service/date.
-- Exception type `1` means add service.
-- Exception type `2` means remove service.
-- Duplicate `calendar_dates` rows for the same `service_id` + date are treated as invalid and rejected by resolver construction.
-- Resolver behavior must apply exception precedence deterministically before route availability decisions.
-
-## Direct Route Core Truth
-
-- Direct route validity requires origin and destination in the same `RoutePattern` with destination after origin.
-- Reverse order in the same pattern is not a valid direct route.
-- Direct-route decisions are StopPointId-based only.
-
-## Data Confidence Levels
-
-- `REALTIME`: live vehicle/ETA data from active realtime feed ingestion.
-- `FORECAST`: computed prediction from schedule and derived timing logic without confirmed live vehicle state.
-- `STATIC`: schedule-only GTFS output with no realtime/forecast augmentation.
-
-Threshold policy before realtime implementation:
-
-- `REALTIME` freshness threshold: TODO
-- `FORECAST` staleness threshold: TODO
-- `STATIC` fallback threshold: TODO
+Not-found precedence for the current direct-route core:
+- `SAME_STOP`
+- `ORIGIN_NOT_FOUND`
+- `DESTINATION_NOT_FOUND`
+- `DESTINATION_NOT_AFTER_ORIGIN`
+- `NO_DIRECT_PATTERN`

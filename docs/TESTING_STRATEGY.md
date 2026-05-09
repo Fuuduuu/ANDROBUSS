@@ -1,121 +1,40 @@
 # TESTING_STRATEGY
 
-## Planned Test Layers
+## Current Test Baseline
 
-- Unit tests for core-domain invariants.
-- Unit tests for GTFS parsing and mapping.
-- Unit/property tests for calendar and service-date resolution.
-- Unit tests for routing candidate generation and ranking.
-- Compose UI tests in later passes.
-- Field tests per city adapter.
+- `core-domain` tests exist and run.
+- `ServiceCalendarResolver` semantics are tested with explicit `LocalDate` inputs.
+- `core-gtfs` CSV/parser/mapper tests exist and run.
+- `core-routing` direct-route tests exist and run.
+- CI baseline runs Gradle build/lint.
 
-## PASS 04 GTFS Fixture Strategy
+## Core-Domain Coverage Focus
 
-### Fixture Types
+- ID/display-name invariants.
+- `GeoPoint` range validation.
+- `RoutePattern` ordering and minimum-stop invariants.
+- Duplicate stop-point compatibility for loop patterns.
+- Calendar base + exception override semantics.
 
-A. Smoke fixture:
+## Core-GTFS Coverage Focus
 
-- Tiny fixture for one city.
-- One or two lines only.
-- Enough records to validate parser reads core mandatory files.
-- No routing complexity requirement.
+- CSV quoting/escaping and CRLF/LF behavior.
+- Required-file validation.
+- Calendar file presence rules.
+- Exception mapping (`1` add, `2` remove, invalid values fail).
+- StopPoint identity protection (same-name different-`stop_id` remains separate).
 
-B. StopPoint precision fixture:
+## Core-Routing Coverage Focus
 
-- Must include same-name and opposite-direction stop cases (or synthetic equivalent later if source feed does not contain minimal case cleanly).
-- Primary purpose: protect StopGroup vs StopPoint separation.
+- Direct-route validity rule (destination after origin in same pattern).
+- Deterministic not-found precedence.
+- Duplicate-stop loop handling.
+- Ordered segment extraction.
+- StopPointId-only identity behavior.
 
-C. Direct-route fixture:
+## Near-Term Test Gaps
 
-- Must include valid ordered pattern where `destinationIndex > originIndex`.
-- Must include invalid reverse-direction case.
-
-D. Calendar fixture:
-
-- Must include `calendar.txt` and `calendar_dates.txt`.
-- Must cover add/remove exception behavior (`exception_type=1` add, `exception_type=2` remove).
-
-E. City-mapping fixture:
-
-- Must prove city-to-feed mapping decisions.
-- Must avoid parsing full Estonia bundle for normal unit tests.
-
-## Fixture Anti-Goals (Do Not Add Yet)
-
-- Full Estonia unified feed as normal unit-test fixture.
-- Full multi-city GTFS dumps committed in repo.
-- Realtime payload fixtures.
-- Transfer/ticketing/map-tile data fixtures.
-- Huge `stop_times.txt` fixtures where minimal deterministic subset is enough.
-- Generated Room database snapshots.
-
-## Fixture Storage Policy (Planned)
-
-- No large raw ZIP files committed.
-- Tiny deterministic fixtures only (hand-curated or reproducibly generated in a dedicated future pass).
-- Real downloaded ZIPs stay temp/local/cache only.
-- Source URL + hash + discovery timestamp must be recorded in docs/audit.
-
-Potential future fixture paths (proposal only, not created in PASS 04):
-
-- `test-fixtures/gtfs/rakvere-smoke/`
-- `test-fixtures/gtfs/rakvere-stop-point-precision/`
-- `test-fixtures/gtfs/rakvere-calendar/`
-- `test-fixtures/gtfs/parnu-city-county-mapping/`
-
-## Protected Coverage Target
-
-- `ServiceCalendarResolver` target: 100% branch coverage.
-
-## PASS 05 Test Infra Note
-
-- PASS 05 intentionally shipped without executable `core-domain` tests because minimal test dependency wiring was missing and build-file changes were out of scope for that pass.
-- PASS 06 must begin by adding minimal pure Kotlin test dependency support and executable tests for calendar semantics.
-
-## PASS 06 Test Baseline
-
-- `core-domain` now uses minimal pure Kotlin test infrastructure via `testImplementation(kotlin("test"))`.
-- PASS 05 invariant tests are now executable in `core-domain`.
-- `ServiceCalendarResolver` semantics are covered with explicit `LocalDate` tests:
-  - base weekday/date-range activation
-  - `ADD_SERVICE` and `REMOVE_SERVICE` override precedence
-  - no-base-calendar behavior
-  - exact service/date exception scoping
-  - duplicate exception rejection policy
-
-## PASS 07 Parser Test Baseline
-
-- `core-gtfs` now uses minimal pure Kotlin test infrastructure via `testImplementation(kotlin("test"))`.
-- Synthetic fixture: `core-gtfs/src/test/resources/gtfs/rakvere-smoke/`.
-- Coverage includes:
-  - CSV quoted comma and escaped quote parsing
-  - CRLF/LF handling
-  - required GTFS file validation
-  - calendar-file presence rules (`calendar.txt` and/or `calendar_dates.txt`)
-  - calendar exception mapping (`1` add, `2` remove, invalid values fail)
-  - StopPoint identity protection for same-name different-`stop_id` stops
-  - ordered `RoutePattern` creation from `stop_sequence`
-  - `Trip` -> `ServiceRef(ServiceId)` mapping
-  - Android-free parser/mapper API guard
-
-## PASS 08 Routing Test Baseline
-
-- `core-routing` now uses minimal pure Kotlin test infrastructure via `testImplementation(kotlin("test"))`.
-- `DirectRouteSearch` unit coverage includes:
-  - valid direct route in same pattern with destination after origin
-  - reverse-direction failure
-  - no-shared-pattern failure
-  - deterministic not-found precedence for missing origin/destination
-  - same origin/destination failure
-  - duplicate stop point loop-pattern handling
-  - deterministic multi-pattern ordering
-  - ordered segment stop-point extraction
-  - StopPointId-only identity behavior (no stop-name inference)
-  - Android-free API guard
-
-## Risk Focus
-
-- Calendar edge cases (holidays, exceptions, overnight service).
-- StopGroup versus StopPoint correctness.
-- Offline cache consistency after dataset updates.
-- City/feed mapping drift over time.
+- City adapter metadata contract tests (planned for PASS 09).
+- Parser-to-routing integration coverage beyond minimal unit boundaries.
+- Room persistence/invalidation tests (future).
+- UI and end-to-end flow tests (future).

@@ -8,40 +8,33 @@
 
 ## PASS 03 Discovery Verdict (2026-05-09)
 
-- Legacy `https://peatus.ee/gtfs/gtfs.zip` no longer behaves as a direct GTFS ZIP source for this pass.
-  - Redirect chain observed: `www.peatus.ee/gtfs/gtfs.zip` -> `peatus.ee/gtfs/gtfs.zip` -> `/reitti/gtfs/gtfs.zip`
-  - Final response in checks: HTML closure page (`See rakendus on suletud.`), not ZIP.
-- Live downloadable GTFS ZIP feeds were verified from `https://eu-gtfs.remix.com/` direct object URLs.
-  - This repo treats `eu-gtfs.remix.com` as operationally verified hosting, not as an officially confirmed ministry domain in this pass.
+- Legacy `https://peatus.ee/gtfs/gtfs.zip` no longer behaves as a direct GTFS ZIP source.
+- Operationally live GTFS ZIP hosting was verified from direct `https://eu-gtfs.remix.com/...` feed object URLs.
+- In this repo, `eu-gtfs.remix.com` is treated as verified hosting location, not confirmed ministry-owned domain.
+
+See:
+- `docs/audit/PASS_03_GTFS_SOURCE_DISCOVERY.md`
+- `docs/CITY_ADAPTERS.md` for city/feed mapping baseline.
 
 ## Verified Feed Pattern
 
-- Unified feed exists:
-  - `estonia_unified_gtfs.zip`
-- Split feeds exist (city/county/transport scope), for example:
-  - `rakvere.zip`, `parnu.zip`, `narva.zip`, `tallinn.zip`, `tartu.zip`
-  - `laane_virumaa.zip`, `vorumaa.zip`, `viljandimaa.zip`, `parnumaa.zip`, `saaremaa.zip`, `ida_viru.zip`
-  - `kaugliinid.zip`, `elron.zip`
+- Unified feed exists: `estonia_unified_gtfs.zip`.
+- Split feeds exist by county/city/transport scope.
+- Multi-feed ingestion is required for ANDROBUSS.
 
 ## Canonical Base Policy
 
 - Static GTFS remains canonical base.
-- In implementation planning, canonical should be treated as a source set (unified + split options) rather than a single immutable file.
+- Canonical base should be treated as a source set (unified + split feed options), not one guaranteed single file.
 
-## License/Legal Status
+## Legal Status
 
-- Legal license confirmation from official authority text is not finalized in PASS 03.
-- Current status:
-  - `UNCLEAR` / `THIRD_PARTY_INDEXED_CC0_SIGNAL` only
-  - Not legally confirmed in this repository yet
+- License/legal confirmation from official authority text is still unresolved in repository docs.
+- Current tracking status: `UNCLEAR` / `THIRD_PARTY_INDEXED_CC0_SIGNAL`.
 
-## Data Governance Rules
+## Governance Rules
 
-- No private, scraped, or unauthorized feeds.
-- Every ingested feed must store:
-  - source URL
-  - retrieval timestamp
-  - file size
-  - SHA256
-  - content-type/status snapshot
-- Realtime remains optional and city-specific.
+- No private or unauthorized feeds.
+- Feed provenance metadata must be tracked (URL, timestamp, size, hash, content-type/status evidence).
+- Realtime remains optional and adapter-specific.
+- Synthetic test fixtures are allowed; full live feed dumps are not normal unit-test assets.
