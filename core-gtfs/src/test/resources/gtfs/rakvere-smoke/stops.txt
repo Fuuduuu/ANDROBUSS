@@ -1,0 +1,5 @@
+stop_id,stop_name,stop_lat,stop_lon
+RKV_A_OUT,Keskpeatus,59.346100,26.355200
+RKV_A_IN,Keskpeatus,59.346300,26.355500
+RKV_B,Spordikeskus,59.350000,26.360000
+RKV_C,Jaam,59.355000,26.365000

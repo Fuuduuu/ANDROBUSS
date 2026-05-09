@@ -1,0 +1,3 @@
+route_id,agency_id,route_short_name,route_long_name
+R1,rakvere_agency,1,"Jaam, Keskpeatus"
+R2,rakvere_agency,,Ringliin

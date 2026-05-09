@@ -1,6 +1,8 @@
 # GTFS_PIPELINE
 
-Planned ingest/cache/diff flow only. No parser implementation exists yet.
+Planned ingest/cache/diff flow with a minimal fixture parser baseline.
+
+PASS 07 adds a pure Kotlin `core-gtfs` parser for tiny local fixtures only; production feed download/sync/persistence logic is still pending.
 
 ## Planned Stages
 
@@ -36,6 +38,34 @@ Missing-file behavior requirements (planned):
 - Missing mandatory file -> fail ingest with explicit structured error.
 - Missing optional file -> continue with warning metadata.
 - Missing both `calendar.txt` and `calendar_dates.txt` -> fail ingest.
+
+## PASS 07 Minimal Parser Scope (Implemented)
+
+- Supported files:
+  - `agency.txt`
+  - `stops.txt`
+  - `routes.txt`
+  - `trips.txt`
+  - `stop_times.txt`
+  - `calendar.txt` (optional if `calendar_dates.txt` exists)
+  - `calendar_dates.txt` (optional if `calendar.txt` exists)
+- Validation:
+  - mandatory file checks for agency/stops/routes/trips/stop_times
+  - fail if both calendar files are absent
+- Mapping baseline:
+  - `stop_id` -> `StopPointId` (routing identity)
+  - same-name stops remain separate stop points
+  - one safe default stop-group per stop point for now
+  - minimal `RoutePattern` + `Trip` mapping from `trips.txt` + `stop_times.txt`
+  - `exception_type 1` -> `ADD_SERVICE`, `2` -> `REMOVE_SERVICE`
+
+## PASS 07 Non-Goals (Still Pending)
+
+- No network download/update orchestration.
+- No ZIP ingestion from live sources.
+- No Room persistence.
+- No routing search logic.
+- No city-adapter-specific normalization.
 
 Tracking and provenance requirements (planned):
 

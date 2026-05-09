@@ -5,7 +5,8 @@
 - Repository initialized for ANDROBUSS planning work.
 - Gradle skeleton and Android module structure exist (from PASS 02).
 - Core-domain baseline models now exist (PASS 05).
-- No parser, routing engine, Room schema, or Android UI logic implementation exists yet.
+- Minimal pure Kotlin GTFS fixture parser/mapping exists in `core-gtfs` (PASS 07).
+- No routing engine, Room schema, or Android UI logic implementation exists yet.
 
 ## Documentation State
 
@@ -18,6 +19,7 @@
 - PASS 05 core-domain stop/pattern model pass completed.
 - PASS 05B domain namespace and guardrail cleanup completed.
 - PASS 06 service calendar resolver spec and tests completed.
+- PASS 07 minimal GTFS fixture parser completed.
 
 ## Architecture Audit Artifacts
 
@@ -29,10 +31,11 @@
 - `docs/audit/PASS_05_CORE_DOMAIN_STOP_AND_PATTERN_MODELS.md`
 - `docs/audit/PASS_05B_DOMAIN_NAMESPACE_AND_GUARDRAIL_CLEANUP.md`
 - `docs/audit/PASS_06_SERVICE_CALENDAR_RESOLVER_SPEC_AND_TESTS.md`
+- `docs/audit/PASS_07_MINIMAL_GTFS_FIXTURE_PARSER.md`
 
 ## Current Pass
 
-`PASS 07 — MINIMAL_GTFS_FIXTURE_PARSER`
+`PASS 08 — DIRECT_ROUTE_SEARCH_CORE`
 
 ## PASS 05 Snapshot
 
@@ -44,7 +47,6 @@
 
 ## Guardrails Still Active
 
-- No GTFS parser implementation.
 - No Room schema/entities/DAOs.
 - No routing engine implementation.
 - No feature UI screens or ViewModels.
@@ -65,6 +67,13 @@
 - Resolver semantics lock base calendar range/weekday logic plus `calendar_dates` add/remove overrides.
 - Resolver duplicate exception policy rejects repeated serviceId/date exception rows.
 
+## PASS 07 Snapshot
+
+- `core-gtfs` can parse tiny local GTFS fixture folders with required-file validation.
+- `calendar.txt` and `calendar_dates.txt` map into existing calendar domain models.
+- Minimal trip/stop_times mapping now creates `RoutePattern` and `Trip` structures without routing search.
+- Synthetic `rakvere-smoke` fixture is committed for deterministic parser tests.
+
 ## Next Likely Pass
 
-`PASS 07 — MINIMAL_GTFS_FIXTURE_PARSER`
+`PASS 08 — DIRECT_ROUTE_SEARCH_CORE`

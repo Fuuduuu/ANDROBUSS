@@ -83,6 +83,21 @@ Potential future fixture paths (proposal only, not created in PASS 04):
   - exact service/date exception scoping
   - duplicate exception rejection policy
 
+## PASS 07 Parser Test Baseline
+
+- `core-gtfs` now uses minimal pure Kotlin test infrastructure via `testImplementation(kotlin("test"))`.
+- Synthetic fixture: `core-gtfs/src/test/resources/gtfs/rakvere-smoke/`.
+- Coverage includes:
+  - CSV quoted comma and escaped quote parsing
+  - CRLF/LF handling
+  - required GTFS file validation
+  - calendar-file presence rules (`calendar.txt` and/or `calendar_dates.txt`)
+  - calendar exception mapping (`1` add, `2` remove, invalid values fail)
+  - StopPoint identity protection for same-name different-`stop_id` stops
+  - ordered `RoutePattern` creation from `stop_sequence`
+  - `Trip` -> `ServiceRef(ServiceId)` mapping
+  - Android-free parser/mapper API guard
+
 ## Risk Focus
 
 - Calendar edge cases (holidays, exceptions, overnight service).
