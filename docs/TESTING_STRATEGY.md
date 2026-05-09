@@ -72,6 +72,17 @@ Potential future fixture paths (proposal only, not created in PASS 04):
 - PASS 05 intentionally shipped without executable `core-domain` tests because minimal test dependency wiring was missing and build-file changes were out of scope for that pass.
 - PASS 06 must begin by adding minimal pure Kotlin test dependency support and executable tests for calendar semantics.
 
+## PASS 06 Test Baseline
+
+- `core-domain` now uses minimal pure Kotlin test infrastructure via `testImplementation(kotlin("test"))`.
+- PASS 05 invariant tests are now executable in `core-domain`.
+- `ServiceCalendarResolver` semantics are covered with explicit `LocalDate` tests:
+  - base weekday/date-range activation
+  - `ADD_SERVICE` and `REMOVE_SERVICE` override precedence
+  - no-base-calendar behavior
+  - exact service/date exception scoping
+  - duplicate exception rejection policy
+
 ## Risk Focus
 
 - Calendar edge cases (holidays, exceptions, overnight service).

@@ -17,6 +17,7 @@
 - PASS 04 GTFS fixture strategy and city mapping completed (docs/audit only).
 - PASS 05 core-domain stop/pattern model pass completed.
 - PASS 05B domain namespace and guardrail cleanup completed.
+- PASS 06 service calendar resolver spec and tests completed.
 
 ## Architecture Audit Artifacts
 
@@ -27,10 +28,11 @@
 - `docs/audit/PASS_04_GTFS_FIXTURE_STRATEGY_AND_CITY_MAPPING.md`
 - `docs/audit/PASS_05_CORE_DOMAIN_STOP_AND_PATTERN_MODELS.md`
 - `docs/audit/PASS_05B_DOMAIN_NAMESPACE_AND_GUARDRAIL_CLEANUP.md`
+- `docs/audit/PASS_06_SERVICE_CALENDAR_RESOLVER_SPEC_AND_TESTS.md`
 
 ## Current Pass
 
-`PASS 06 — SERVICE_CALENDAR_RESOLVER_SPEC_AND_TESTS`
+`PASS 07 — MINIMAL_GTFS_FIXTURE_PARSER`
 
 ## PASS 05 Snapshot
 
@@ -43,7 +45,6 @@
 ## Guardrails Still Active
 
 - No GTFS parser implementation.
-- No service calendar resolver implementation.
 - No Room schema/entities/DAOs.
 - No routing engine implementation.
 - No feature UI screens or ViewModels.
@@ -56,6 +57,14 @@
 - GTFS ZIP guardrail is enforced in `.gitignore`.
 - No product logic expansion is included in this pass.
 
+## PASS 06 Snapshot
+
+- Minimal pure Kotlin test infrastructure exists in `core-domain`.
+- PASS 05 domain invariants have executable tests.
+- `ServiceCalendar`, `ServiceCalendarException`, and `ServiceCalendarResolver` are implemented in `core-domain`.
+- Resolver semantics lock base calendar range/weekday logic plus `calendar_dates` add/remove overrides.
+- Resolver duplicate exception policy rejects repeated serviceId/date exception rows.
+
 ## Next Likely Pass
 
-`PASS 06 — SERVICE_CALENDAR_RESOLVER_SPEC_AND_TESTS`
+`PASS 07 — MINIMAL_GTFS_FIXTURE_PARSER`

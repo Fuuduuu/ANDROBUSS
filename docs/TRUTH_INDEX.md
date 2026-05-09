@@ -26,6 +26,7 @@ Canonical truths for this repository:
 - `calendar_dates` exceptions override base `calendar` rules for matching service/date.
 - Exception type `1` means add service.
 - Exception type `2` means remove service.
+- Duplicate `calendar_dates` rows for the same `service_id` + date are treated as invalid and rejected by resolver construction.
 - Resolver behavior must apply exception precedence deterministically before route availability decisions.
 
 ## Data Confidence Levels
