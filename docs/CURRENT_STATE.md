@@ -6,7 +6,8 @@
 - Gradle skeleton and Android module structure exist (from PASS 02).
 - Core-domain baseline models now exist (PASS 05).
 - Minimal pure Kotlin GTFS fixture parser/mapping exists in `core-gtfs` (PASS 07).
-- No routing engine, Room schema, or Android UI logic implementation exists yet.
+- Minimal direct-route search core exists in `core-routing` (PASS 08).
+- No Room schema or Android UI logic implementation exists yet.
 
 ## Documentation State
 
@@ -20,6 +21,7 @@
 - PASS 05B domain namespace and guardrail cleanup completed.
 - PASS 06 service calendar resolver spec and tests completed.
 - PASS 07 minimal GTFS fixture parser completed.
+- PASS 08 direct-route search core completed.
 
 ## Architecture Audit Artifacts
 
@@ -32,10 +34,11 @@
 - `docs/audit/PASS_05B_DOMAIN_NAMESPACE_AND_GUARDRAIL_CLEANUP.md`
 - `docs/audit/PASS_06_SERVICE_CALENDAR_RESOLVER_SPEC_AND_TESTS.md`
 - `docs/audit/PASS_07_MINIMAL_GTFS_FIXTURE_PARSER.md`
+- `docs/audit/PASS_08_DIRECT_ROUTE_SEARCH_CORE.md`
 
 ## Current Pass
 
-`PASS 08 — DIRECT_ROUTE_SEARCH_CORE`
+`PASS 09 — RAKVERE_CITY_ADAPTER_METADATA`
 
 ## PASS 05 Snapshot
 
@@ -48,7 +51,7 @@
 ## Guardrails Still Active
 
 - No Room schema/entities/DAOs.
-- No routing engine implementation.
+- No transfer routing implementation.
 - No feature UI screens or ViewModels.
 - No Map SDK dependency.
 
@@ -74,6 +77,13 @@
 - Minimal trip/stop_times mapping now creates `RoutePattern` and `Trip` structures without routing search.
 - Synthetic `rakvere-smoke` fixture is committed for deterministic parser tests.
 
+## PASS 08 Snapshot
+
+- `core-routing` now provides minimal direct route search by `StopPointId`.
+- Valid direct route requires same `RoutePattern` and destination after origin.
+- Loop patterns with duplicate stop points are handled with index-pair evaluation.
+- Search output is domain-level candidates only (no UI card/recommendation formatting).
+
 ## Next Likely Pass
 
-`PASS 08 — DIRECT_ROUTE_SEARCH_CORE`
+`PASS 09 — RAKVERE_CITY_ADAPTER_METADATA`

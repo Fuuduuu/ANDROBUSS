@@ -29,6 +29,12 @@ Canonical truths for this repository:
 - Duplicate `calendar_dates` rows for the same `service_id` + date are treated as invalid and rejected by resolver construction.
 - Resolver behavior must apply exception precedence deterministically before route availability decisions.
 
+## Direct Route Core Truth
+
+- Direct route validity requires origin and destination in the same `RoutePattern` with destination after origin.
+- Reverse order in the same pattern is not a valid direct route.
+- Direct-route decisions are StopPointId-based only.
+
 ## Data Confidence Levels
 
 - `REALTIME`: live vehicle/ETA data from active realtime feed ingestion.

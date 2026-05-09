@@ -98,6 +98,21 @@ Potential future fixture paths (proposal only, not created in PASS 04):
   - `Trip` -> `ServiceRef(ServiceId)` mapping
   - Android-free parser/mapper API guard
 
+## PASS 08 Routing Test Baseline
+
+- `core-routing` now uses minimal pure Kotlin test infrastructure via `testImplementation(kotlin("test"))`.
+- `DirectRouteSearch` unit coverage includes:
+  - valid direct route in same pattern with destination after origin
+  - reverse-direction failure
+  - no-shared-pattern failure
+  - deterministic not-found precedence for missing origin/destination
+  - same origin/destination failure
+  - duplicate stop point loop-pattern handling
+  - deterministic multi-pattern ordering
+  - ordered segment stop-point extraction
+  - StopPointId-only identity behavior (no stop-name inference)
+  - Android-free API guard
+
 ## Risk Focus
 
 - Calendar edge cases (holidays, exceptions, overnight service).
