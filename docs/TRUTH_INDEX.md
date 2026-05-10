@@ -43,6 +43,9 @@ Canonical truths for this repository:
 - PASS 20 proves parser-to-search integration at fixture level only.
 - `MappedGtfsFeed.stopPoints` can seed `InMemoryStopPointIndex`.
 - `MappedGtfsFeed.routePatterns` can be supplied to `DirectRouteQueryPreparationUseCase`.
+- `DomainFeedSnapshot` is a parser-agnostic feature-search boundary for domain-mapped feed data.
+- `DomainFeedSnapshot.stopPoints` and `DomainFeedSnapshot.routePatterns` must come from the same feed snapshot/version.
+- `DomainFeedSnapshotProvider` is synchronous in PASS 21 and Room-backed implementation is future work.
 - `feature-search` production code must not depend on `core-gtfs` parser implementation.
 - `testImplementation(project(":core-gtfs"))` is allowed only for feature-search integration tests.
 - Stop-candidate enrichment does not upgrade `StopCandidate.confidence`; confidence still describes how the original name-level candidate was produced.

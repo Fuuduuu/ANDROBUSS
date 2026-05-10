@@ -17,6 +17,7 @@
 - `feature-search` destination enrichment orchestration tests exist and run.
 - `feature-search` direct-route query preparation use-case tests exist and run.
 - `feature-search` parser-to-search pipeline integration tests using `core-gtfs` `rakvere-smoke` fixture exist and run.
+- `feature-search` feed snapshot/provider contract tests exist and run.
 - CI baseline runs Gradle build/lint.
 
 ## Core-Domain Coverage Focus
@@ -169,10 +170,19 @@
 - Loop pattern (`pattern:T3`) preservation from parser output.
 - Anti-fabrication checks that route IDs come from parser/domain stop IDs, not name strings.
 
+## Feature-Search Feed Snapshot Coverage Focus (PASS 21)
+
+- `DomainFeedSnapshotProvider` city-match/null behavior.
+- `DomainFeedSnapshot` preserves `stopPoints` and `routePatterns` unchanged.
+- Snapshot `stopPoints` can seed `InMemoryStopPointIndex`.
+- Snapshot `routePatterns` can drive `DirectRouteQueryPreparationUseCase`.
+- Parser-agnostic boundary verification without importing parser types.
+- Android-free guard for feed snapshot/provider classes.
+
 ## Near-Term Test Gaps
 
 - Production destination enrichment orchestration wiring into app/ViewModel flow (future).
-- Feed-domain snapshot/provider contract tests for route-pattern sourcing (PASS 21 target).
+- Room-backed feed snapshot/provider parity tests (future).
 - Room-backed resolver parity tests (future).
 - Room persistence/invalidation tests (future).
 - UI and end-to-end flow tests (future).

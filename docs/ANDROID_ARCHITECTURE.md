@@ -31,7 +31,7 @@ Architecture baseline and implementation status snapshot.
 - `feature-alerts`
 - `city-adapters`
 
-## Implementation Status (After PASS 20)
+## Implementation Status (After PASS 21)
 
 - Implemented pure Kotlin logic:
   - `core-domain`
@@ -39,11 +39,12 @@ Architecture baseline and implementation status snapshot.
   - `core-routing`
   - `city-adapters` metadata contract/registry
   - `feature-search` search pipeline core (resolution, enrichment, orchestration, route-query preparation)
+  - `feature-search` parser-agnostic feed boundary (`DomainFeedSnapshot`, `DomainFeedSnapshotProvider`, `InMemoryDomainFeedSnapshot`)
 - Skeleton/future:
   - `app`, `data-local`, `data-remote`, UI `feature-*` runtime wiring.
 - Not implemented yet:
   - Room schema and cache layer.
-  - Production feed provider/snapshot boundary and downloader/cache orchestration.
+  - Room-backed feed provider implementation and downloader/cache orchestration.
   - Compose feature flows and ViewModel wiring beyond minimal shell.
 
 ## Module Responsibilities
@@ -71,6 +72,7 @@ Architecture baseline and implementation status snapshot.
 Test-only rule:
 - `feature-search` tests may depend on `core-gtfs` for fixture integration tests.
 - `feature-search` production code must not depend on parser implementation.
+- `data-local` and Room-backed provider wiring remain PASS 22 scope and are not yet implemented.
 
 Forbidden coupling:
 - `data-remote` must not directly depend on `city-adapters`.

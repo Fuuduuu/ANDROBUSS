@@ -35,6 +35,13 @@ GTFS pipeline status after PASS 20.
 - This integration proof does not implement production feed ingestion, provider abstractions, or cache wiring.
 - PASS 20 tests do not use real `rakvere.zip`; they use `rakvere-smoke` fixture only.
 
+## PASS 21 Feed Boundary
+
+- PASS 21 introduces parser-agnostic `DomainFeedSnapshot` and `DomainFeedSnapshotProvider` in `feature-search`.
+- Callers may convert parser output into snapshot boundary objects:
+  - `DomainFeedSnapshot(cityId, mappedFeed.stopPoints, mappedFeed.routePatterns)`
+- PASS 21 does not implement production ingestion, downloader, or Room-backed provider wiring.
+
 ## PASS 17 Metadata Discovery Note
 
 - Real `rakvere.zip` `stops.txt` was inspected in a temp folder for conservative Rakvere POI stop-name discovery.
@@ -56,7 +63,7 @@ GTFS pipeline status after PASS 20.
 - Network downloader/update checks.
 - ZIP ingestion from live sources in runtime.
 - Room/cache persistence.
-- Feed-domain snapshot/provider boundary.
+- Room-backed feed snapshot/provider boundary implementation.
 - Shapes/fares/transfers handling.
 - Realtime ingestion.
 - Production feed-to-city adapter orchestration.

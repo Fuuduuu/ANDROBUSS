@@ -18,6 +18,10 @@ Protected surfaces (high change-control sensitivity):
   - `StopPointResolver` contract
   - `VerifiedStopPointCandidate` identity/source guarantees
   - `InMemoryStopPointIndex` anti-fabrication and multi-candidate behavior
+- Feed snapshot/provider boundary in `feature-search`:
+  - `DomainFeedSnapshot` must keep `stopPoints` and `routePatterns` from the same snapshot
+  - `DomainFeedSnapshotProvider` parser-agnostic contract
+  - `InMemoryDomainFeedSnapshot` single-city semantics
 - Stop-candidate enrichment boundary in `feature-search`:
   - `StopCandidateEnricher` must copy IDs only from verified stop-point candidates
   - `StopCandidateEnrichmentResult` success/failure semantics

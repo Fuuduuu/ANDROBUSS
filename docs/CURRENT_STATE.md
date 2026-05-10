@@ -4,18 +4,19 @@
 
 - Expected repo root: `C:\Users\Kasutaja\Desktop\ANDROBUSS`
 - Expected branch: `main`
-- Latest accepted HEAD: `1ae1daa` (`PASS 20`)
+- Latest accepted HEAD: `8cdd748` (`PASS 20B`)
 - Working tree must be clean before a new pass
 
 ## Latest Accepted Pass
 
-- `PASS 20 — GTFS_FIXTURE_TO_SEARCH_PIPELINE_INTEGRATION_TEST`
+- `PASS 20B — GTFS_PIPELINE_DOCS_AND_DIAGRAMS_SYNC`
 
-PASS 20 proved fixture-level parser-to-search integration:
-- `GtfsFeedParser` -> `GtfsDomainMapper` -> `MappedGtfsFeed.stopPoints` -> `InMemoryStopPointIndex`
-- `MappedGtfsFeed.routePatterns` -> `DirectRouteQueryPreparationUseCase`
-- same-name `Keskpeatus` remains two distinct `StopPointId` values
-- no production runtime wiring changes
+PASS 21 adds a parser-agnostic feed boundary in `feature-search`:
+- `DomainFeedSnapshot`
+- `DomainFeedSnapshotProvider`
+- `InMemoryDomainFeedSnapshot`
+- integration coverage proving snapshot stop points seed `InMemoryStopPointIndex`
+- integration coverage proving snapshot route patterns can be supplied to `DirectRouteQueryPreparationUseCase`
 
 ## Current Core Status
 
@@ -23,12 +24,14 @@ PASS 20 proved fixture-level parser-to-search integration:
 - `feature-search` has test-scope parser integration only:
   - `testImplementation(project(":core-gtfs"))`
 - No production parser dependency from feature-search runtime code.
+- `DomainFeedSnapshotProvider` is synchronous and in-memory only in PASS 21.
 
 ## Not Implemented Yet
 
-- Production feed snapshot/provider boundary
+- Room-backed feed snapshot provider
 - Room/cache persistence
-- Production route-pattern source/provider
+- Production route-pattern source/provider wiring
+- Production feed downloader/refresh flow
 - App/ViewModel runtime wiring of the pipeline
 - Nearest-stop/geospatial resolution
 - UI feature flows
@@ -44,8 +47,8 @@ PASS 20 proved fixture-level parser-to-search integration:
 
 ## Current Pass
 
-- `PASS 20B — GTFS_PIPELINE_DOCS_AND_DIAGRAMS_SYNC` (docs-only)
+- `PASS 21 — DOMAIN_FEED_SNAPSHOT_AND_PROVIDER_CONTRACT`
 
 ## Next Technical Pass
 
-- `PASS 21 — FEED_DOMAIN_SNAPSHOT_AND_ROUTE_PATTERN_PROVIDER_SPEC`
+- `PASS 22 — DATA_LOCAL_ROOM_SCHEMA_AND_FEED_SNAPSHOT_PROVIDER`

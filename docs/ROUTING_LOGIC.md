@@ -73,6 +73,13 @@ Identity rules:
 - `RoutePattern` source remains caller responsibility until provider/Room passes.
 - PASS 20 uses synthetic `rakvere-smoke` stop names for integration tests; this does not redefine Rakvere real-world POI metadata.
 
+## Feed Snapshot Boundary (PASS 21)
+
+- `DirectRouteQueryPreparationUseCase` remains unchanged and still accepts caller-supplied `RoutePattern` lists.
+- `DomainFeedSnapshot` now groups `stopPoints` and `routePatterns` together for one city snapshot.
+- `DomainFeedSnapshotProvider` is parser-agnostic and synchronous in PASS 21.
+- Future caller wiring may source route patterns from `DomainFeedSnapshotProvider`; this pass does not load data automatically.
+
 ## Deterministic Not-Found Order
 
 - `SAME_STOP`
