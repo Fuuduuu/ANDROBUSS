@@ -28,6 +28,7 @@ Canonical truths for this repository:
 - Accessibility is an MVP requirement, not polish.
 - Destination target resolution is metadata-based (`CITY_PLACE_METADATA`) and does not perform nearest-stop/routing/map logic.
 - Rakvere `preferredStopGroupNames` must be sourced from real `rakvere.zip` `stops.txt` discovery, not synthetic fixture names.
+- `rakvere-smoke` stop names (`Jaam`, `Keskpeatus`, `Spordikeskus`) are synthetic fixture names and must not be treated as real Rakvere POI names.
 - Place-to-stop candidate mapping uses preferred stop-group names as unresolved name-level candidates; it does not fabricate `StopGroupId` or `StopPointId`.
 - If a Rakvere POI has no confident real `stop_name` match, `preferredStopGroupNames` must remain empty.
 - `StopCandidateEnricher` populates `StopCandidate.stopPointIds` only from `VerifiedStopPointCandidate.stopPointId`.
@@ -38,6 +39,7 @@ Canonical truths for this repository:
 - Direct route query preparation may call bridge only when destination is non-ambiguous, origin `StopPointId` is explicit, and `RoutePattern` list is supplied.
 - Ambiguous destination must not be routed.
 - Direct route query preparation uses exact-one destination policy (`single()`), never hidden `first()` selection.
+- PASS 20 parser-to-search integration uses only parser-derived `StopPoint.id` values as route IDs.
 - Stop-candidate enrichment does not upgrade `StopCandidate.confidence`; confidence still describes how the original name-level candidate was produced.
 - Presence of `stopPointIds` indicates resolution happened through verified candidates.
 - Multiple same-name `StopPoint` matches must remain preserved through enrichment.

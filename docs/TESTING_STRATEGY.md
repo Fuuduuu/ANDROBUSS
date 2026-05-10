@@ -16,6 +16,7 @@
 - `feature-search` stop-candidate enrichment production tests exist and run.
 - `feature-search` destination enrichment orchestration tests exist and run.
 - `feature-search` direct-route query preparation use-case tests exist and run.
+- `feature-search` parser-to-search pipeline integration tests using `core-gtfs` `rakvere-smoke` fixture exist and run.
 - CI baseline runs Gradle build/lint.
 
 ## Core-Domain Coverage Focus
@@ -152,10 +153,24 @@
 - Bridge-call input preserves anti-fabrication destination `StopPointId`.
 - Android-free guard for preparation use-case/result classes.
 
+## Feature-Search Parser-to-Search Integration Coverage Focus (PASS 20)
+
+- `GtfsFeedParser` + `GtfsDomainMapper` -> `MappedGtfsFeed` integration.
+- Parser-derived `stopPoints` seed `InMemoryStopPointIndex`.
+- Parser-derived `routePatterns` are consumed by `DirectRouteQueryPreparationUseCase`.
+- `StopCandidateEnricher` and `DestinationEnrichmentOrchestrator` behavior on parser-derived names:
+  - non-ambiguous (`Jaam`)
+  - ambiguous (`Keskpeatus`)
+- End-to-end parser-derived route-query preparation outcomes:
+  - `RouteFound`
+  - `RouteNotFound`
+- Loop pattern (`pattern:T3`) preservation from parser output.
+- Anti-fabrication checks that route IDs come from parser/domain stop IDs, not name strings.
+
 ## Near-Term Test Gaps
 
 - Production destination enrichment orchestration wiring into app/ViewModel flow (future).
-- GTFS feed-domain integration and route-pattern provider tests for route-query preparation caller (PASS 20 target).
+- Feed-domain snapshot/provider contract tests for route-pattern sourcing (PASS 21 target).
 - Room-backed resolver parity tests (future).
 - Room persistence/invalidation tests (future).
 - UI and end-to-end flow tests (future).

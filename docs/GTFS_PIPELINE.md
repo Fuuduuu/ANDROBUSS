@@ -29,6 +29,10 @@ GTFS pipeline status after PASS 17.
 - Fixture is deterministic and intentionally small.
 - It is not a production data snapshot.
 - Synthetic fixture stop names are not authoritative city metadata for real Rakvere mapping.
+- PASS 20 integration tests prove parser/mapper output can seed feature-search pipeline:
+  - `MappedGtfsFeed.stopPoints` seeding `InMemoryStopPointIndex`
+  - `MappedGtfsFeed.routePatterns` supplied to `DirectRouteQueryPreparationUseCase`
+- This integration proof does not implement production feed ingestion, provider abstractions, or cache wiring.
 
 ## PASS 17 Metadata Discovery Note
 

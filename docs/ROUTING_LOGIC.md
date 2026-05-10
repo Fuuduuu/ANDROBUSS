@@ -63,6 +63,15 @@ Identity rules:
   - patterns are provided.
 - Destination selection uses exact-one policy (`single()`), not fallback `first()`.
 
+## GTFS Fixture Pipeline Integration (PASS 20)
+
+- `GtfsFeedParser` + `GtfsDomainMapper` output can be consumed directly by feature-search pipeline tests:
+  - `MappedGtfsFeed.stopPoints` -> `InMemoryStopPointIndex`
+  - `MappedGtfsFeed.routePatterns` -> `DirectRouteQueryPreparationUseCase`
+- `DirectRouteQueryPreparationUseCase` can execute bridge flow with parser-derived patterns when caller supplies them.
+- `RoutePattern` source remains caller responsibility until provider/Room passes.
+- PASS 20 uses synthetic `rakvere-smoke` stop names for integration tests; this does not redefine Rakvere real-world POI metadata.
+
 ## Deterministic Not-Found Order
 
 - `SAME_STOP`

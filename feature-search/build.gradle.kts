@@ -28,4 +28,5 @@ dependencies {
     implementation(platform(libs.compose.bom))
 
     testImplementation(kotlin("test"))
+    testImplementation(project(":core-gtfs"))
 }

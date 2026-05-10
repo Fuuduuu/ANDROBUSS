@@ -4,7 +4,7 @@
 
 - Expected repo root: `C:\Users\Kasutaja\Desktop\ANDROBUSS`.
 - Expected branch: `main`.
-- Latest accepted HEAD: `a2ebe41` (`PASS 18`).
+- Latest accepted HEAD: `c4ad0cc` (`PASS 19`).
 - Working tree should be clean before starting a new pass.
 
 ## Accepted Passes
@@ -32,6 +32,7 @@
 - PASS 16B: enrichment docs/diagrams sync.
 - PASS 17: Rakvere real GTFS stop-name discovery and conservative metadata mapping.
 - PASS 18: destination enrichment orchestrator and ambiguity contract.
+- PASS 19: direct-route query preparation use-case.
 
 ## Implemented Core Stack
 
@@ -66,6 +67,10 @@
   - Direct-route query preparation use-case (`DirectRouteQueryPreparationUseCase`).
   - Use-case requires already enriched destination result + explicit origin `StopPointId` + caller-supplied `RoutePattern` list.
   - Use-case does not load data and does not implement UI/Room.
+  - PASS 20 integration tests prove parser-to-search pipeline compatibility using `core-gtfs` `rakvere-smoke` fixture:
+    - parser/mapper -> `MappedGtfsFeed.stopPoints` -> `InMemoryStopPointIndex`
+    - parser/mapper -> `MappedGtfsFeed.routePatterns` -> `DirectRouteQueryPreparationUseCase`
+  - No production provider abstraction or Room-backed provider exists yet.
   - Enrichment orchestration is not yet wired into app/ViewModel runtime flow.
   - Integration tests for resolver-to-bridge flow using hand-built domain data.
   - Executable destination, candidate mapping, and integration tests.
@@ -92,8 +97,8 @@
 
 ## Current Pass
 
-`PASS 19 — DIRECT_ROUTE_QUERY_PREPARATION_USE_CASE`
+`PASS 20 — GTFS_FIXTURE_TO_SEARCH_PIPELINE_INTEGRATION_TEST`
 
 ## Next Technical Pass
 
-`PASS 20 — GTFS_FEED_DOMAIN_INTEGRATION_AND_ROUTE_PATTERN_PROVIDER_SPEC`
+`PASS 21 — FEED_DOMAIN_SNAPSHOT_AND_ROUTE_PATTERN_PROVIDER_SPEC`
