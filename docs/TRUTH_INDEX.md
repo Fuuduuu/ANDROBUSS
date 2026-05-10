@@ -20,6 +20,7 @@ Canonical truths for this repository:
 - Map is an input aid, not the routing engine.
 - Destination target resolution is metadata-based (`CITY_PLACE_METADATA`) and does not perform nearest-stop/routing/map logic.
 - Place-to-stop candidate mapping uses preferred stop-group names as unresolved name-level candidates; it does not fabricate `StopGroupId` or `StopPointId`.
+- Origin candidate resolution (manual text or current location) is unresolved seed generation only and must not fabricate `StopPointId`/`StopGroupId`.
 - Wave 0 is Rakvere.
 - Wave 1 is Voru, Viljandi, Parnu, Kuressaare.
 - Wave 2 is Narva, Kohtla-Jarve, Sillamae.

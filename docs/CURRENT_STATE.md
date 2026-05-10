@@ -4,7 +4,7 @@
 
 - Expected repo root: `C:\Users\Kasutaja\Desktop\ANDROBUSS`.
 - Expected branch: `main`.
-- Last accepted HEAD before this pass: `8a489c9` (`PASS 10`).
+- Last accepted HEAD before this pass: `280f8a0` (`PASS 11`).
 - Working tree should be clean before starting a new pass.
 
 ## Accepted Passes
@@ -44,6 +44,7 @@
   - Destination target model and query normalizer.
   - Metadata-based place query resolver.
   - Place-to-stop candidate model and resolver (name-only candidate layer).
+  - Origin candidate model and resolver (manual-text and current-location unresolved seeds).
   - Executable destination and candidate mapping tests.
 
 ## Not Implemented Yet
@@ -55,11 +56,12 @@
 - Transfer routing.
 - Compose feature UI and ViewModels.
 - Verified stop-group/stop-point ID mapping from place candidates.
+- Origin-to-stop-point nearest lookup.
 
 ## Current Pass
 
-`PASS 11 — PLACE_TO_STOP_CANDIDATE_MAPPING_SPEC`
+`PASS 12 — ORIGIN_STOPPOINT_CANDIDATE_RESOLVER_SPEC`
 
 ## Next Pass
 
-`PASS 12 — ORIGIN_STOPPOINT_CANDIDATE_RESOLVER_SPEC`
+`PASS 13 — DESTINATION_TO_DIRECT_ROUTE_QUERY_BRIDGE_SPEC`

@@ -9,6 +9,7 @@
 - `city-adapters` metadata tests exist and run.
 - `feature-search` destination resolver tests exist and run.
 - `feature-search` place-to-stop candidate mapping tests exist and run.
+- `feature-search` origin candidate resolver tests exist and run.
 - CI baseline runs Gradle build/lint.
 
 ## Core-Domain Coverage Focus
@@ -67,9 +68,17 @@
 - Conservative candidate confidence policy.
 - Android-free candidate resolver API guard.
 
+## Feature-Search Origin Candidate Coverage Focus (PASS 12)
+
+- Blank/whitespace manual text handling (`BLANK_QUERY`).
+- Null current location handling (`MISSING_LOCATION`).
+- Manual text candidate normalization and unresolved confidence policy.
+- Current location coordinate pass-through without nearest-stop inference.
+- No fabricated `StopPointId` or `StopGroup` mappings.
+- Android-free origin resolver API guard.
+
 ## Near-Term Test Gaps
 
-- Origin stop-point candidate resolver tests (planned for PASS 12).
 - Destination-to-route query bridge behavior tests (future).
 - Room persistence/invalidation tests (future).
 - UI and end-to-end flow tests (future).
