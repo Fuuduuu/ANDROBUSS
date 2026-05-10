@@ -200,5 +200,9 @@
 ## Governance Checks
 
 - `tools/validate_project_state.py` validates `docs/PROJECT_STATE.yml` schema.
-- Run locally: `python tools/validate_project_state.py`
+- Windows local: `py -3 tools/validate_project_state.py`
+- CI/Linux: `python tools/validate_project_state.py`
+- Validator uses Python stdlib only (`pathlib`, `re`, `subprocess`, `sys`).
+- No `PyYAML` or other third-party dependency is required.
+- Commit hash mismatch is warning-only, not a hard failure.
 - GitHub Actions CI runs the validator.

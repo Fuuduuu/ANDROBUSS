@@ -69,6 +69,7 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 - Added `tools/validate_project_state.py` for compact `docs/PROJECT_STATE.yml` schema checks.
 - Validator is runnable locally and is wired into CI.
+- Local Windows validator command: `py -3 tools/validate_project_state.py`.
 
 ## Next Technical Pass
 

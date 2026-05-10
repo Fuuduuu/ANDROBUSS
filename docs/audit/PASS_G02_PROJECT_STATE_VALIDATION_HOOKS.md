@@ -55,6 +55,10 @@ Updated (minimal):
 
 - Parser is intentionally lightweight/regex-based and schema-specific (not full YAML parsing).
 - `project.last_accepted_commit` may lag during in-progress work by design; script only warns.
+- On this Windows environment, `python` app alias was unavailable.
+- Local validation was executed with `py -3 tools/validate_project_state.py`.
+- CI/Linux keeps using `python tools/validate_project_state.py`.
+- This does not change validator behavior.
 
 ## Recommended next pass
 
