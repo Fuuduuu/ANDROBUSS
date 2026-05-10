@@ -21,6 +21,11 @@ Protected surfaces (high change-control sensitivity):
 - Stop-candidate enrichment boundary in `feature-search`:
   - `StopCandidateEnricher` must copy IDs only from verified stop-point candidates
   - `StopCandidateEnrichmentResult` success/failure semantics
+- Destination-enrichment orchestration boundary in `feature-search`:
+  - `DestinationEnrichmentOrchestrator` destination-only orchestration contract
+  - must not call `DirectRouteQueryBridge` directly
+  - must not select a single verified stop-point candidate
+  - `DestinationEnrichmentResult` ambiguity semantics
 - Source identity anti-fabrication rule:
   - IDs must not be fabricated from names, place labels, manual text, or coordinates
 - Room schema and migration strategy (future).

@@ -14,6 +14,7 @@
 - `feature-search` stop-point resolution contract/name-index tests exist and run.
 - `feature-search` resolver-to-bridge integration tests (hand-built domain data) exist and run.
 - `feature-search` stop-candidate enrichment production tests exist and run.
+- `feature-search` destination enrichment orchestration tests exist and run.
 - CI baseline runs Gradle build/lint.
 
 ## Core-Domain Coverage Focus
@@ -125,10 +126,22 @@
 - Enrichment result exposes verified candidates for later ranking/wiring.
 - Android-free guard for enrichment classes.
 
+## Feature-Search Destination Enrichment Orchestration Coverage Focus (PASS 18)
+
+- Empty-candidate branch returns `NoCandidates`.
+- All-fail branch returns `NoneEnriched` with preserved failures.
+- Enriched branch preserves all verified candidates and all failed candidates.
+- Ambiguity semantics are deterministic:
+  - `isAmbiguous=false` when total verified candidate count is exactly one.
+  - `isAmbiguous=true` when total verified candidate count is greater than one.
+- Orchestrator does not depend on or call `DirectRouteQueryBridge`.
+- Anti-fabrication guarantees remain enforced through resolver+enricher pipeline.
+- Android-free guard for orchestration classes.
+
 ## Near-Term Test Gaps
 
-- Production stop-candidate enrichment wiring (future).
-- Rakvere multi-candidate verified stop-point selection strategy tests (PASS 18 target).
+- Production destination enrichment orchestration wiring into app/ViewModel flow (future).
+- Route-query preparation tests after ambiguity handling (PASS 19 target).
 - Room-backed resolver parity tests (future).
 - Room persistence/invalidation tests (future).
 - UI and end-to-end flow tests (future).

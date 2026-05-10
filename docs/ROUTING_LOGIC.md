@@ -38,6 +38,16 @@ Identity rules:
 - `NotEnriched` preserves original unresolved candidate.
 - Origin-side enrichment is not implemented.
 
+## Destination Enrichment Orchestration (PASS 18)
+
+- `DestinationEnrichmentOrchestrator` coordinates destination-candidate enrichment only.
+- It does not call `DirectRouteQueryBridge`.
+- It does not select a single verified stop-point candidate.
+- `isAmbiguous=true` when total verified stop-point candidate count is greater than one.
+- Candidate IDs can be extracted from enriched results as:
+  - `enrichedCandidates.flatMap { it.verifiedCandidates.map { v -> v.stopPointId } }`
+- Do not forward IDs blindly when `isAmbiguous=true`; disambiguation remains required before route-query preparation.
+
 ## Deterministic Not-Found Order
 
 - `SAME_STOP`
@@ -59,6 +69,6 @@ Identity rules:
 - Service-day filtering inside route search.
 - Transfer routing.
 - Nearest-stop and walking-distance ranking.
-- Production wiring of destination enrichment and bridge flow in app/ViewModel runtime.
+- Production wiring of destination enrichment orchestration and bridge flow in app/ViewModel runtime.
 - Verified origin-side stop-point enrichment pipeline.
 - UI card composition and rider copy generation.

@@ -4,7 +4,7 @@
 
 - Expected repo root: `C:\Users\Kasutaja\Desktop\ANDROBUSS`.
 - Expected branch: `main`.
-- Latest accepted HEAD: `b8da7f3` (`PASS 16B`).
+- Latest accepted HEAD: `ebd1ff3` (`PASS 17`).
 - Working tree should be clean before starting a new pass.
 
 ## Accepted Passes
@@ -30,6 +30,7 @@
 - PASS 15: stop resolution and bridge integration tests.
 - PASS 16: stop-candidate enrichment production class.
 - PASS 16B: enrichment docs/diagrams sync.
+- PASS 17: Rakvere real GTFS stop-name discovery and conservative metadata mapping.
 
 ## Implemented Core Stack
 
@@ -58,7 +59,10 @@
   - Direct-route query bridge with explicit precondition gating before route search calls.
   - Stop-point resolution contract and in-memory name index for verified `StopPointId` candidates.
   - Stop-candidate enrichment production class (`StopCandidateEnricher`) for destination-side ID enrichment.
-  - Enrichment class is not yet wired into app/ViewModel runtime flow.
+  - Destination enrichment orchestration production class (`DestinationEnrichmentOrchestrator`).
+  - Orchestrator does not call `DirectRouteQueryBridge` and does not select a single verified stop-point candidate.
+  - Orchestrator returns ambiguity flag when multiple verified stop-point candidates exist.
+  - Enrichment orchestration is not yet wired into app/ViewModel runtime flow.
   - Integration tests for resolver-to-bridge flow using hand-built domain data.
   - Executable destination, candidate mapping, and integration tests.
 
@@ -84,8 +88,8 @@
 
 ## Current Pass
 
-`PASS 17 — RAKVERE_REAL_GTFS_STOP_NAME_DISCOVERY_AND_METADATA_SPEC`
+`PASS 18 — DESTINATION_ENRICHMENT_ORCHESTRATOR_AND_AMBIGUITY_SPEC`
 
 ## Next Technical Pass
 
-`PASS 18 — VERIFIED_STOPPOINT_SELECTION_AND_BRIDGE_WIRING_STRATEGY`
+`PASS 19 — DESTINATION_ROUTE_QUERY_PREPARATION_USE_CASE`
