@@ -15,6 +15,7 @@
 - `feature-search` resolver-to-bridge integration tests (hand-built domain data) exist and run.
 - `feature-search` stop-candidate enrichment production tests exist and run.
 - `feature-search` destination enrichment orchestration tests exist and run.
+- `feature-search` direct-route query preparation use-case tests exist and run.
 - CI baseline runs Gradle build/lint.
 
 ## Core-Domain Coverage Focus
@@ -138,10 +139,23 @@
 - Anti-fabrication guarantees remain enforced through resolver+enricher pipeline.
 - Android-free guard for orchestration classes.
 
+## Feature-Search Route Query Preparation Coverage Focus (PASS 19)
+
+- `NoCandidates` precondition branch.
+- `DestinationUnresolved` branch.
+- `DestinationAmbiguous` branch with bridge-call block.
+- `OriginNotProvided` branch with bridge-call block.
+- `NoPatternsAvailable` branch with bridge-call block.
+- `Executed(RouteFound)` path when safe preconditions hold.
+- `Executed(RouteNotFound)` path, including reverse-direction not-found semantics.
+- Exact-one destination policy (`single()`) fails loudly on malformed non-ambiguous input.
+- Bridge-call input preserves anti-fabrication destination `StopPointId`.
+- Android-free guard for preparation use-case/result classes.
+
 ## Near-Term Test Gaps
 
 - Production destination enrichment orchestration wiring into app/ViewModel flow (future).
-- Route-query preparation tests after ambiguity handling (PASS 19 target).
+- GTFS feed-domain integration and route-pattern provider tests for route-query preparation caller (PASS 20 target).
 - Room-backed resolver parity tests (future).
 - Room persistence/invalidation tests (future).
 - UI and end-to-end flow tests (future).

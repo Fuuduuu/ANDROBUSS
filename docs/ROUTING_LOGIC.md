@@ -48,6 +48,21 @@ Identity rules:
   - `enrichedCandidates.flatMap { it.verifiedCandidates.map { v -> v.stopPointId } }`
 - Do not forward IDs blindly when `isAmbiguous=true`; disambiguation remains required before route-query preparation.
 
+## Route Query Preparation Use-Case (PASS 19)
+
+- `DirectRouteQueryPreparationUseCase` coordinates:
+  - already computed `DestinationEnrichmentResult`,
+  - explicit origin `StopPointId`,
+  - caller-supplied `RoutePattern` list.
+- `RoutePattern` loading is caller responsibility.
+- The use-case does not call `DestinationEnrichmentOrchestrator`.
+- The use-case does not load GTFS/Room data.
+- Bridge call is allowed only when:
+  - destination is enriched and non-ambiguous,
+  - origin `StopPointId` is provided,
+  - patterns are provided.
+- Destination selection uses exact-one policy (`single()`), not fallback `first()`.
+
 ## Deterministic Not-Found Order
 
 - `SAME_STOP`
@@ -70,5 +85,6 @@ Identity rules:
 - Transfer routing.
 - Nearest-stop and walking-distance ranking.
 - Production wiring of destination enrichment orchestration and bridge flow in app/ViewModel runtime.
+- Production route-pattern provider and feed-domain integration for use-case caller.
 - Verified origin-side stop-point enrichment pipeline.
 - UI card composition and rider copy generation.

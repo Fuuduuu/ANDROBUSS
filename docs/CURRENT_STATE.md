@@ -4,7 +4,7 @@
 
 - Expected repo root: `C:\Users\Kasutaja\Desktop\ANDROBUSS`.
 - Expected branch: `main`.
-- Latest accepted HEAD: `ebd1ff3` (`PASS 17`).
+- Latest accepted HEAD: `a2ebe41` (`PASS 18`).
 - Working tree should be clean before starting a new pass.
 
 ## Accepted Passes
@@ -31,6 +31,7 @@
 - PASS 16: stop-candidate enrichment production class.
 - PASS 16B: enrichment docs/diagrams sync.
 - PASS 17: Rakvere real GTFS stop-name discovery and conservative metadata mapping.
+- PASS 18: destination enrichment orchestrator and ambiguity contract.
 
 ## Implemented Core Stack
 
@@ -62,6 +63,9 @@
   - Destination enrichment orchestration production class (`DestinationEnrichmentOrchestrator`).
   - Orchestrator does not call `DirectRouteQueryBridge` and does not select a single verified stop-point candidate.
   - Orchestrator returns ambiguity flag when multiple verified stop-point candidates exist.
+  - Direct-route query preparation use-case (`DirectRouteQueryPreparationUseCase`).
+  - Use-case requires already enriched destination result + explicit origin `StopPointId` + caller-supplied `RoutePattern` list.
+  - Use-case does not load data and does not implement UI/Room.
   - Enrichment orchestration is not yet wired into app/ViewModel runtime flow.
   - Integration tests for resolver-to-bridge flow using hand-built domain data.
   - Executable destination, candidate mapping, and integration tests.
@@ -88,8 +92,8 @@
 
 ## Current Pass
 
-`PASS 18 — DESTINATION_ENRICHMENT_ORCHESTRATOR_AND_AMBIGUITY_SPEC`
+`PASS 19 — DIRECT_ROUTE_QUERY_PREPARATION_USE_CASE`
 
 ## Next Technical Pass
 
-`PASS 19 — DESTINATION_ROUTE_QUERY_PREPARATION_USE_CASE`
+`PASS 20 — GTFS_FEED_DOMAIN_INTEGRATION_AND_ROUTE_PATTERN_PROVIDER_SPEC`

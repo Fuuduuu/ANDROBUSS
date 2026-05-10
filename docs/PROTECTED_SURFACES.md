@@ -26,6 +26,14 @@ Protected surfaces (high change-control sensitivity):
   - must not call `DirectRouteQueryBridge` directly
   - must not select a single verified stop-point candidate
   - `DestinationEnrichmentResult` ambiguity semantics
+- Route-query preparation boundary in `feature-search`:
+  - `DirectRouteQueryPreparationUseCase` precondition and bridge-call contract
+  - must not route ambiguous destination enrichment results
+  - must require explicit origin `StopPointId`
+  - must require caller-supplied `RoutePattern` list
+  - exact-one destination policy (`single()`), no hidden fallback selection
+- Route-query preparation result boundary:
+  - `DirectRouteQueryPreparationResult` branch semantics
 - Source identity anti-fabrication rule:
   - IDs must not be fabricated from names, place labels, manual text, or coordinates
 - Room schema and migration strategy (future).

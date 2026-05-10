@@ -35,12 +35,16 @@ Canonical truths for this repository:
 - `DestinationEnrichmentOrchestrator` coordinates destination-side enrichment only.
 - `DestinationEnrichmentOrchestrator` must not select a single verified stop-point candidate.
 - `DestinationEnrichmentResult.Enriched.isAmbiguous=true` means caller/ViewModel must handle disambiguation before route-query preparation.
+- Direct route query preparation may call bridge only when destination is non-ambiguous, origin `StopPointId` is explicit, and `RoutePattern` list is supplied.
+- Ambiguous destination must not be routed.
+- Direct route query preparation uses exact-one destination policy (`single()`), never hidden `first()` selection.
 - Stop-candidate enrichment does not upgrade `StopCandidate.confidence`; confidence still describes how the original name-level candidate was produced.
 - Presence of `stopPointIds` indicates resolution happened through verified candidates.
 - Multiple same-name `StopPoint` matches must remain preserved through enrichment.
 - Origin enrichment is not implemented yet.
 - `StopCandidateEnricher` is production code but is not yet wired into app/ViewModel runtime flow.
 - `DestinationEnrichmentOrchestrator` does not call `DirectRouteQueryBridge`; bridge usage remains a separate step.
+- `DirectRouteQueryPreparationUseCase` is separate from enrichment and does not call `DestinationEnrichmentOrchestrator`.
 - Origin candidate resolution (manual text or current location) is unresolved seed generation only and must not fabricate `StopPointId`/`StopGroupId`.
 - Direct-route bridge must return `NotReady` until explicit origin and destination `StopPointId` candidates exist; names/coordinates must not be converted into `StopPointId`.
 - Verified stop-point resolution candidates must be sourced from actual `StopPoint` objects; `stopPointId` must come from `StopPoint.id` only.
