@@ -4,7 +4,7 @@
 
 - Expected repo root: `C:\Users\Kasutaja\Desktop\ANDROBUSS`.
 - Expected branch: `main`.
-- Last accepted HEAD before this pass: `984b6e1` (`PASS 09`).
+- Last accepted HEAD before this pass: `8a489c9` (`PASS 10`).
 - Working tree should be clean before starting a new pass.
 
 ## Accepted Passes
@@ -21,6 +21,7 @@
 - PASS 08: direct-route search core.
 - PASS 08B: docs/diagrams sync.
 - PASS 09: Rakvere city adapter metadata.
+- PASS 10: destination target model and place resolver.
 
 ## Implemented Core Stack
 
@@ -40,10 +41,10 @@
   - Rakvere metadata provider and city adapter registry.
   - Executable metadata tests.
 - `feature-search`:
-  - Destination target model.
-  - Place-query normalizer.
-  - City-place to destination-target resolver.
-  - Executable resolver/normalization tests.
+  - Destination target model and query normalizer.
+  - Metadata-based place query resolver.
+  - Place-to-stop candidate model and resolver (name-only candidate layer).
+  - Executable destination and candidate mapping tests.
 
 ## Not Implemented Yet
 
@@ -53,12 +54,12 @@
 - Realtime ingestion.
 - Transfer routing.
 - Compose feature UI and ViewModels.
-- Place-to-stop candidate mapping.
+- Verified stop-group/stop-point ID mapping from place candidates.
 
 ## Current Pass
 
-`PASS 10 — DESTINATION_TARGET_MODEL_AND_PLACE_RESOLVER_SPEC`
+`PASS 11 — PLACE_TO_STOP_CANDIDATE_MAPPING_SPEC`
 
 ## Next Pass
 
-`PASS 11 — PLACE_TO_STOP_CANDIDATE_MAPPING_SPEC`
+`PASS 12 — ORIGIN_STOPPOINT_CANDIDATE_RESOLVER_SPEC`

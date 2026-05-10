@@ -8,6 +8,7 @@
 - `core-routing` direct-route tests exist and run.
 - `city-adapters` metadata tests exist and run.
 - `feature-search` destination resolver tests exist and run.
+- `feature-search` place-to-stop candidate mapping tests exist and run.
 - CI baseline runs Gradle build/lint.
 
 ## Core-Domain Coverage Focus
@@ -56,9 +57,19 @@
 - Destination target source (`CITY_PLACE_METADATA`) and conservative coordinate pass-through.
 - Android-free resolver API guard.
 
+## Feature-Search Place-to-Stop Candidate Coverage Focus (PASS 11)
+
+- `NO_PREFERRED_STOP_GROUPS` behavior.
+- `UNSUPPORTED_TARGET_SOURCE` behavior.
+- One/multi preferred-stop-group candidate creation.
+- Deterministic metadata-order preservation.
+- No fabricated `StopPointId` values.
+- Conservative candidate confidence policy.
+- Android-free candidate resolver API guard.
+
 ## Near-Term Test Gaps
 
-- Place-to-stop candidate mapping tests (planned for PASS 11).
-- Parser-to-routing integration coverage beyond minimal unit boundaries.
+- Origin stop-point candidate resolver tests (planned for PASS 12).
+- Destination-to-route query bridge behavior tests (future).
 - Room persistence/invalidation tests (future).
 - UI and end-to-end flow tests (future).
