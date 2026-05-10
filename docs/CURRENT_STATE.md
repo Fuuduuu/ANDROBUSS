@@ -4,19 +4,26 @@
 
 - Expected repo root: `C:\Users\Kasutaja\Desktop\ANDROBUSS`
 - Expected branch: `main`
-- Latest accepted HEAD: `8cdd748` (`PASS 20B`)
+- Latest accepted HEAD: `709010d` (`PASS 21`)
 - Working tree must be clean before a new pass
 
 ## Latest Accepted Pass
 
-- `PASS 20B — GTFS_PIPELINE_DOCS_AND_DIAGRAMS_SYNC`
+- `PASS 21 — DOMAIN_FEED_SNAPSHOT_AND_PROVIDER_CONTRACT`
 
-PASS 21 adds a parser-agnostic feed boundary in `feature-search`:
+PASS 21 added a parser-agnostic feed boundary in `feature-search`:
 - `DomainFeedSnapshot`
 - `DomainFeedSnapshotProvider`
 - `InMemoryDomainFeedSnapshot`
 - integration coverage proving snapshot stop points seed `InMemoryStopPointIndex`
 - integration coverage proving snapshot route patterns can be supplied to `DirectRouteQueryPreparationUseCase`
+
+PASS 22A confirms storage-identity strategy for future Room baseline:
+- GTFS `stop_id` and `tripId`-derived pattern IDs are treated as feed/city-local identifiers.
+- Future storage keys must be city/feed-scoped:
+  - stop-point key: `cityId + feedId + stopId`
+  - route-pattern key: `cityId + feedId + patternId`
+  - pattern-stop key: `cityId + feedId + patternId + sequence`
 
 ## Current Core Status
 
@@ -47,8 +54,8 @@ PASS 21 adds a parser-agnostic feed boundary in `feature-search`:
 
 ## Current Pass
 
-- `PASS 21 — DOMAIN_FEED_SNAPSHOT_AND_PROVIDER_CONTRACT`
+- `PASS 22A — FEED_IDENTITY_AND_STORAGE_KEY_STRATEGY`
 
 ## Next Technical Pass
 
-- `PASS 22 — DATA_LOCAL_ROOM_SCHEMA_AND_FEED_SNAPSHOT_PROVIDER`
+- `PASS 22 — FEED_CONTRACT_MOVE_AND_ROOM_SCHEMA_BASELINE` (with composite storage-key strategy)

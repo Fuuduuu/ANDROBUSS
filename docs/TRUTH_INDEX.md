@@ -43,6 +43,12 @@ Canonical truths for this repository:
 - PASS 20 proves parser-to-search integration at fixture level only.
 - `MappedGtfsFeed.stopPoints` can seed `InMemoryStopPointIndex`.
 - `MappedGtfsFeed.routePatterns` can be supplied to `DirectRouteQueryPreparationUseCase`.
+- GTFS `stop_id` and `tripId`-derived `RoutePatternId("pattern:${tripId}")` are treated as feed/city-local IDs for persistence purposes.
+- Future Room storage identity must be scoped:
+  - stop point key: `cityId + feedId + stopId`
+  - route pattern key: `cityId + feedId + patternId`
+  - pattern stop key: `cityId + feedId + patternId + sequence`
+- `PatternStop` identity key must include sequence; repeated `stopId` values inside one pattern remain valid and must not be collapsed.
 - `DomainFeedSnapshot` is a parser-agnostic feature-search boundary for domain-mapped feed data.
 - `DomainFeedSnapshot.stopPoints` and `DomainFeedSnapshot.routePatterns` must come from the same feed snapshot/version.
 - `DomainFeedSnapshotProvider` is synchronous in PASS 21 and Room-backed implementation is future work.

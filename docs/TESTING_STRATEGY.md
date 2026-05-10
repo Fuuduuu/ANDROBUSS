@@ -179,9 +179,19 @@
 - Parser-agnostic boundary verification without importing parser types.
 - Android-free guard for feed snapshot/provider classes.
 
+## Feed Identity Strategy Coverage Focus (PASS 22A)
+
+- Documented identity rule: GTFS `stop_id` and trip-derived pattern IDs are feed/city-local for persistence.
+- Future Room entity keys must be validated as composite storage keys:
+  - `cityId + feedId + stopId`
+  - `cityId + feedId + patternId`
+  - `cityId + feedId + patternId + sequence`
+- Duplicate `stopId` values inside one pattern must remain preserved in persistence tests.
+
 ## Near-Term Test Gaps
 
 - Production destination enrichment orchestration wiring into app/ViewModel flow (future).
+- Room composite-key schema and DAO tests (PASS 22 target).
 - Room-backed feed snapshot/provider parity tests (future).
 - Room-backed resolver parity tests (future).
 - Room persistence/invalidation tests (future).

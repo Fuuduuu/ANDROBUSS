@@ -42,6 +42,15 @@ GTFS pipeline status after PASS 20.
   - `DomainFeedSnapshot(cityId, mappedFeed.stopPoints, mappedFeed.routePatterns)`
 - PASS 21 does not implement production ingestion, downloader, or Room-backed provider wiring.
 
+## PASS 22A Identity Strategy
+
+- GTFS `stop_id` and trip-derived route-pattern IDs are treated as feed/city-local storage identifiers.
+- Future Room schema keys must be city/feed-scoped:
+  - stop point storage key: `cityId + feedId + stopId`
+  - route pattern storage key: `cityId + feedId + patternId`
+  - pattern stop storage key: `cityId + feedId + patternId + sequence`
+- This strategy does not change parser behavior or routing identity semantics.
+
 ## PASS 17 Metadata Discovery Note
 
 - Real `rakvere.zip` `stops.txt` was inspected in a temp folder for conservative Rakvere POI stop-name discovery.

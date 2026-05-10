@@ -80,6 +80,12 @@ Identity rules:
 - `DomainFeedSnapshotProvider` is parser-agnostic and synchronous in PASS 21.
 - Future caller wiring may source route patterns from `DomainFeedSnapshotProvider`; this pass does not load data automatically.
 
+## Storage Key Strategy (PASS 22A)
+
+- PASS 22A defines a future persistence-key strategy only; routing behavior is unchanged.
+- Room storage keys are planned as city/feed-scoped composites.
+- `StopPointId` remains routing identity and is not derived from names or coordinates.
+
 ## Deterministic Not-Found Order
 
 - `SAME_STOP`

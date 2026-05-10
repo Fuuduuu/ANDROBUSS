@@ -31,7 +31,7 @@ Architecture baseline and implementation status snapshot.
 - `feature-alerts`
 - `city-adapters`
 
-## Implementation Status (After PASS 21)
+## Implementation Status (After PASS 22A)
 
 - Implemented pure Kotlin logic:
   - `core-domain`
@@ -46,6 +46,16 @@ Architecture baseline and implementation status snapshot.
   - Room schema and cache layer.
   - Room-backed feed provider implementation and downloader/cache orchestration.
   - Compose feature flows and ViewModel wiring beyond minimal shell.
+  - Feed contract move from `feature-search` to `core-domain` is still pending the next pass.
+
+## Storage Identity Strategy (PASS 22A)
+
+- Persistence identity for GTFS-mapped IDs is city/feed-scoped.
+- Future Room keys:
+  - stop point key: `cityId + feedId + stopId`
+  - route pattern key: `cityId + feedId + patternId`
+  - pattern stop key: `cityId + feedId + patternId + sequence`
+- This is a storage-layer scoping rule and does not change routing behavior.
 
 ## Module Responsibilities
 

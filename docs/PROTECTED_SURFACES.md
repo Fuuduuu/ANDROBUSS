@@ -22,6 +22,12 @@ Protected surfaces (high change-control sensitivity):
   - `DomainFeedSnapshot` must keep `stopPoints` and `routePatterns` from the same snapshot
   - `DomainFeedSnapshotProvider` parser-agnostic contract
   - `InMemoryDomainFeedSnapshot` single-city semantics
+- Feed identity and storage-key strategy:
+  - GTFS-mapped IDs are feed/city-local for persistence storage
+  - future Room stop-point key must be `cityId + feedId + stopId`
+  - future Room route-pattern key must be `cityId + feedId + patternId`
+  - future Room pattern-stop key must be `cityId + feedId + patternId + sequence`
+  - repeated `stopId` values inside one pattern must remain valid
 - Stop-candidate enrichment boundary in `feature-search`:
   - `StopCandidateEnricher` must copy IDs only from verified stop-point candidates
   - `StopCandidateEnrichmentResult` success/failure semantics

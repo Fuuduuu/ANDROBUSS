@@ -1,6 +1,6 @@
 # CODEBASE_IMPACT_MAP
 
-State synchronized after `PASS 20`.
+State synchronized after `PASS 22A`.
 
 ## Module Responsibilities
 
@@ -21,6 +21,12 @@ State synchronized after `PASS 20`.
 - No production parser integration was introduced.
 - No Room/cache/downloader runtime boundary was introduced.
 
+## PASS 22A Impact
+
+- Architecture decision recorded: GTFS-derived local IDs are feed/city-scoped for storage identity.
+- Composite Room-key strategy is now explicit for the next storage pass.
+- No Room code was added in PASS 22A.
+
 ## Feature-Search Snapshot
 
 - Destination resolver implemented.
@@ -31,6 +37,7 @@ State synchronized after `PASS 20`.
 - Direct-route query preparation use-case implemented.
 - Parser-derived integration proven in tests only (`rakvere-smoke`).
 - No app/ViewModel runtime wiring yet.
+- Feed contract move to `core-domain` and Room baseline are pending next pass.
 
 ## Dependency Direction Rules
 
