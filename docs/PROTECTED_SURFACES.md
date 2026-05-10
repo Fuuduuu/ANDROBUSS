@@ -11,6 +11,10 @@ Protected surfaces (high change-control sensitivity):
 - Direct routing boundary in `core-routing`:
   - `DirectRouteSearch`
   - direct-route result/reason contract
+- Stop-point resolution boundary in `feature-search`:
+  - `StopPointResolver` contract
+  - `VerifiedStopPointCandidate` identity/source guarantees
+  - `InMemoryStopPointIndex` anti-fabrication and multi-candidate behavior
 - Room schema and migration strategy (future).
 - City adapter contract and city/feed mapping model.
 - Location/privacy handling policy.

@@ -22,6 +22,8 @@ Canonical truths for this repository:
 - Place-to-stop candidate mapping uses preferred stop-group names as unresolved name-level candidates; it does not fabricate `StopGroupId` or `StopPointId`.
 - Origin candidate resolution (manual text or current location) is unresolved seed generation only and must not fabricate `StopPointId`/`StopGroupId`.
 - Direct-route bridge must return `NotReady` until explicit origin and destination `StopPointId` candidates exist; names/coordinates must not be converted into `StopPointId`.
+- Verified stop-point resolution candidates must be sourced from actual `StopPoint` objects; `stopPointId` must come from `StopPoint.id` only.
+- Name-index resolution may return multiple candidates for same-name stops; PASS 14 does not use coordinate hints for matching.
 - Wave 0 is Rakvere.
 - Wave 1 is Voru, Viljandi, Parnu, Kuressaare.
 - Wave 2 is Narva, Kohtla-Jarve, Sillamae.

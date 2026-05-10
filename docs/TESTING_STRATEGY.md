@@ -11,6 +11,7 @@
 - `feature-search` place-to-stop candidate mapping tests exist and run.
 - `feature-search` origin candidate resolver tests exist and run.
 - `feature-search` direct-route bridge/precondition tests exist and run.
+- `feature-search` stop-point resolution contract/name-index tests exist and run.
 - CI baseline runs Gradle build/lint.
 
 ## Core-Domain Coverage Focus
@@ -87,9 +88,19 @@
 - Name/coordinate anti-fabrication guarantees.
 - Android-free bridge API guard.
 
+## Feature-Search StopPoint Resolution Coverage Focus (PASS 14)
+
+- Empty/unknown/index-missing result branches.
+- Exact and normalized name-match confidence behavior.
+- Multiple same-name `StopPoint` results in deterministic input order.
+- Candidate fields sourced from actual `StopPoint` objects only.
+- Future geospatial source/confidence placeholders are never emitted.
+- Coordinate hint is accepted but ignored by PASS 14 name index.
+- Android-free resolution API guard.
+
 ## Near-Term Test Gaps
 
-- Verified stop-point candidate mapping contract tests (future).
-- Place-name/coordinate to verified stop-point resolution fixtures (future).
+- Stop-point resolution integration through bridge wiring (future).
+- Room-backed resolver parity tests (future).
 - Room persistence/invalidation tests (future).
 - UI and end-to-end flow tests (future).
