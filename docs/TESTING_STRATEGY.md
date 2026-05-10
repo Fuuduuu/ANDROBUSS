@@ -10,6 +10,7 @@
 - `feature-search` destination resolver tests exist and run.
 - `feature-search` place-to-stop candidate mapping tests exist and run.
 - `feature-search` origin candidate resolver tests exist and run.
+- `feature-search` direct-route bridge/precondition tests exist and run.
 - CI baseline runs Gradle build/lint.
 
 ## Core-Domain Coverage Focus
@@ -77,8 +78,18 @@
 - No fabricated `StopPointId` or `StopGroup` mappings.
 - Android-free origin resolver API guard.
 
+## Feature-Search Direct-Route Bridge Coverage Focus (PASS 13)
+
+- Not-ready precondition gating before route search call.
+- Direct-route call guard when origin/destination/patterns are unresolved.
+- Explicit route-search invocation only with provided `StopPointId` values.
+- Deterministic first-ID selection policy.
+- Name/coordinate anti-fabrication guarantees.
+- Android-free bridge API guard.
+
 ## Near-Term Test Gaps
 
-- Destination-to-route query bridge behavior tests (future).
+- Verified stop-point candidate mapping contract tests (future).
+- Place-name/coordinate to verified stop-point resolution fixtures (future).
 - Room persistence/invalidation tests (future).
 - UI and end-to-end flow tests (future).

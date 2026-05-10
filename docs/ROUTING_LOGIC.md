@@ -17,6 +17,19 @@ Identity rules:
 - routing identity is `StopPointId`,
 - stop names/display labels are never routing identity.
 
+## Bridge Preconditions (PASS 13)
+
+- Direct route search must not run until explicit origin and destination `StopPointId` candidates exist.
+- Bridge precondition outcomes:
+  - both unresolved -> `BothUnresolved`
+  - only origin unresolved -> `OriginUnresolved`
+  - only destination unresolved -> `DestinationUnresolved`
+  - no patterns -> `NoPatternsAvailable`
+- Current selection policy is deterministic and minimal:
+  - first resolved origin `StopPointId`
+  - first resolved destination `StopPointId`
+- Bridge does not derive `StopPointId` from names, stop-group labels, manual text, or coordinates.
+
 ## Deterministic Not-Found Order
 
 - `SAME_STOP`
@@ -38,4 +51,5 @@ Identity rules:
 - Service-day filtering inside route search.
 - Transfer routing.
 - Nearest-stop and walking-distance ranking.
+- Verified origin/destination stop-point resolution pipeline for bridge inputs.
 - UI card composition and rider copy generation.

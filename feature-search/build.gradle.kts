@@ -23,6 +23,7 @@ android {
 
 dependencies {
     implementation(project(":core-domain"))
+    implementation(project(":core-routing"))
     implementation(project(":city-adapters"))
     implementation(platform(libs.compose.bom))
 
