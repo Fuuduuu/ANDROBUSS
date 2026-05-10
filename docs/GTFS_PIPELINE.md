@@ -1,6 +1,6 @@
 # GTFS_PIPELINE
 
-GTFS pipeline status after PASS 17.
+GTFS pipeline status after PASS 20.
 
 ## Current Implemented Scope
 
@@ -33,6 +33,7 @@ GTFS pipeline status after PASS 17.
   - `MappedGtfsFeed.stopPoints` seeding `InMemoryStopPointIndex`
   - `MappedGtfsFeed.routePatterns` supplied to `DirectRouteQueryPreparationUseCase`
 - This integration proof does not implement production feed ingestion, provider abstractions, or cache wiring.
+- PASS 20 tests do not use real `rakvere.zip`; they use `rakvere-smoke` fixture only.
 
 ## PASS 17 Metadata Discovery Note
 
@@ -55,6 +56,7 @@ GTFS pipeline status after PASS 17.
 - Network downloader/update checks.
 - ZIP ingestion from live sources in runtime.
 - Room/cache persistence.
+- Feed-domain snapshot/provider boundary.
 - Shapes/fares/transfers handling.
 - Realtime ingestion.
 - Production feed-to-city adapter orchestration.

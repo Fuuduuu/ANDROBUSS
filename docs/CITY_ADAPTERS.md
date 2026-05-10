@@ -68,8 +68,8 @@ POIs left unresolved in PASS 17 (no confident exact stop-name mapping):
 - `Rakvere linnus`
 - `Vallimägi`
 
-## Next Adapter Pass Scope
+## Next Adapter-Related Scope
 
-`PASS 18 — VERIFIED_STOPPOINT_SELECTION_AND_BRIDGE_WIRING_STRATEGY` should define how multiple verified stop-point candidates are selected and wired into production bridge flow.
+`PASS 21 — FEED_DOMAIN_SNAPSHOT_AND_ROUTE_PATTERN_PROVIDER_SPEC` is the next infrastructure boundary pass before runtime adapter/provider wiring.
 
-PASS 18 should not add UI, realtime, Room, or production downloader logic.
+City-adapter runtime integration, UI wiring, realtime, Room, and downloader behavior remain out of scope here.

@@ -18,6 +18,7 @@ Implemented and tested core modules:
 - `core-domain`: canonical stop/pattern/service models and `ServiceCalendarResolver`.
 - `core-gtfs`: minimal GTFS fixture parser, CSV reader, and domain mapper.
 - `core-routing`: minimal direct-route search core.
+- `feature-search`: destination/origin candidates, stop resolution, enrichment/orchestration, and route-query preparation.
 
 Not implemented yet:
 - Room cache/schema.
@@ -32,4 +33,4 @@ Docs-first, pass-based, sniper-prompt workflow.
 
 ## Next Pass
 
-`PASS 09 — RAKVERE_CITY_ADAPTER_METADATA`
+`PASS 21 — FEED_DOMAIN_SNAPSHOT_AND_ROUTE_PATTERN_PROVIDER_SPEC`

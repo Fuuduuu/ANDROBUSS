@@ -1,94 +1,79 @@
 # CODEBASE_IMPACT_MAP
 
-This map reflects the post-PASS-16 implementation state.
+State synchronized after `PASS 20`.
 
-## Module Inventory
+## Module Responsibilities
 
-- `app`
-- `core-domain`
-- `core-gtfs`
-- `core-routing`
-- `data-local`
-- `data-remote`
-- `feature-map`
-- `feature-search`
-- `feature-stop-board`
-- `feature-route-detail`
-- `feature-favourites`
-- `feature-alerts`
-- `city-adapters`
+| Module | Responsibility | Current status |
+| --- | --- | --- |
+| `core-domain` | Canonical IDs/models/invariants/calendar semantics | Implemented + tested |
+| `core-gtfs` | GTFS parser/mapper and fixture parsing tests | Implemented + tested |
+| `core-routing` | Direct-route search core | Implemented + tested |
+| `city-adapters` | City metadata contract + Rakvere metadata | Implemented + tested |
+| `feature-search` | Search pipeline: resolution, enrichment, orchestration, route-query preparation | Implemented + tested |
+| `data-local` | Future Room/cache/feed persistence boundary | Future |
+| `data-remote` | Future downloader/update-check boundary | Future |
+| `app` + UI `feature-*` modules | Runtime wiring + UI flows | Skeleton/future |
 
-## Module Responsibility and Status
+## PASS 20 Impact
 
-| Module | Responsibility | Status after PASS 16 | Primary Risk if Changed |
-| --- | --- | --- | --- |
-| `app` | Android shell and composition root | Skeleton only | Broken runtime wiring |
-| `core-domain` | Canonical IDs/models/invariants and calendar resolver | Implemented + tested | Semantic breakage across modules |
-| `core-gtfs` | Minimal fixture parser and domain mapper | Implemented + tested | Silent ingest corruption |
-| `core-routing` | Direct-route search core | Implemented + tested | Wrong direct-route outcomes |
-| `city-adapters` | City metadata contract and Rakvere metadata | Implemented metadata + tested | City mapping regressions |
-| `feature-search` | Destination/origin candidates, bridge, stop-point resolution, stop-candidate enrichment | Implemented + tested (no app wiring yet) | Candidate/resolution contract drift |
-| `data-local` | Room schema/persistence surfaces | Skeleton/future | Migration/data loss |
-| `data-remote` | Feed sync/download orchestration surfaces | Skeleton/future | Stale or invalid data pipeline |
-| `feature-map` | Map input aid UI | Skeleton/future | Map-first UX drift |
-| `feature-stop-board` | Stop departures UI | Skeleton/future | Departure trust loss |
-| `feature-route-detail` | Rider route detail UI | Skeleton/future | Misleading rider instructions |
-| `feature-favourites` | Saved places/routes UI | Skeleton/future | Preference loss |
-| `feature-alerts` | Service alert UI | Skeleton/future | Missed disruptions |
+- `feature-search` gained test-scope integration with `core-gtfs` for fixture pipeline proof.
+- No production parser integration was introduced.
+- No Room/cache/downloader runtime boundary was introduced.
 
-## Feature-Search Capability Snapshot
+## Feature-Search Snapshot
 
-- Destination query normalization and alias resolution is implemented.
-- Destination place-to-stop candidate mapping is implemented at unresolved name level.
-- Origin candidate resolver is implemented for manual text and current-location seeds (unresolved).
-- Direct route bridge precondition gating is implemented.
-- Stop-point resolution contract and in-memory name index are implemented.
-- Stop-candidate enrichment is implemented (`StopCandidateEnricher` + result model).
-- PASS 15 integration tests prove resolution + bridge flow with hand-built domain data.
-- No app/ViewModel/runtime wiring exists yet.
-- No Room/cache/network/nearest-stop runtime implementation exists.
+- Destination resolver implemented.
+- Place-to-stop candidate mapping implemented.
+- Stop-point resolution contract and in-memory index implemented.
+- Stop-candidate enrichment implemented.
+- Destination enrichment orchestrator implemented.
+- Direct-route query preparation use-case implemented.
+- Parser-derived integration proven in tests only (`rakvere-smoke`).
+- No app/ViewModel runtime wiring yet.
 
 ## Dependency Direction Rules
 
+Production dependencies:
 - `core-routing` -> `core-domain`
 - `core-gtfs` -> `core-domain`
-- `city-adapters` -> `core-domain`, `core-gtfs`
-- `feature-search` -> `core-domain`, `city-adapters`, `core-routing`
-- `data-local` -> `core-domain`, `core-gtfs`
-- `data-remote` -> `core-domain`, `core-gtfs`
+- `city-adapters` -> `core-domain`
+- `feature-search` -> `core-domain`, `core-routing`, `city-adapters`
+- `data-local` -> `core-domain`, `core-gtfs` (future)
+- `data-remote` -> `core-domain`, `core-gtfs` (future)
 - `app` orchestrates `feature-*`, `data-*`, and `city-adapters`
 
-Forbidden direct coupling:
+Test-only dependency:
+- `feature-search` tests may depend on `core-gtfs`
 
-- `data-remote` must not depend on `city-adapters`
-- `city-adapters` must not depend on `data-remote`
-- feature modules must not parse GTFS directly
+Forbidden directions:
+- Core modules must not depend on feature modules.
+- `feature-search` production must not depend on `core-gtfs` parser implementation.
 
-## Mermaid Module Impact Overview
+## Module State Diagram
 
 ```mermaid
 flowchart LR
-    app --> feature_search["feature-search (implemented core logic, no runtime wiring)"]
-    app --> feature_map["feature-map (future)"]
-    app --> feature_stop_board["feature-stop-board (future)"]
-    app --> feature_route_detail["feature-route-detail (future)"]
-    app --> feature_favourites["feature-favourites (future)"]
-    app --> feature_alerts["feature-alerts (future)"]
-    app --> data_local["data-local (future)"]
-    app --> data_remote["data-remote (future)"]
-    app --> city_adapters["city-adapters (metadata implemented)"]
+    core_domain["core-domain (implemented)"]
+    core_gtfs["core-gtfs (implemented)"]
+    core_routing["core-routing (implemented)"]
+    city_adapters["city-adapters (implemented metadata)"]
+    feature_search["feature-search (implemented pipeline)"]
+    data_local["data-local (future Room/cache)"]
+    data_remote["data-remote (future downloader/sync)"]
+    app_ui["app + UI feature modules (future runtime wiring)"]
 
-    feature_search --> core_domain["core-domain (implemented)"]
-    feature_search --> core_routing["core-routing (implemented)"]
-    feature_search --> city_adapters
-
+    core_gtfs --> core_domain
     core_routing --> core_domain
-    core_gtfs["core-gtfs (implemented)"] --> core_domain
-
-    city_adapters --> core_gtfs
     city_adapters --> core_domain
-    data_local --> core_gtfs
+    feature_search --> core_domain
+    feature_search --> core_routing
+    feature_search --> city_adapters
     data_local --> core_domain
-    data_remote --> core_gtfs
+    data_local --> core_gtfs
     data_remote --> core_domain
+    data_remote --> core_gtfs
+    app_ui --> feature_search
+    app_ui --> data_local
+    app_ui --> data_remote
 ```

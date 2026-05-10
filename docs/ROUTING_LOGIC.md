@@ -65,6 +65,7 @@ Identity rules:
 
 ## GTFS Fixture Pipeline Integration (PASS 20)
 
+- `DirectRouteSearch` behavior is unchanged by PASS 20.
 - `GtfsFeedParser` + `GtfsDomainMapper` output can be consumed directly by feature-search pipeline tests:
   - `MappedGtfsFeed.stopPoints` -> `InMemoryStopPointIndex`
   - `MappedGtfsFeed.routePatterns` -> `DirectRouteQueryPreparationUseCase`

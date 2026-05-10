@@ -40,6 +40,11 @@ Canonical truths for this repository:
 - Ambiguous destination must not be routed.
 - Direct route query preparation uses exact-one destination policy (`single()`), never hidden `first()` selection.
 - PASS 20 parser-to-search integration uses only parser-derived `StopPoint.id` values as route IDs.
+- PASS 20 proves parser-to-search integration at fixture level only.
+- `MappedGtfsFeed.stopPoints` can seed `InMemoryStopPointIndex`.
+- `MappedGtfsFeed.routePatterns` can be supplied to `DirectRouteQueryPreparationUseCase`.
+- `feature-search` production code must not depend on `core-gtfs` parser implementation.
+- `testImplementation(project(":core-gtfs"))` is allowed only for feature-search integration tests.
 - Stop-candidate enrichment does not upgrade `StopCandidate.confidence`; confidence still describes how the original name-level candidate was produced.
 - Presence of `stopPointIds` indicates resolution happened through verified candidates.
 - Multiple same-name `StopPoint` matches must remain preserved through enrichment.

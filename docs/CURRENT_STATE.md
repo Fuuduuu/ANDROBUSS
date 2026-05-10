@@ -2,103 +2,50 @@
 
 ## Repository Baseline
 
-- Expected repo root: `C:\Users\Kasutaja\Desktop\ANDROBUSS`.
-- Expected branch: `main`.
-- Latest accepted HEAD: `c4ad0cc` (`PASS 19`).
-- Working tree should be clean before starting a new pass.
+- Expected repo root: `C:\Users\Kasutaja\Desktop\ANDROBUSS`
+- Expected branch: `main`
+- Latest accepted HEAD: `1ae1daa` (`PASS 20`)
+- Working tree must be clean before a new pass
 
-## Accepted Passes
+## Latest Accepted Pass
 
-- PASS 00: docs bootstrap.
-- PASS 01B: architecture review fixes.
-- PASS 02: Android/Gradle skeleton.
-- PASS 03: GTFS source discovery.
-- PASS 04: GTFS fixture and city/feed mapping strategy.
-- PASS 05: core-domain stop/pattern models.
-- PASS 05B: namespace and guardrail cleanup.
-- PASS 06: `ServiceCalendarResolver` spec + tests.
-- PASS 07: minimal GTFS fixture parser.
-- PASS 08: direct-route search core.
-- PASS 08B: docs/diagrams sync.
-- PASS 09: Rakvere city adapter metadata.
-- PASS 10: destination target model and place resolver.
-- PASS 11: place-to-stop candidate mapping.
-- PASS 11B: stop-candidate confidence docs clarification.
-- PASS 12: origin candidate resolver.
-- PASS 13: direct-route query bridge and precondition gating.
-- PASS 14: stop-point resolution contract and in-memory name index.
-- PASS 15: stop resolution and bridge integration tests.
-- PASS 16: stop-candidate enrichment production class.
-- PASS 16B: enrichment docs/diagrams sync.
-- PASS 17: Rakvere real GTFS stop-name discovery and conservative metadata mapping.
-- PASS 18: destination enrichment orchestrator and ambiguity contract.
-- PASS 19: direct-route query preparation use-case.
+- `PASS 20 — GTFS_FIXTURE_TO_SEARCH_PIPELINE_INTEGRATION_TEST`
 
-## Implemented Core Stack
+PASS 20 proved fixture-level parser-to-search integration:
+- `GtfsFeedParser` -> `GtfsDomainMapper` -> `MappedGtfsFeed.stopPoints` -> `InMemoryStopPointIndex`
+- `MappedGtfsFeed.routePatterns` -> `DirectRouteQueryPreparationUseCase`
+- same-name `Keskpeatus` remains two distinct `StopPointId` values
+- no production runtime wiring changes
 
-- `core-domain`:
-  - Transit IDs, `GeoPoint`, `StopGroup`, `StopPoint`, `RouteLine`, `PatternStop`, `RoutePattern`, `Trip`, `DataConfidence`.
-  - `ServiceCalendar`, `ServiceCalendarException`, `ServiceCalendarResolver`.
-  - Executable invariants and calendar tests.
-- `core-gtfs`:
-  - `CsvTableReader`, `GtfsFeedParser`, `GtfsDomainMapper`, GTFS raw models and parse exception.
-  - Synthetic tiny fixture: `core-gtfs/src/test/resources/gtfs/rakvere-smoke/`.
-  - Executable CSV/parser/mapper tests.
-- `core-routing`:
-  - Direct-route models and `DirectRouteSearch`.
-  - Executable direct-route tests, including duplicate-stop loop cases.
-- `city-adapters`:
-  - Pure Kotlin metadata contract.
-  - Rakvere metadata provider and city adapter registry.
-  - PASS 17 adds conservative preferred-stop-group-name mappings from real `rakvere.zip` `stops.txt`.
-  - `city-adapters` now depends on `core-domain` only (no `core-gtfs` dependency).
-  - Executable metadata tests.
-- `feature-search`:
-  - Destination target model and query normalizer.
-  - Metadata-based place query resolver.
-  - Place-to-stop candidate model and resolver (name-only candidate layer).
-  - Origin candidate model and resolver (manual-text and current-location unresolved seeds).
-  - Direct-route query bridge with explicit precondition gating before route search calls.
-  - Stop-point resolution contract and in-memory name index for verified `StopPointId` candidates.
-  - Stop-candidate enrichment production class (`StopCandidateEnricher`) for destination-side ID enrichment.
-  - Destination enrichment orchestration production class (`DestinationEnrichmentOrchestrator`).
-  - Orchestrator does not call `DirectRouteQueryBridge` and does not select a single verified stop-point candidate.
-  - Orchestrator returns ambiguity flag when multiple verified stop-point candidates exist.
-  - Direct-route query preparation use-case (`DirectRouteQueryPreparationUseCase`).
-  - Use-case requires already enriched destination result + explicit origin `StopPointId` + caller-supplied `RoutePattern` list.
-  - Use-case does not load data and does not implement UI/Room.
-  - PASS 20 integration tests prove parser-to-search pipeline compatibility using `core-gtfs` `rakvere-smoke` fixture:
-    - parser/mapper -> `MappedGtfsFeed.stopPoints` -> `InMemoryStopPointIndex`
-    - parser/mapper -> `MappedGtfsFeed.routePatterns` -> `DirectRouteQueryPreparationUseCase`
-  - No production provider abstraction or Room-backed provider exists yet.
-  - Enrichment orchestration is not yet wired into app/ViewModel runtime flow.
-  - Integration tests for resolver-to-bridge flow using hand-built domain data.
-  - Executable destination, candidate mapping, and integration tests.
+## Current Core Status
+
+- `core-domain`, `core-gtfs`, `core-routing`, `city-adapters`, and `feature-search` pure Kotlin search stack are implemented and tested.
+- `feature-search` has test-scope parser integration only:
+  - `testImplementation(project(":core-gtfs"))`
+- No production parser dependency from feature-search runtime code.
 
 ## Not Implemented Yet
 
-- Room entities/DAO/AppDatabase and offline cache persistence.
-- City adapter runtime integration beyond metadata.
-- Production GTFS downloader/sync orchestration.
-- Realtime ingestion.
-- Transfer routing.
-- Compose feature UI and ViewModels.
-- Verified stop-group/stop-point ID mapping from place candidates.
-- Origin-to-stop-point nearest lookup.
-- Room-backed stop-point resolver replacement.
-- Production wiring for stop-point resolution into bridge inputs.
-- Origin enrichment production class is deferred.
+- Production feed snapshot/provider boundary
+- Room/cache persistence
+- Production route-pattern source/provider
+- App/ViewModel runtime wiring of the pipeline
+- Nearest-stop/geospatial resolution
+- UI feature flows
 
-## UX Planning State
+## Current Risks
 
-- Gemini UX research is integrated as planning guidance.
-- Destination-first and list-first/home-map-second rules are now canonical planning inputs.
-- No UI runtime implementation exists yet.
+- Production feed snapshot/provider is not implemented.
+- Room/cache is not implemented.
+- Production `RoutePattern` source is not implemented.
+- UI/ViewModel wiring is not implemented.
+- Nearest-stop/geospatial behavior is not implemented.
+- `rakvere-smoke` names are synthetic and separate from real Rakvere POI metadata names.
 
 ## Current Pass
 
-`PASS 20 — GTFS_FIXTURE_TO_SEARCH_PIPELINE_INTEGRATION_TEST`
+- `PASS 20B — GTFS_PIPELINE_DOCS_AND_DIAGRAMS_SYNC` (docs-only)
 
 ## Next Technical Pass
 
-`PASS 21 — FEED_DOMAIN_SNAPSHOT_AND_ROUTE_PATTERN_PROVIDER_SPEC`
+- `PASS 21 — FEED_DOMAIN_SNAPSHOT_AND_ROUTE_PATTERN_PROVIDER_SPEC`

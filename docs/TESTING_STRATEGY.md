@@ -156,6 +156,7 @@
 ## Feature-Search Parser-to-Search Integration Coverage Focus (PASS 20)
 
 - `GtfsFeedParser` + `GtfsDomainMapper` -> `MappedGtfsFeed` integration.
+- `feature-search` uses `testImplementation(project(":core-gtfs"))` for this integration coverage only.
 - Parser-derived `stopPoints` seed `InMemoryStopPointIndex`.
 - Parser-derived `routePatterns` are consumed by `DirectRouteQueryPreparationUseCase`.
 - `StopCandidateEnricher` and `DestinationEnrichmentOrchestrator` behavior on parser-derived names:
@@ -164,6 +165,7 @@
 - End-to-end parser-derived route-query preparation outcomes:
   - `RouteFound`
   - `RouteNotFound`
+- Ambiguous parser-derived destination (`Keskpeatus`) blocks query preparation as `DestinationAmbiguous`.
 - Loop pattern (`pattern:T3`) preservation from parser output.
 - Anti-fabrication checks that route IDs come from parser/domain stop IDs, not name strings.
 

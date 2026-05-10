@@ -36,6 +36,7 @@ Protected surfaces (high change-control sensitivity):
   - `DirectRouteQueryPreparationResult` branch semantics
 - Source identity anti-fabrication rule:
   - IDs must not be fabricated from names, place labels, manual text, or coordinates
+  - `StopPointId` must come only from `StopPoint.id` and propagated `VerifiedStopPointCandidate.stopPointId`
 - Room schema and migration strategy (future).
 - City adapter contract and city/feed mapping model.
 - Location/privacy handling policy.

@@ -31,18 +31,20 @@ Architecture baseline and implementation status snapshot.
 - `feature-alerts`
 - `city-adapters`
 
-## Implementation Status (After PASS 08)
+## Implementation Status (After PASS 20)
 
 - Implemented pure Kotlin logic:
   - `core-domain`
   - `core-gtfs`
   - `core-routing`
+  - `city-adapters` metadata contract/registry
+  - `feature-search` search pipeline core (resolution, enrichment, orchestration, route-query preparation)
 - Skeleton/future:
-  - `app`, `data-local`, `data-remote`, `feature-*`, `city-adapters` runtime logic.
+  - `app`, `data-local`, `data-remote`, UI `feature-*` runtime wiring.
 - Not implemented yet:
   - Room schema and cache layer.
-  - Hilt graph integration.
-  - Compose feature flows beyond minimal shell.
+  - Production feed provider/snapshot boundary and downloader/cache orchestration.
+  - Compose feature flows and ViewModel wiring beyond minimal shell.
 
 ## Module Responsibilities
 
@@ -61,10 +63,14 @@ Architecture baseline and implementation status snapshot.
 - `core-gtfs` -> `core-domain`.
 - `data-local` -> `core-domain`, `core-gtfs`.
 - `data-remote` -> `core-domain`, `core-gtfs`.
-- `city-adapters` -> `core-domain`, `core-gtfs`.
-- `feature-map` and `feature-route-detail` -> `core-routing`.
-- `feature-search`, `feature-stop-board`, `feature-favourites`, `feature-alerts` -> `core-domain`.
+- `city-adapters` -> `core-domain`.
+- `feature-search` -> `core-domain`, `core-routing`, `city-adapters`.
+- UI feature modules may depend on `core-domain`/`core-routing` as needed.
 - `app` orchestrates all Android modules.
+
+Test-only rule:
+- `feature-search` tests may depend on `core-gtfs` for fixture integration tests.
+- `feature-search` production code must not depend on parser implementation.
 
 Forbidden coupling:
 - `data-remote` must not directly depend on `city-adapters`.
