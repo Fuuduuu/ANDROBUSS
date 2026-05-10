@@ -28,6 +28,9 @@ Canonical truths for this repository:
 - Accessibility is an MVP requirement, not polish.
 - Destination target resolution is metadata-based (`CITY_PLACE_METADATA`) and does not perform nearest-stop/routing/map logic.
 - Place-to-stop candidate mapping uses preferred stop-group names as unresolved name-level candidates; it does not fabricate `StopGroupId` or `StopPointId`.
+- `StopCandidateEnricher` populates `StopCandidate.stopPointIds` only from `VerifiedStopPointCandidate.stopPointId`.
+- `StopCandidateEnricher` must never derive `StopPointId` from stop-group names, display names, manual text, or coordinates.
+- Stop-candidate enrichment does not upgrade `StopCandidate.confidence`; confidence still describes how the original name-level candidate was produced.
 - Origin candidate resolution (manual text or current location) is unresolved seed generation only and must not fabricate `StopPointId`/`StopGroupId`.
 - Direct-route bridge must return `NotReady` until explicit origin and destination `StopPointId` candidates exist; names/coordinates must not be converted into `StopPointId`.
 - Verified stop-point resolution candidates must be sourced from actual `StopPoint` objects; `stopPointId` must come from `StopPoint.id` only.

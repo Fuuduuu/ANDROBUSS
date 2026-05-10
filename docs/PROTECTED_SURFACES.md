@@ -15,6 +15,9 @@ Protected surfaces (high change-control sensitivity):
   - `StopPointResolver` contract
   - `VerifiedStopPointCandidate` identity/source guarantees
   - `InMemoryStopPointIndex` anti-fabrication and multi-candidate behavior
+- Stop-candidate enrichment boundary in `feature-search`:
+  - `StopCandidateEnricher` must copy IDs only from verified stop-point candidates
+  - `StopCandidateEnrichmentResult` success/failure semantics
 - Room schema and migration strategy (future).
 - City adapter contract and city/feed mapping model.
 - Location/privacy handling policy.

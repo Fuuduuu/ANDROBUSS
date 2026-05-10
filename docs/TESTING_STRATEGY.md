@@ -13,6 +13,7 @@
 - `feature-search` direct-route bridge/precondition tests exist and run.
 - `feature-search` stop-point resolution contract/name-index tests exist and run.
 - `feature-search` resolver-to-bridge integration tests (hand-built domain data) exist and run.
+- `feature-search` stop-candidate enrichment production tests exist and run.
 - CI baseline runs Gradle build/lint.
 
 ## Core-Domain Coverage Focus
@@ -108,6 +109,16 @@
 - Same-name stop points producing different route outcomes by `StopPointId`.
 - No `StopPointId` fabrication from names.
 - Guard tests proving unresolved cases do not trigger route search call.
+
+## Feature-Search StopCandidate Enrichment Coverage Focus (PASS 16)
+
+- Enrichment uses `StopPointResolver` output only.
+- `StopCandidate.stopPointIds` are copied only from verified candidate IDs.
+- Same-name multi-stop resolution preserves deterministic ID order.
+- Failure branches preserve original unresolved candidate unchanged.
+- No fabricated IDs on unknown/empty-index/error branches.
+- Enrichment result exposes verified candidates for later ranking/wiring.
+- Android-free guard for enrichment classes.
 
 ## Near-Term Test Gaps
 

@@ -4,7 +4,7 @@
 
 - Expected repo root: `C:\Users\Kasutaja\Desktop\ANDROBUSS`.
 - Expected branch: `main`.
-- Last accepted HEAD before this pass: `5dd2af2` (`PASS 15`).
+- Last accepted HEAD before this pass: `b35db77` (`PASS UX-01`).
 - Working tree should be clean before starting a new pass.
 
 ## Accepted Passes
@@ -27,6 +27,7 @@
 - PASS 13: direct-route query bridge and precondition gating.
 - PASS 14: stop-point resolution contract and in-memory name index.
 - PASS 15: stop resolution and bridge integration tests.
+- PASS 16: stop-candidate enrichment production class.
 
 ## Implemented Core Stack
 
@@ -52,6 +53,8 @@
   - Origin candidate model and resolver (manual-text and current-location unresolved seeds).
   - Direct-route query bridge with explicit precondition gating before route search calls.
   - Stop-point resolution contract and in-memory name index for verified `StopPointId` candidates.
+  - Stop-candidate enrichment production class (`StopCandidateEnricher`) for destination-side ID enrichment.
+  - Enrichment class is not yet wired into app/ViewModel runtime flow.
   - Integration tests for resolver-to-bridge flow using hand-built domain data.
   - Executable destination, candidate mapping, and integration tests.
 
@@ -67,6 +70,7 @@
 - Origin-to-stop-point nearest lookup.
 - Room-backed stop-point resolver replacement.
 - Production wiring for stop-point resolution into bridge inputs.
+- Origin enrichment production class is deferred.
 
 ## UX Planning State
 
@@ -76,8 +80,8 @@
 
 ## Current Pass
 
-`PASS UX-01 — UX_BLUEPRINT_AND_MVP_SCOPE_SYNC`
+`PASS 16 — STOP_CANDIDATE_ENRICHMENT_PRODUCTION`
 
 ## Next Technical Pass
 
-`PASS 16 — STOP_CANDIDATE_ENRICHMENT_AND_BRIDGE_WIRING_PRODUCTION`
+`PASS 17 — RAKVERE_STOPPOINT_MAPPING_FIXTURE_SPEC`
