@@ -4,7 +4,7 @@ project:
   remote: https://github.com/Fuuduuu/ANDROBUSS.git
   last_accepted_commit: e1a480e
   last_known_good_commit: e1a480e
-  current_pass: PASS_G01
+  current_pass: PASS_G02
   next_recommended_pass: PASS_22B_FEED_CONTRACT_MOVE_AND_ROOM_SCHEMA_WITH_SCOPED_KEYS
 
 scope:

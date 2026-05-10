@@ -61,6 +61,7 @@ Truth hierarchy (highest to lowest for decision-making):
   - route pattern key: `cityId + feedId + patternId`
   - pattern stop key: `cityId + feedId + patternId + sequence`
 - `PatternStop` identity key must include sequence; repeated `stopId` values inside one pattern remain valid and must not be collapsed.
+- `docs/PROJECT_STATE.yml` is schema-checked by `tools/validate_project_state.py` and by CI.
 - `DomainFeedSnapshot` is a parser-agnostic feature-search boundary for domain-mapped feed data.
 - `DomainFeedSnapshot.stopPoints` and `DomainFeedSnapshot.routePatterns` must come from the same feed snapshot/version.
 - `DomainFeedSnapshotProvider` is synchronous in PASS 21 and Room-backed implementation is future work.

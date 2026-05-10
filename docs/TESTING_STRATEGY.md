@@ -196,3 +196,9 @@
 - Room-backed resolver parity tests (future).
 - Room persistence/invalidation tests (future).
 - UI and end-to-end flow tests (future).
+
+## Governance Checks
+
+- `tools/validate_project_state.py` validates `docs/PROJECT_STATE.yml` schema.
+- Run locally: `python tools/validate_project_state.py`
+- GitHub Actions CI runs the validator.

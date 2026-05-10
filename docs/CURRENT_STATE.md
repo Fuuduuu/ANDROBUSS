@@ -54,7 +54,7 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Current Pass
 
-- `PASS_G01 — GOVERNANCE_BOOTSTRAP_DOCS_ONLY`
+- `PASS_G02 — PROJECT_STATE_VALIDATION_HOOKS`
 
 ## Governance Bootstrap (PASS_G01)
 
@@ -65,6 +65,11 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
   - `docs/PASS_TEMPLATE.md`
 - No runtime/source/build behavior changes.
 
+## Governance Validation (PASS_G02)
+
+- Added `tools/validate_project_state.py` for compact `docs/PROJECT_STATE.yml` schema checks.
+- Validator is runnable locally and is wired into CI.
+
 ## Next Technical Pass
 
-- `PASS 22 — FEED_CONTRACT_MOVE_AND_ROOM_SCHEMA_BASELINE` (with composite storage-key strategy)
+- `PASS 22B — FEED_CONTRACT_MOVE_AND_ROOM_SCHEMA_WITH_SCOPED_KEYS`

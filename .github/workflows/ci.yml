@@ -24,6 +24,9 @@ jobs:
       - name: Ensure Gradle wrapper is executable
         run: chmod +x ./gradlew
 
+      - name: Validate project state
+        run: python tools/validate_project_state.py
+
       - name: Build
         run: ./gradlew build
 
