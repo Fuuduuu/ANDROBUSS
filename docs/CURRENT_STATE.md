@@ -4,7 +4,7 @@
 
 - Expected repo root: `C:\Users\Kasutaja\Desktop\ANDROBUSS`.
 - Expected branch: `main`.
-- Last accepted HEAD before this pass: `cd8d5aa` (`PASS 13`).
+- Last accepted HEAD before this pass: `c57eddf` (`PASS 14`).
 - Working tree should be clean before starting a new pass.
 
 ## Accepted Passes
@@ -47,6 +47,7 @@
   - Origin candidate model and resolver (manual-text and current-location unresolved seeds).
   - Direct-route query bridge with explicit precondition gating before route search calls.
   - Stop-point resolution contract and in-memory name index for verified `StopPointId` candidates.
+  - Integration tests for resolver-to-bridge flow using hand-built domain data.
   - Executable destination and candidate mapping tests.
 
 ## Not Implemented Yet
@@ -60,11 +61,12 @@
 - Verified stop-group/stop-point ID mapping from place candidates.
 - Origin-to-stop-point nearest lookup.
 - Room-backed stop-point resolver replacement.
+- Production wiring for stop-point resolution into bridge inputs.
 
 ## Current Pass
 
-`PASS 14 — STOPPOINT_RESOLUTION_CONTRACT_AND_NAME_INDEX`
+`PASS 15 — STOPPOINT_RESOLUTION_INTEGRATION_AND_BRIDGE_WIRING`
 
 ## Next Pass
 
-`PASS 15 — STOPPOINT_RESOLUTION_INTEGRATION_AND_BRIDGE_WIRING`
+`PASS 16 — STOP_CANDIDATE_ENRICHMENT_AND_BRIDGE_WIRING_PRODUCTION`

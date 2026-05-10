@@ -24,6 +24,7 @@ Canonical truths for this repository:
 - Direct-route bridge must return `NotReady` until explicit origin and destination `StopPointId` candidates exist; names/coordinates must not be converted into `StopPointId`.
 - Verified stop-point resolution candidates must be sourced from actual `StopPoint` objects; `stopPointId` must come from `StopPoint.id` only.
 - Name-index resolution may return multiple candidates for same-name stops; PASS 14 does not use coordinate hints for matching.
+- Integration behavior must preserve `StopPointId` identity: same display name can resolve to different stop points and produce different routing outcomes.
 - Wave 0 is Rakvere.
 - Wave 1 is Voru, Viljandi, Parnu, Kuressaare.
 - Wave 2 is Narva, Kohtla-Jarve, Sillamae.

@@ -12,6 +12,7 @@
 - `feature-search` origin candidate resolver tests exist and run.
 - `feature-search` direct-route bridge/precondition tests exist and run.
 - `feature-search` stop-point resolution contract/name-index tests exist and run.
+- `feature-search` resolver-to-bridge integration tests (hand-built domain data) exist and run.
 - CI baseline runs Gradle build/lint.
 
 ## Core-Domain Coverage Focus
@@ -98,9 +99,19 @@
 - Coordinate hint is accepted but ignored by PASS 14 name index.
 - Android-free resolution API guard.
 
+## Feature-Search Resolution-Bridge Integration Coverage Focus (PASS 15)
+
+- Unresolved -> `NotReady` precondition path checks.
+- Name-level candidate resolution via `InMemoryStopPointIndex`.
+- Verified ID handoff into `DirectRouteQueryBridge`.
+- `RouteFound` and `RouteNotFound` integration outcomes.
+- Same-name stop points producing different route outcomes by `StopPointId`.
+- No `StopPointId` fabrication from names.
+- Guard tests proving unresolved cases do not trigger route search call.
+
 ## Near-Term Test Gaps
 
-- Stop-point resolution integration through bridge wiring (future).
+- Production stop-candidate enrichment wiring (future).
 - Room-backed resolver parity tests (future).
 - Room persistence/invalidation tests (future).
 - UI and end-to-end flow tests (future).
