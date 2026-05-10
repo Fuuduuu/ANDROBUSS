@@ -16,8 +16,16 @@ Canonical truths for this repository:
 - Data confidence levels are `STATIC`, `FORECAST`, `REALTIME`.
 - Static GTFS is canonical base data.
 - Realtime is optional and adapter-specific.
-- Destination-first UX remains product direction.
-- Map is an input aid, not the routing engine.
+- ANDROBUSS is destination-first.
+- The primary rider question is `Kuhu soovid minna?`
+- Riders must not need stop IDs, route IDs, or direction jargon to start a query.
+- StopPoint complexity remains internal; rider UX must hide this complexity.
+- Home screen is list-first, not map-first.
+- Map is a secondary helping surface and input aid, not the primary cognitive burden or routing engine.
+- Initial result view should show only 1-3 best options.
+- Full timetable and full stop list belong to detail/progressive disclosure, not home or primary results.
+- Empty states must be explanatory and action-oriented.
+- Accessibility is an MVP requirement, not polish.
 - Destination target resolution is metadata-based (`CITY_PLACE_METADATA`) and does not perform nearest-stop/routing/map logic.
 - Place-to-stop candidate mapping uses preferred stop-group names as unresolved name-level candidates; it does not fabricate `StopGroupId` or `StopPointId`.
 - Origin candidate resolution (manual text or current location) is unresolved seed generation only and must not fabricate `StopPointId`/`StopGroupId`.
@@ -31,6 +39,7 @@ Canonical truths for this repository:
 - Later cities are Haapsalu and Paide.
 - Tallinn and Tartu are future-only adapters.
 - Ticketing is out of scope without legal/partner basis.
+- MVP excludes ticketing/accounts/login requirements, live vehicle map, heavy map-first UI, and multimodal clutter.
 
 ## StopGroup vs StopPoint Semantics
 

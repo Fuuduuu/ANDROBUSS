@@ -29,3 +29,9 @@ A protected surface may not change without a dedicated `PROTECTED_SURFACE_CHANGE
 
 - Docs-only passes must not alter runtime source/build logic.
 - Runtime passes must not rewrite unrelated docs; only state/audit/roadmap updates are allowed unless the pass explicitly includes docs synchronization.
+
+## UX Surface Guardrails
+
+- Future UI surfaces must preserve destination-first behavior as default.
+- Map-first UI requires explicit scope approval in a dedicated pass.
+- Full timetable-first primary UI is not MVP-approved and must not be introduced implicitly.

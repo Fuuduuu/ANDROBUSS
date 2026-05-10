@@ -4,7 +4,7 @@
 
 - Expected repo root: `C:\Users\Kasutaja\Desktop\ANDROBUSS`.
 - Expected branch: `main`.
-- Last accepted HEAD before this pass: `c57eddf` (`PASS 14`).
+- Last accepted HEAD before this pass: `5dd2af2` (`PASS 15`).
 - Working tree should be clean before starting a new pass.
 
 ## Accepted Passes
@@ -22,6 +22,11 @@
 - PASS 08B: docs/diagrams sync.
 - PASS 09: Rakvere city adapter metadata.
 - PASS 10: destination target model and place resolver.
+- PASS 11: place-to-stop candidate mapping.
+- PASS 12: origin candidate resolver.
+- PASS 13: direct-route query bridge and precondition gating.
+- PASS 14: stop-point resolution contract and in-memory name index.
+- PASS 15: stop resolution and bridge integration tests.
 
 ## Implemented Core Stack
 
@@ -48,7 +53,7 @@
   - Direct-route query bridge with explicit precondition gating before route search calls.
   - Stop-point resolution contract and in-memory name index for verified `StopPointId` candidates.
   - Integration tests for resolver-to-bridge flow using hand-built domain data.
-  - Executable destination and candidate mapping tests.
+  - Executable destination, candidate mapping, and integration tests.
 
 ## Not Implemented Yet
 
@@ -63,10 +68,16 @@
 - Room-backed stop-point resolver replacement.
 - Production wiring for stop-point resolution into bridge inputs.
 
+## UX Planning State
+
+- Gemini UX research is integrated as planning guidance.
+- Destination-first and list-first/home-map-second rules are now canonical planning inputs.
+- No runtime/UI code was added in this UX sync pass.
+
 ## Current Pass
 
-`PASS 15 — STOPPOINT_RESOLUTION_INTEGRATION_AND_BRIDGE_WIRING`
+`PASS UX-01 — UX_BLUEPRINT_AND_MVP_SCOPE_SYNC`
 
-## Next Pass
+## Next Technical Pass
 
 `PASS 16 — STOP_CANDIDATE_ENRICHMENT_AND_BRIDGE_WIRING_PRODUCTION`

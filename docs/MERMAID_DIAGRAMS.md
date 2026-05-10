@@ -1,6 +1,6 @@
 # MERMAID_DIAGRAMS
 
-Mermaid diagrams in this file are the source of truth for architecture visuals after PASS 08.
+Mermaid diagrams in this file are the source of truth for architecture visuals after PASS UX-01.
 
 ## Pass Timeline
 
@@ -15,7 +15,15 @@ flowchart LR
     P05B --> P06["PASS 06\ncalendar resolver + tests"]
     P06 --> P07["PASS 07\nminimal GTFS fixture parser"]
     P07 --> P08["PASS 08\ndirect route search core"]
-    P08 --> P09["PASS 09 planned\nRakvere city adapter metadata"]
+    P08 --> P09["PASS 09\nRakvere city adapter metadata"]
+    P09 --> P10["PASS 10\ndestination target resolver"]
+    P10 --> P11["PASS 11\nplace-to-stop candidate mapping"]
+    P11 --> P12["PASS 12\norigin candidate resolver"]
+    P12 --> P13["PASS 13\ndirect-route bridge + preconditions"]
+    P13 --> P14["PASS 14\nstop-point resolution contract + name index"]
+    P14 --> P15["PASS 15\nresolution-bridge integration tests"]
+    P15 --> PUX01["PASS UX-01\ndocs-only UX blueprint sync"]
+    PUX01 --> P16["PASS 16 planned\nproduction enrichment + bridge wiring"]
 ```
 
 ## Android Module Dependency Graph
@@ -100,4 +108,17 @@ flowchart LR
     Mapping --> FeedSelect["feed selection metadata"]
     FeedSelect --> LaterSearch["later destination-first search integration"]
     LaterSearch --> LaterUI["later UI integration"]
+```
+
+## UX Flow (Destination-First MVP)
+
+```mermaid
+flowchart LR
+    Open["First open"] --> Ask["Kuhu soovid minna?"]
+    Ask --> Input["Quick destination buttons or search"]
+    Input --> Origin["Origin seed (manual text or location seed)"]
+    Origin --> Candidates["Route candidate query path"]
+    Candidates --> Cards["1-3 result cards with large ETA"]
+    Cards --> Detail["Route detail (progressive disclosure)"]
+    Detail --> Map["Optional map helper view"]
 ```
