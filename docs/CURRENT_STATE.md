@@ -4,7 +4,7 @@
 
 - Expected repo root: `C:\Users\Kasutaja\Desktop\ANDROBUSS`.
 - Expected branch: `main`.
-- Last accepted HEAD before this pass: `b35db77` (`PASS UX-01`).
+- Latest accepted HEAD: `1657d94` (`PASS 16`).
 - Working tree should be clean before starting a new pass.
 
 ## Accepted Passes
@@ -76,11 +76,11 @@
 
 - Gemini UX research is integrated as planning guidance.
 - Destination-first and list-first/home-map-second rules are now canonical planning inputs.
-- No runtime/UI code was added in this UX sync pass.
+- No UI runtime implementation exists yet.
 
 ## Current Pass
 
-`PASS 16 — STOP_CANDIDATE_ENRICHMENT_PRODUCTION`
+`PASS 16B — ENRICHMENT_DOCS_AND_DIAGRAMS_SYNC` (docs-only)
 
 ## Next Technical Pass
 

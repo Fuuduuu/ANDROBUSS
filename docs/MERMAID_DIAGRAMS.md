@@ -1,6 +1,6 @@
 # MERMAID_DIAGRAMS
 
-Mermaid diagrams in this file are the source of truth for architecture visuals after PASS UX-01.
+Mermaid diagrams in this file are the source of truth for architecture visuals after PASS 16B.
 
 ## Pass Timeline
 
@@ -23,7 +23,9 @@ flowchart LR
     P13 --> P14["PASS 14\nstop-point resolution contract + name index"]
     P14 --> P15["PASS 15\nresolution-bridge integration tests"]
     P15 --> PUX01["PASS UX-01\ndocs-only UX blueprint sync"]
-    PUX01 --> P16["PASS 16 planned\nproduction enrichment + bridge wiring"]
+    PUX01 --> P16["PASS 16\nstop candidate enrichment production"]
+    P16 --> P16B["PASS 16B\ndocs-only enrichment sync"]
+    P16B --> P17["PASS 17 planned\nRakvere stop-point mapping fixture spec"]
 ```
 
 ## Android Module Dependency Graph
@@ -31,14 +33,14 @@ flowchart LR
 ```mermaid
 graph TD
     app --> feature_map["feature-map (planned)"]
-    app --> feature_search["feature-search (planned)"]
+    app --> feature_search["feature-search (implemented core logic, runtime wiring pending)"]
     app --> feature_stop_board["feature-stop-board (planned)"]
     app --> feature_route_detail["feature-route-detail (planned)"]
     app --> feature_favourites["feature-favourites (planned)"]
     app --> feature_alerts["feature-alerts (planned)"]
     app --> data_local["data-local (planned)"]
     app --> data_remote["data-remote (planned)"]
-    app --> city_adapters["city-adapters (metadata next)"]
+    app --> city_adapters["city-adapters (metadata implemented)"]
 
     feature_map --> core_routing["core-routing (implemented)"]
     feature_route_detail --> core_routing
@@ -108,6 +110,44 @@ flowchart LR
     Mapping --> FeedSelect["feed selection metadata"]
     FeedSelect --> LaterSearch["later destination-first search integration"]
     LaterSearch --> LaterUI["later UI integration"]
+```
+
+## Search Pipeline After PASS 16
+
+```mermaid
+flowchart LR
+    DestinationTarget --> StopCandidate
+    StopCandidate --> Enricher["StopCandidateEnricher"]
+    Enricher --> Resolver["StopPointResolver / InMemoryStopPointIndex"]
+    Resolver --> Verified["VerifiedStopPointCandidate"]
+    Verified --> Enriched["StopCandidate (with stopPointIds)"]
+    Enriched --> Bridge["DirectRouteQueryBridge"]
+    Bridge --> Search["DirectRouteSearch"]
+```
+
+## Bridge Precondition Flow
+
+```mermaid
+flowchart TD
+    Input["origin candidates + destination candidates + patterns"] --> CheckO{"origin stopPointIds resolved?"}
+    CheckO -->|No| OIssue["NotReady.OriginUnresolved or BothUnresolved"]
+    CheckO -->|Yes| CheckD{"destination stopPointIds resolved?"}
+    CheckD -->|No| DIssue["NotReady.DestinationUnresolved"]
+    CheckD -->|Yes| CheckP{"patterns available?"}
+    CheckP -->|No| PIssue["NotReady.NoPatternsAvailable"]
+    CheckP -->|Yes| Call["call DirectRouteSearch"]
+```
+
+## StopPointId Anti-Fabrication Flow
+
+```mermaid
+flowchart LR
+    StopPointIdSrc["StopPoint.id"] --> VerifiedId["VerifiedStopPointCandidate.stopPointId"]
+    VerifiedId --> EnrichedIds["StopCandidate.stopPointIds"]
+
+    ForbiddenName["stopGroupName / displayName / place name"] -. forbidden .-> EnrichedIds
+    ForbiddenText["manual text"] -. forbidden .-> EnrichedIds
+    ForbiddenCoord["coordinate"] -. forbidden .-> EnrichedIds
 ```
 
 ## UX Flow (Destination-First MVP)

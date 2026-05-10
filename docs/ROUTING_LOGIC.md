@@ -30,6 +30,14 @@ Identity rules:
   - first resolved destination `StopPointId`
 - Bridge does not derive `StopPointId` from names, stop-group labels, manual text, or coordinates.
 
+## Destination-Side Enrichment (PASS 16)
+
+- `DirectRouteSearch` behavior/signature is unchanged.
+- `StopCandidateEnricher` can populate destination-side `StopCandidate.stopPointIds` before bridge query.
+- Enrichment copies IDs only from `VerifiedStopPointCandidate.stopPointId`.
+- `NotEnriched` preserves original unresolved candidate.
+- Origin-side enrichment is not implemented.
+
 ## Deterministic Not-Found Order
 
 - `SAME_STOP`
@@ -51,5 +59,6 @@ Identity rules:
 - Service-day filtering inside route search.
 - Transfer routing.
 - Nearest-stop and walking-distance ranking.
-- Verified origin/destination stop-point resolution pipeline for bridge inputs.
+- Production wiring of destination enrichment and bridge flow in app/ViewModel runtime.
+- Verified origin-side stop-point enrichment pipeline.
 - UI card composition and rider copy generation.

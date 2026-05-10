@@ -11,6 +11,9 @@ Protected surfaces (high change-control sensitivity):
 - Direct routing boundary in `core-routing`:
   - `DirectRouteSearch`
   - direct-route result/reason contract
+- Direct-route bridge boundary in `feature-search`:
+  - `DirectRouteQueryBridge` precondition gating contract
+  - deterministic first-resolved-ID selection policy
 - Stop-point resolution boundary in `feature-search`:
   - `StopPointResolver` contract
   - `VerifiedStopPointCandidate` identity/source guarantees
@@ -18,6 +21,8 @@ Protected surfaces (high change-control sensitivity):
 - Stop-candidate enrichment boundary in `feature-search`:
   - `StopCandidateEnricher` must copy IDs only from verified stop-point candidates
   - `StopCandidateEnrichmentResult` success/failure semantics
+- Source identity anti-fabrication rule:
+  - IDs must not be fabricated from names, place labels, manual text, or coordinates
 - Room schema and migration strategy (future).
 - City adapter contract and city/feed mapping model.
 - Location/privacy handling policy.

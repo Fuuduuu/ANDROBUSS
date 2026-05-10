@@ -123,6 +123,7 @@
 ## Near-Term Test Gaps
 
 - Production stop-candidate enrichment wiring (future).
+- Rakvere preferred-stop-group-name to verified-stop-point fixture mapping tests (PASS 17 target).
 - Room-backed resolver parity tests (future).
 - Room persistence/invalidation tests (future).
 - UI and end-to-end flow tests (future).
