@@ -4,19 +4,14 @@
 
 - Expected repo root: `C:\Users\Kasutaja\Desktop\ANDROBUSS`
 - Expected branch: `main`
-- Latest accepted HEAD: `709010d` (`PASS 21`)
+- Latest accepted HEAD: `89a471d` (`PASS_G02`)
 - Working tree must be clean before a new pass
 
 ## Latest Accepted Pass
 
-- `PASS 21 — DOMAIN_FEED_SNAPSHOT_AND_PROVIDER_CONTRACT`
+- `PASS_G02 — PROJECT_STATE_VALIDATION_HOOKS`
 
-PASS 21 added a parser-agnostic feed boundary in `feature-search`:
-- `DomainFeedSnapshot`
-- `DomainFeedSnapshotProvider`
-- `InMemoryDomainFeedSnapshot`
-- integration coverage proving snapshot stop points seed `InMemoryStopPointIndex`
-- integration coverage proving snapshot route patterns can be supplied to `DirectRouteQueryPreparationUseCase`
+PASS 21 added a parser-agnostic feed boundary and in-memory provider bootstrap.
 
 PASS 22A confirms storage-identity strategy for future Room baseline:
 - GTFS `stop_id` and `tripId`-derived pattern IDs are treated as feed/city-local identifiers.
@@ -28,15 +23,19 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 ## Current Core Status
 
 - `core-domain`, `core-gtfs`, `core-routing`, `city-adapters`, and `feature-search` pure Kotlin search stack are implemented and tested.
+- `DomainFeedSnapshot` and `DomainFeedSnapshotProvider` now live in `core-domain`.
+- `feature-search` keeps `InMemoryDomainFeedSnapshot` as an in-memory implementation.
+- `data-local` now includes Room baseline schema + DAO + mapper + load-then-serve provider using scoped keys:
+  - stop-point key: `cityId + feedId + stopId`
+  - route-pattern key: `cityId + feedId + patternId`
+  - pattern-stop key: `cityId + feedId + patternId + sequence`
 - `feature-search` has test-scope parser integration only:
   - `testImplementation(project(":core-gtfs"))`
 - No production parser dependency from feature-search runtime code.
-- `DomainFeedSnapshotProvider` is synchronous and in-memory only in PASS 21.
+- `RoomDomainFeedSnapshotProvider` caches snapshots by `CityId` and is prepared by explicit `prepare(cityId, feedId)` calls.
 
 ## Not Implemented Yet
 
-- Room-backed feed snapshot provider
-- Room/cache persistence
 - Production route-pattern source/provider wiring
 - Production feed downloader/refresh flow
 - App/ViewModel runtime wiring of the pipeline
@@ -45,8 +44,8 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Current Risks
 
-- Production feed snapshot/provider is not implemented.
-- Room/cache is not implemented.
+- Room-backed snapshot/provider baseline is implemented but not wired into app runtime.
+- Room baseline exists, but runtime wiring, freshness metadata, and feed lifecycle policy are not implemented.
 - Production `RoutePattern` source is not implemented.
 - UI/ViewModel wiring is not implemented.
 - Nearest-stop/geospatial behavior is not implemented.
@@ -54,7 +53,7 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Current Pass
 
-- `PASS_G02 — PROJECT_STATE_VALIDATION_HOOKS`
+- `PASS_22B — FEED_CONTRACT_MOVE_AND_ROOM_SCHEMA_WITH_SCOPED_KEYS`
 
 ## Governance Bootstrap (PASS_G01)
 
@@ -73,4 +72,4 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Next Technical Pass
 
-- `PASS 22B — FEED_CONTRACT_MOVE_AND_ROOM_SCHEMA_WITH_SCOPED_KEYS`
+- `PASS 23 — FEED_SNAPSHOT_IMPORT_OR_APP_WIRING_DECISION`

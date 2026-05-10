@@ -188,11 +188,30 @@
   - `cityId + feedId + patternId + sequence`
 - Duplicate `stopId` values inside one pattern must remain preserved in persistence tests.
 
+## Data-Local Room Baseline Coverage Focus (PASS 22B)
+
+- `FeedEntityMapperTest` covers scoped key mapping and anti-fabrication:
+  - stop-point round-trip
+  - route-pattern round-trip
+  - sequence preservation
+  - duplicate stop IDs for loop patterns
+  - same-name different-ID stop separation
+- `FeedSnapshotDaoTest` covers scoped Room behavior:
+  - city/feed-scoped queries
+  - same local IDs across different scopes
+  - ordered pattern-stop reads
+  - cascade delete from route-pattern to pattern-stops
+- `RoomDomainFeedSnapshotLoaderTest` covers load-then-serve provider baseline:
+  - cache empty before `prepare`
+  - `prepare(cityId, feedId)` populates cache
+  - `getSnapshot(cityId)` serves cache only
+  - route-pattern order and duplicate-stop preservation through Room load
+  - route-search parity check using Room-loaded `routePatterns`
+
 ## Near-Term Test Gaps
 
 - Production destination enrichment orchestration wiring into app/ViewModel flow (future).
-- Room composite-key schema and DAO tests (PASS 22 target).
-- Room-backed feed snapshot/provider parity tests (future).
+- Room freshness/version metadata and lifecycle tests (future).
 - Room-backed resolver parity tests (future).
 - Room persistence/invalidation tests (future).
 - UI and end-to-end flow tests (future).

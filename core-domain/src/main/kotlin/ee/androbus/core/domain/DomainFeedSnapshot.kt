@@ -1,11 +1,7 @@
-package ee.androbus.feature.search.feed
-
-import ee.androbus.core.domain.CityId
-import ee.androbus.core.domain.RoutePattern
-import ee.androbus.core.domain.StopPoint
+package ee.androbus.core.domain
 
 /**
- * Parser-agnostic domain feed boundary for feature-search.
+ * Parser-agnostic domain feed boundary shared across modules.
  *
  * stopPoints and routePatterns are kept in one snapshot so callers use a
  * consistent feed version when resolving candidates and querying routes.

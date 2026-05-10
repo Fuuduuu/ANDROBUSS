@@ -31,7 +31,7 @@ Architecture baseline and implementation status snapshot.
 - `feature-alerts`
 - `city-adapters`
 
-## Implementation Status (After PASS 22A)
+## Implementation Status (After PASS 22B)
 
 - Implemented pure Kotlin logic:
   - `core-domain`
@@ -39,19 +39,21 @@ Architecture baseline and implementation status snapshot.
   - `core-routing`
   - `city-adapters` metadata contract/registry
   - `feature-search` search pipeline core (resolution, enrichment, orchestration, route-query preparation)
-  - `feature-search` parser-agnostic feed boundary (`DomainFeedSnapshot`, `DomainFeedSnapshotProvider`, `InMemoryDomainFeedSnapshot`)
+  - `core-domain` feed boundary (`DomainFeedSnapshot`, `DomainFeedSnapshotProvider`)
+  - `feature-search` in-memory feed provider (`InMemoryDomainFeedSnapshot`)
+- Implemented Android baseline:
+  - `data-local` scoped Room schema + DAO + mapper + load-then-serve provider baseline.
 - Skeleton/future:
-  - `app`, `data-local`, `data-remote`, UI `feature-*` runtime wiring.
+  - `app`, `data-remote`, UI `feature-*` runtime wiring.
 - Not implemented yet:
-  - Room schema and cache layer.
-  - Room-backed feed provider implementation and downloader/cache orchestration.
+  - app runtime wiring that calls Room provider `prepare(...)` before search flows.
+  - downloader/cache orchestration and feed refresh lifecycle.
   - Compose feature flows and ViewModel wiring beyond minimal shell.
-  - Feed contract move from `feature-search` to `core-domain` is still pending the next pass.
 
 ## Storage Identity Strategy (PASS 22A)
 
 - Persistence identity for GTFS-mapped IDs is city/feed-scoped.
-- Future Room keys:
+- Room baseline keys:
   - stop point key: `cityId + feedId + stopId`
   - route pattern key: `cityId + feedId + patternId`
   - pattern stop key: `cityId + feedId + patternId + sequence`
@@ -63,7 +65,7 @@ Architecture baseline and implementation status snapshot.
 - `core-domain`: canonical IDs/models/invariants and service calendar semantics.
 - `core-gtfs`: minimal GTFS fixture parsing and domain mapping.
 - `core-routing`: direct-route candidate search core.
-- `data-local`: future Room persistence boundary.
+- `data-local`: scoped Room persistence + Room feed snapshot provider baseline.
 - `data-remote`: future feed sync/downloader boundary.
 - `feature-*`: future UI boundaries.
 - `city-adapters`: future city-specific metadata and runtime mapping.
@@ -82,7 +84,7 @@ Architecture baseline and implementation status snapshot.
 Test-only rule:
 - `feature-search` tests may depend on `core-gtfs` for fixture integration tests.
 - `feature-search` production code must not depend on parser implementation.
-- `data-local` and Room-backed provider wiring remain PASS 22 scope and are not yet implemented.
+- `feature-search` and `data-local` must stay independent in production dependency graph.
 
 Forbidden coupling:
 - `data-remote` must not directly depend on `city-adapters`.

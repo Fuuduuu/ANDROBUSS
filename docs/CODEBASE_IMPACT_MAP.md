@@ -1,6 +1,6 @@
 # CODEBASE_IMPACT_MAP
 
-State synchronized after `PASS 22A`.
+State synchronized after `PASS 22B`.
 
 ## Module Responsibilities
 
@@ -11,7 +11,7 @@ State synchronized after `PASS 22A`.
 | `core-routing` | Direct-route search core | Implemented + tested |
 | `city-adapters` | City metadata contract + Rakvere metadata | Implemented + tested |
 | `feature-search` | Search pipeline: resolution, enrichment, orchestration, route-query preparation | Implemented + tested |
-| `data-local` | Future Room/cache/feed persistence boundary | Future |
+| `data-local` | Scoped Room feed snapshot persistence/provider baseline | Implemented baseline |
 | `data-remote` | Future downloader/update-check boundary | Future |
 | `app` + UI `feature-*` modules | Runtime wiring + UI flows | Skeleton/future |
 
@@ -27,6 +27,17 @@ State synchronized after `PASS 22A`.
 - Composite Room-key strategy is now explicit for the next storage pass.
 - No Room code was added in PASS 22A.
 
+## PASS 22B Impact
+
+- `DomainFeedSnapshot` and `DomainFeedSnapshotProvider` moved from `feature-search` to `core-domain`.
+- `data-local` gained scoped-key Room baseline:
+  - entities (`StopPointEntity`, `RoutePatternEntity`, `PatternStopEntity`)
+  - DAO (`FeedSnapshotDao`)
+  - DB (`AppDatabase`)
+  - mapper (`FeedEntityMapper`)
+  - load-then-serve provider (`RoomDomainFeedSnapshotLoader`, `RoomDomainFeedSnapshotProvider`)
+- No parser/routing/search algorithm behavior changed.
+
 ## Feature-Search Snapshot
 
 - Destination resolver implemented.
@@ -37,7 +48,7 @@ State synchronized after `PASS 22A`.
 - Direct-route query preparation use-case implemented.
 - Parser-derived integration proven in tests only (`rakvere-smoke`).
 - No app/ViewModel runtime wiring yet.
-- Feed contract move to `core-domain` and Room baseline are pending next pass.
+- Feed contract move to `core-domain` and Room baseline are now implemented.
 
 ## Dependency Direction Rules
 

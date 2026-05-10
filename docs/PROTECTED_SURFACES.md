@@ -18,16 +18,25 @@ Protected surfaces (high change-control sensitivity):
   - `StopPointResolver` contract
   - `VerifiedStopPointCandidate` identity/source guarantees
   - `InMemoryStopPointIndex` anti-fabrication and multi-candidate behavior
-- Feed snapshot/provider boundary in `feature-search`:
+- Feed snapshot/provider contract boundary in `core-domain`:
   - `DomainFeedSnapshot` must keep `stopPoints` and `routePatterns` from the same snapshot
   - `DomainFeedSnapshotProvider` parser-agnostic contract
-  - `InMemoryDomainFeedSnapshot` single-city semantics
+  - synchronous `getSnapshot(cityId)` semantics
+- Feed snapshot/provider implementations:
+  - `InMemoryDomainFeedSnapshot` single-city semantics in `feature-search`
+  - `RoomDomainFeedSnapshotProvider` load-then-serve cache policy in `data-local`
 - Feed identity and storage-key strategy:
   - GTFS-mapped IDs are feed/city-local for persistence storage
-  - future Room stop-point key must be `cityId + feedId + stopId`
-  - future Room route-pattern key must be `cityId + feedId + patternId`
-  - future Room pattern-stop key must be `cityId + feedId + patternId + sequence`
+  - Room stop-point key is `cityId + feedId + stopId`
+  - Room route-pattern key is `cityId + feedId + patternId`
+  - Room pattern-stop key is `cityId + feedId + patternId + sequence`
   - repeated `stopId` values inside one pattern must remain valid
+- Room schema baseline in `data-local`:
+  - `StopPointEntity`
+  - `RoutePatternEntity`
+  - `PatternStopEntity`
+  - `FeedSnapshotDao`
+  - `AppDatabase`
 - Stop-candidate enrichment boundary in `feature-search`:
   - `StopCandidateEnricher` must copy IDs only from verified stop-point candidates
   - `StopCandidateEnrichmentResult` success/failure semantics

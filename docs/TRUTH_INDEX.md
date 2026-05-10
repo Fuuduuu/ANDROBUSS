@@ -56,17 +56,21 @@ Truth hierarchy (highest to lowest for decision-making):
 - `MappedGtfsFeed.stopPoints` can seed `InMemoryStopPointIndex`.
 - `MappedGtfsFeed.routePatterns` can be supplied to `DirectRouteQueryPreparationUseCase`.
 - GTFS `stop_id` and `tripId`-derived `RoutePatternId("pattern:${tripId}")` are treated as feed/city-local IDs for persistence purposes.
-- Future Room storage identity must be scoped:
+- Room storage identity is scoped:
   - stop point key: `cityId + feedId + stopId`
   - route pattern key: `cityId + feedId + patternId`
   - pattern stop key: `cityId + feedId + patternId + sequence`
 - `PatternStop` identity key must include sequence; repeated `stopId` values inside one pattern remain valid and must not be collapsed.
 - `docs/PROJECT_STATE.yml` is schema-checked by `tools/validate_project_state.py` and by CI.
-- `DomainFeedSnapshot` is a parser-agnostic feature-search boundary for domain-mapped feed data.
+- `DomainFeedSnapshot` and `DomainFeedSnapshotProvider` live in `core-domain` as parser-agnostic feed boundary contracts.
 - `DomainFeedSnapshot.stopPoints` and `DomainFeedSnapshot.routePatterns` must come from the same feed snapshot/version.
-- `DomainFeedSnapshotProvider` is synchronous in PASS 21 and Room-backed implementation is future work.
+- `InMemoryDomainFeedSnapshot` remains in `feature-search` as single-city in-memory implementation.
+- `RoomDomainFeedSnapshotProvider` lives in `data-local` and uses load-then-serve behavior:
+  - `prepare(cityId, feedId)` performs Room IO via suspend loader
+  - `getSnapshot(cityId)` serves in-memory cache only (no DAO calls)
 - `feature-search` production code must not depend on `core-gtfs` parser implementation.
 - `testImplementation(project(":core-gtfs"))` is allowed only for feature-search integration tests.
+- `feature-search` and `data-local` remain independent in production dependencies.
 - Stop-candidate enrichment does not upgrade `StopCandidate.confidence`; confidence still describes how the original name-level candidate was produced.
 - Presence of `stopPointIds` indicates resolution happened through verified candidates.
 - Multiple same-name `StopPoint` matches must remain preserved through enrichment.

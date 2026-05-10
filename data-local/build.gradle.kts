@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -19,6 +20,10 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+
+    testOptions {
+        unitTests.isIncludeAndroidResources = true
+    }
 }
 
 dependencies {
@@ -26,5 +31,13 @@ dependencies {
     implementation(project(":core-gtfs"))
 
     implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
     implementation(libs.kotlinx.coroutines.android)
+    ksp(libs.room.compiler)
+
+    testImplementation(kotlin("test"))
+    testImplementation(project(":core-routing"))
+    testImplementation(libs.room.testing)
+    testImplementation(libs.androidx.test.core)
+    testImplementation(libs.robolectric)
 }

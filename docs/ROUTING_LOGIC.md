@@ -76,14 +76,21 @@ Identity rules:
 ## Feed Snapshot Boundary (PASS 21)
 
 - `DirectRouteQueryPreparationUseCase` remains unchanged and still accepts caller-supplied `RoutePattern` lists.
-- `DomainFeedSnapshot` now groups `stopPoints` and `routePatterns` together for one city snapshot.
-- `DomainFeedSnapshotProvider` is parser-agnostic and synchronous in PASS 21.
+- `DomainFeedSnapshot` groups `stopPoints` and `routePatterns` together for one city snapshot.
+- `DomainFeedSnapshotProvider` is parser-agnostic and synchronous.
 - Future caller wiring may source route patterns from `DomainFeedSnapshotProvider`; this pass does not load data automatically.
 
-## Storage Key Strategy (PASS 22A)
+## Feed Contract Move + Room Provider Baseline (PASS 22B)
 
-- PASS 22A defines a future persistence-key strategy only; routing behavior is unchanged.
-- Room storage keys are planned as city/feed-scoped composites.
+- `DomainFeedSnapshot` and `DomainFeedSnapshotProvider` now live in `core-domain`.
+- `RoomDomainFeedSnapshotProvider` in `data-local` uses load-then-serve policy:
+  - `prepare(cityId, feedId)` performs suspend Room load
+  - `getSnapshot(cityId)` returns cache only and never hits Room
+- This pass does not change route search, bridge, or route-query preparation behavior.
+
+## Storage Key Strategy (PASS 22A/22B)
+
+- Room storage keys are city/feed-scoped composites.
 - `StopPointId` remains routing identity and is not derived from names or coordinates.
 
 ## Deterministic Not-Found Order

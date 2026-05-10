@@ -1,6 +1,8 @@
 package ee.androbus.feature.search.feed
 
 import ee.androbus.core.domain.CityId
+import ee.androbus.core.domain.DomainFeedSnapshot
+import ee.androbus.core.domain.DomainFeedSnapshotProvider
 import ee.androbus.core.domain.FeedId
 import ee.androbus.core.domain.GeoPoint
 import ee.androbus.core.domain.PatternStop

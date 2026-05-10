@@ -37,19 +37,21 @@ GTFS pipeline status after PASS 20.
 
 ## PASS 21 Feed Boundary
 
-- PASS 21 introduces parser-agnostic `DomainFeedSnapshot` and `DomainFeedSnapshotProvider` in `feature-search`.
+- PASS 21 introduced parser-agnostic `DomainFeedSnapshot` and `DomainFeedSnapshotProvider` boundary contracts.
+- PASS 22B moved those contracts to `core-domain`.
 - Callers may convert parser output into snapshot boundary objects:
   - `DomainFeedSnapshot(cityId, mappedFeed.stopPoints, mappedFeed.routePatterns)`
-- PASS 21 does not implement production ingestion, downloader, or Room-backed provider wiring.
+- PASS 21/22B do not implement downloader or production ingestion orchestration.
 
-## PASS 22A Identity Strategy
+## PASS 22A/22B Identity + Storage Baseline
 
 - GTFS `stop_id` and trip-derived route-pattern IDs are treated as feed/city-local storage identifiers.
-- Future Room schema keys must be city/feed-scoped:
+- Room baseline schema keys are city/feed-scoped:
   - stop point storage key: `cityId + feedId + stopId`
   - route pattern storage key: `cityId + feedId + patternId`
   - pattern stop storage key: `cityId + feedId + patternId + sequence`
-- This strategy does not change parser behavior or routing identity semantics.
+- PASS 22B adds `data-local` baseline Room entities/DAO/mapper/loader/provider using these scoped keys.
+- Routing identity semantics remain unchanged (`StopPointId` still comes from persisted/verified stop IDs only).
 
 ## PASS 17 Metadata Discovery Note
 
@@ -71,8 +73,8 @@ GTFS pipeline status after PASS 20.
 
 - Network downloader/update checks.
 - ZIP ingestion from live sources in runtime.
-- Room/cache persistence.
-- Room-backed feed snapshot/provider boundary implementation.
+- feed freshness/version metadata.
+- app runtime wiring that prepares and consumes Room snapshot provider.
 - Shapes/fares/transfers handling.
 - Realtime ingestion.
 - Production feed-to-city adapter orchestration.

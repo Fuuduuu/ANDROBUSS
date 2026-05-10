@@ -56,13 +56,16 @@ Examples:
 - RoutePattern storage key: cityId + feedId + patternId
 - PatternStop storage key: cityId + feedId + patternId + sequence
 Tests:
-- `TODO_PASS_22B_TEST_REQUIRED`
+- `FeedEntityMapperTest` - `StopPoint round-trip keeps scoped key and identity`
+- `FeedSnapshotDaoTest` - `same stopId may exist across feed scopes`
+- `FeedSnapshotDaoTest` - `same patternId may exist across feed scopes`
 
 INV-007 - Neutral feed snapshot contract
 Rule:
 DomainFeedSnapshot and DomainFeedSnapshotProvider must live in a neutral/core boundary before data-local implements Room provider behavior.
 Tests:
-- `TODO_PASS_22B_TEST_REQUIRED`
+- `InMemoryDomainFeedSnapshotTest` - `feed snapshot classes remain android free`
+- `RoomDomainFeedSnapshotLoaderTest` - `DomainFeedSnapshotProvider type comes from core-domain package`
 
 ## Search / bridge
 
