@@ -18,9 +18,10 @@ Canonical truths for this repository:
 - Realtime is optional and adapter-specific.
 - Destination-first UX remains product direction.
 - Map is an input aid, not the routing engine.
+- Destination target resolution in PASS 10 is metadata-based (`CITY_PLACE_METADATA`) and does not perform nearest-stop/routing/map logic.
 - Wave 0 is Rakvere.
-- Wave 1 is Võru, Viljandi, Pärnu, Kuressaare.
-- Wave 2 is Narva, Kohtla-Järve, Sillamäe.
+- Wave 1 is Voru, Viljandi, Parnu, Kuressaare.
+- Wave 2 is Narva, Kohtla-Jarve, Sillamae.
 - Later cities are Haapsalu and Paide.
 - Tallinn and Tartu are future-only adapters.
 - Ticketing is out of scope without legal/partner basis.

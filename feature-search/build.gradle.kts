@@ -23,5 +23,8 @@ android {
 
 dependencies {
     implementation(project(":core-domain"))
+    implementation(project(":city-adapters"))
     implementation(platform(libs.compose.bom))
+
+    testImplementation(kotlin("test"))
 }
