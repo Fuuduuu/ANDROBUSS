@@ -2,6 +2,18 @@
 
 Canonical truths for this repository:
 
+Truth hierarchy (highest to lowest for decision-making):
+1. Passing validation / CI
+2. Git commit history
+3. `docs/PROJECT_STATE.yml`
+4. `docs/TRUTH_INDEX.md`
+5. `docs/INVARIANTS.md`
+6. `docs/ACTIVE_SCOPE_LOCK.md` (if present)
+7. `docs/audit/PASS_*.md`
+8. `docs/CURRENT_STATE.md`
+9. Diagrams
+10. Chat history (temporary workbench only)
+
 - `StopPointId` is routing identity.
 - `StopGroup` is display/search grouping.
 - Stop names and display names are never routing identity.

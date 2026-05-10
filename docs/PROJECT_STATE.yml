@@ -1,0 +1,98 @@
+project:
+  name: ANDROBUSS
+  branch: main
+  remote: https://github.com/Fuuduuu/ANDROBUSS.git
+  last_accepted_commit: e1a480e
+  last_known_good_commit: e1a480e
+  current_pass: PASS_G01
+  next_recommended_pass: PASS_22B_FEED_CONTRACT_MOVE_AND_ROOM_SCHEMA_WITH_SCOPED_KEYS
+
+scope:
+  current_goal: "Bootstrap compact governance docs without runtime changes."
+  allowed_surfaces:
+    - docs/PROJECT_STATE.yml
+    - docs/INVARIANTS.md
+    - docs/DEBUG_PLAYBOOK.md
+    - docs/PASS_TEMPLATE.md
+    - docs/CURRENT_STATE.md
+    - docs/ROADMAP.md
+    - docs/TRUTH_INDEX.md
+    - docs/audit/PASS_G01_GOVERNANCE_BOOTSTRAP.md
+  forbidden_surfaces:
+    - app/
+    - core-domain/src/
+    - core-gtfs/src/
+    - core-routing/src/
+    - city-adapters/src/
+    - feature-search/src/
+    - data-local/src/
+    - data-remote/src/
+    - build.gradle.kts
+    - settings.gradle.kts
+    - gradle/
+    - .github/
+
+architecture:
+  pure_kotlin_modules:
+    - core-domain
+    - core-gtfs
+    - core-routing
+    - city-adapters
+  android_modules:
+    - app
+    - data-local
+    - data-remote
+    - feature-search
+    - feature-map
+    - feature-stop-board
+    - feature-route-detail
+    - feature-favourites
+    - feature-alerts
+
+invariants:
+  critical:
+    - id: INV-001
+      rule: "StopPointId must come only from actual StopPoint.id or persisted stopId originally mapped from StopPoint.id."
+      test: "StopCandidateEnricherTest::anti fabrication guard keeps verified stop id only; StopResolutionBridgeIntegrationTest::anti fabrication guard keeps GTFS stop ids only"
+    - id: INV-002
+      rule: "core-domain, core-gtfs, core-routing, and city-adapters must remain Android-free."
+      test: "GtfsDomainMapperTest::parser and mapper public APIs remain Android-free; DirectRouteSearchTest::core routing remains Android free; CityAdapterRegistryTest::city adapter metadata remains android free; TODO_CORE_DOMAIN_ANDROID_FREE_TEST_REQUIRED"
+    - id: INV-003
+      rule: "Same public stop name must not collapse distinct StopPointIds."
+      test: "GtfsDomainMapperTest::same-name stops with different stop_id remain separate StopPoints; GtfsFixtureSearchPipelineIntegrationTest::AnniVibe lesson - same-name Keskpeatus resolves to two distinct stop ids"
+    - id: INV-004
+      rule: "RoutePattern stop order must be preserved."
+      test: "DomainInvariantsTest::RoutePattern preserves ordered stops; GtfsDomainMapperTest::mapper creates RoutePattern ordered by stop sequence"
+    - id: INV-005
+      rule: "Loop/circular RoutePatterns may contain duplicate StopPointIds."
+      test: "DomainInvariantsTest::RoutePattern allows duplicate StopPointIds for loop compatibility; DirectRouteSearchTest::duplicate StopPointId loop pattern still finds valid later segment"
+    - id: INV-006
+      rule: "Room storage identity must be scoped by cityId + feedId + localId."
+      test: "TODO_PASS_22B_TEST_REQUIRED"
+    - id: INV-007
+      rule: "DomainFeedSnapshotProvider must live in a neutral/core boundary before data-local implements it."
+      test: "TODO_PASS_22B_TEST_REQUIRED"
+
+risks:
+  active:
+    - "DomainFeedSnapshot and DomainFeedSnapshotProvider still need to move from feature-search to core-domain before Room provider work."
+    - "Room schema must use scoped composite keys: cityId + feedId + stopId/patternId."
+    - "Docs are growing; docs hygiene should be a later explicit pass."
+  deferred:
+    - "Room-backed provider implementation."
+    - "Production feed downloader."
+    - "UI/ViewModel."
+    - "Nearest-stop/geospatial logic."
+    - "Realtime."
+
+validation:
+  required_commands:
+    - ".\\gradlew.bat :core-domain:test"
+    - ".\\gradlew.bat :feature-search:test"
+    - ".\\gradlew.bat build"
+    - "git diff --check"
+
+debug:
+  state: clean
+  last_failing_test: null
+  last_failing_commit: null

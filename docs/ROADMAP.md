@@ -44,3 +44,9 @@ Likely following passes:
 
 Planning rule:
 - Any UI pass must align with `PASS UX-01` destination-first, list-first MVP blueprint.
+
+Governance track:
+- G01 - GOVERNANCE_BOOTSTRAP_DOCS_ONLY
+- G02 - PROJECT_STATE_VALIDATION_HOOKS
+- G03 - DOCS_HYGIENE_AND_ARCHIVE_PLAN
+- G04 - DETEKT_COVERAGE_HARDENING

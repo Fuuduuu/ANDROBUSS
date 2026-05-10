@@ -54,7 +54,16 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Current Pass
 
-- `PASS 22A — FEED_IDENTITY_AND_STORAGE_KEY_STRATEGY`
+- `PASS_G01 — GOVERNANCE_BOOTSTRAP_DOCS_ONLY`
+
+## Governance Bootstrap (PASS_G01)
+
+- Added compact governance scaffold docs:
+  - `docs/PROJECT_STATE.yml`
+  - `docs/INVARIANTS.md`
+  - `docs/DEBUG_PLAYBOOK.md`
+  - `docs/PASS_TEMPLATE.md`
+- No runtime/source/build behavior changes.
 
 ## Next Technical Pass
 
