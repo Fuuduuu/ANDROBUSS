@@ -50,6 +50,11 @@
 - POI seed non-empty with conservative coordinate policy.
 - Registry lookup and duplicate city-id protection.
 - Android-free API guard.
+- PASS 17 real-stop-name discovery constraints:
+  - at least one Rakvere POI has verified `preferredStopGroupNames`
+  - any populated name must match discovered real `rakvere.zip` `stops.txt` values
+  - uncertain POIs remain unresolved (empty preferred-stop-group list)
+  - legal status remains conservative and coordinates remain `null`/`UNKNOWN`
 
 ## Feature-Search Destination Coverage Focus (PASS 10)
 
@@ -123,7 +128,7 @@
 ## Near-Term Test Gaps
 
 - Production stop-candidate enrichment wiring (future).
-- Rakvere preferred-stop-group-name to verified-stop-point fixture mapping tests (PASS 17 target).
+- Rakvere multi-candidate verified stop-point selection strategy tests (PASS 18 target).
 - Room-backed resolver parity tests (future).
 - Room persistence/invalidation tests (future).
 - UI and end-to-end flow tests (future).

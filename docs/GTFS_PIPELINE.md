@@ -1,6 +1,6 @@
 # GTFS_PIPELINE
 
-GTFS pipeline status after PASS 07 and PASS 08.
+GTFS pipeline status after PASS 17.
 
 ## Current Implemented Scope
 
@@ -28,6 +28,13 @@ GTFS pipeline status after PASS 07 and PASS 08.
   - `core-gtfs/src/test/resources/gtfs/rakvere-smoke/`
 - Fixture is deterministic and intentionally small.
 - It is not a production data snapshot.
+- Synthetic fixture stop names are not authoritative city metadata for real Rakvere mapping.
+
+## PASS 17 Metadata Discovery Note
+
+- Real `rakvere.zip` `stops.txt` was inspected in a temp folder for conservative Rakvere POI stop-name discovery.
+- Discovery output is used only for metadata hints (`preferredStopGroupNames`), not parser/runtime behavior.
+- Downloaded ZIP/data files remain outside the repository and must not be committed.
 
 ## Expected Full Pipeline (Future)
 

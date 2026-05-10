@@ -4,7 +4,7 @@
 
 - Expected repo root: `C:\Users\Kasutaja\Desktop\ANDROBUSS`.
 - Expected branch: `main`.
-- Latest accepted HEAD: `1657d94` (`PASS 16`).
+- Latest accepted HEAD: `b8da7f3` (`PASS 16B`).
 - Working tree should be clean before starting a new pass.
 
 ## Accepted Passes
@@ -23,11 +23,13 @@
 - PASS 09: Rakvere city adapter metadata.
 - PASS 10: destination target model and place resolver.
 - PASS 11: place-to-stop candidate mapping.
+- PASS 11B: stop-candidate confidence docs clarification.
 - PASS 12: origin candidate resolver.
 - PASS 13: direct-route query bridge and precondition gating.
 - PASS 14: stop-point resolution contract and in-memory name index.
 - PASS 15: stop resolution and bridge integration tests.
 - PASS 16: stop-candidate enrichment production class.
+- PASS 16B: enrichment docs/diagrams sync.
 
 ## Implemented Core Stack
 
@@ -45,6 +47,8 @@
 - `city-adapters`:
   - Pure Kotlin metadata contract.
   - Rakvere metadata provider and city adapter registry.
+  - PASS 17 adds conservative preferred-stop-group-name mappings from real `rakvere.zip` `stops.txt`.
+  - `city-adapters` now depends on `core-domain` only (no `core-gtfs` dependency).
   - Executable metadata tests.
 - `feature-search`:
   - Destination target model and query normalizer.
@@ -80,8 +84,8 @@
 
 ## Current Pass
 
-`PASS 16B — ENRICHMENT_DOCS_AND_DIAGRAMS_SYNC` (docs-only)
+`PASS 17 — RAKVERE_REAL_GTFS_STOP_NAME_DISCOVERY_AND_METADATA_SPEC`
 
 ## Next Technical Pass
 
-`PASS 17 — RAKVERE_STOPPOINT_MAPPING_FIXTURE_SPEC`
+`PASS 18 — VERIFIED_STOPPOINT_SELECTION_AND_BRIDGE_WIRING_STRATEGY`

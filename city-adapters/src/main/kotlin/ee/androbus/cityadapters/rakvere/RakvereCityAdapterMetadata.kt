@@ -17,7 +17,8 @@ object RakvereCityAdapterMetadata {
     private const val HOSTING = "https://eu-gtfs.remix.com/"
     private const val PRIMARY_FEED_URL = "https://eu-gtfs.remix.com/rakvere.zip"
     private const val CONTEXT_FEED_URL = "https://eu-gtfs.remix.com/laane_virumaa.zip"
-    private const val SEED_PLACE_NOTE = "Seed metadata; stop mapping to be verified in later pass."
+    private const val VERIFIED_STOP_NAME_NOTE = "Preferred stop names verified against rakvere.zip stops.txt in PASS 17."
+    private const val UNRESOLVED_STOP_NAME_NOTE = "No verified stop_name mapping found in PASS 17; kept unresolved."
 
     val metadata: CityAdapterMetadata =
         CityAdapterMetadata(
@@ -53,12 +54,29 @@ object RakvereCityAdapterMetadata {
             places =
                 listOf(
                     place("kesklinn", "Kesklinn", PlaceCategory.CENTER),
-                    place("rakvere-bussijaam", "Rakvere bussijaam", PlaceCategory.BUS_STATION, aliases = listOf("Bussijaam")),
+                    place(
+                        "rakvere-bussijaam",
+                        "Rakvere bussijaam",
+                        PlaceCategory.BUS_STATION,
+                        aliases = listOf("Bussijaam"),
+                        preferredStopGroupNames = listOf("Rakvere bussijaam"),
+                    ),
                     place("rakvere-raudteejaam", "Rakvere raudteejaam", PlaceCategory.TRAIN_STATION, aliases = listOf("Raudteejaam")),
-                    place("pohjakeskus", "Põhjakeskus", PlaceCategory.SHOPPING, aliases = listOf("Pohjakeskus")),
+                    place(
+                        "pohjakeskus",
+                        "Põhjakeskus",
+                        PlaceCategory.SHOPPING,
+                        aliases = listOf("Pohjakeskus"),
+                        preferredStopGroupNames = listOf("Põhjakeskus"),
+                    ),
                     place("vaala-keskus", "Vaala keskus", PlaceCategory.SHOPPING),
                     place("rakvere-haigla", "Rakvere haigla", PlaceCategory.HEALTHCARE),
-                    place("rakvere-polikliinik", "Polikliinik", PlaceCategory.HEALTHCARE),
+                    place(
+                        "rakvere-polikliinik",
+                        "Polikliinik",
+                        PlaceCategory.HEALTHCARE,
+                        preferredStopGroupNames = listOf("Polikliinik"),
+                    ),
                     place("rakvere-teater", "Rakvere teater", PlaceCategory.CULTURE),
                     place("aqva", "Aqva", PlaceCategory.TOURISM),
                     place("rakvere-linnus", "Rakvere linnus", PlaceCategory.TOURISM),
@@ -69,6 +87,7 @@ object RakvereCityAdapterMetadata {
                 listOf(
                     "Source and feed mapping derived from PASS 03 and PASS 04 audits.",
                     "Legal/license certainty remains conservative until official confirmation is documented.",
+                    "PASS 17 added conservative preferred stop-group names only for verified rakvere.zip stop_name matches.",
                 ),
         )
 
@@ -77,6 +96,7 @@ object RakvereCityAdapterMetadata {
         name: String,
         category: PlaceCategory,
         aliases: List<String> = emptyList(),
+        preferredStopGroupNames: List<String> = emptyList(),
     ): CityPlaceMetadata =
         CityPlaceMetadata(
             placeId = id,
@@ -85,7 +105,7 @@ object RakvereCityAdapterMetadata {
             category = category,
             coordinate = null,
             coordinateConfidence = CoordinateConfidence.UNKNOWN,
-            preferredStopGroupNames = emptyList(),
-            notes = SEED_PLACE_NOTE,
+            preferredStopGroupNames = preferredStopGroupNames,
+            notes = if (preferredStopGroupNames.isEmpty()) UNRESOLVED_STOP_NAME_NOTE else VERIFIED_STOP_NAME_NOTE,
         )
 }

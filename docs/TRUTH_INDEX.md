@@ -27,7 +27,9 @@ Canonical truths for this repository:
 - Empty states must be explanatory and action-oriented.
 - Accessibility is an MVP requirement, not polish.
 - Destination target resolution is metadata-based (`CITY_PLACE_METADATA`) and does not perform nearest-stop/routing/map logic.
+- Rakvere `preferredStopGroupNames` must be sourced from real `rakvere.zip` `stops.txt` discovery, not synthetic fixture names.
 - Place-to-stop candidate mapping uses preferred stop-group names as unresolved name-level candidates; it does not fabricate `StopGroupId` or `StopPointId`.
+- If a Rakvere POI has no confident real `stop_name` match, `preferredStopGroupNames` must remain empty.
 - `StopCandidateEnricher` populates `StopCandidate.stopPointIds` only from `VerifiedStopPointCandidate.stopPointId`.
 - `StopCandidateEnricher` must never derive `StopPointId` from stop-group names, display names, place names, manual text, or coordinates.
 - Stop-candidate enrichment does not upgrade `StopCandidate.confidence`; confidence still describes how the original name-level candidate was produced.

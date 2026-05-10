@@ -8,6 +8,5 @@ kotlin {
 
 dependencies {
     implementation(project(":core-domain"))
-    implementation(project(":core-gtfs"))
     testImplementation(kotlin("test"))
 }

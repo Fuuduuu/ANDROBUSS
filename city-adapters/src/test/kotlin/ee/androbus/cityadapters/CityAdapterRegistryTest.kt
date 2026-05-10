@@ -67,6 +67,62 @@ class CityAdapterRegistryTest {
     }
 
     @Test
+    fun `rakvere has at least one verified preferred stop group name`() {
+        val places = RakvereCityAdapterMetadata.metadata.places
+        val resolved = places.filter { it.preferredStopGroupNames.isNotEmpty() }
+        assertTrue(resolved.isNotEmpty(), "Expected at least one POI with verified preferredStopGroupNames.")
+    }
+
+    @Test
+    fun `preferred stop group names stay within discovered real rakvere stop names`() {
+        val discoveredStopNames =
+            setOf(
+                "Bussijaam",
+                "Rakvere bussijaam",
+                "Raudteejaam",
+                "Viru-Kabala raudteejaam",
+                "Haigla",
+                "Polikliinik",
+                "Teater",
+                "Põhjakeskus",
+                "Vaala",
+                "Vallimäe",
+                "Põhja",
+            )
+
+        RakvereCityAdapterMetadata.metadata.places
+            .flatMap { it.preferredStopGroupNames }
+            .forEach { stopName ->
+                assertTrue(
+                    stopName in discoveredStopNames,
+                    "Preferred stop-group name '$stopName' was not in PASS 17 discovered stops.txt values.",
+                )
+            }
+    }
+
+    @Test
+    fun `uncertain rakvere pois remain unresolved`() {
+        val uncertainPlaceIds =
+            setOf(
+                "kesklinn",
+                "rakvere-raudteejaam",
+                "vaala-keskus",
+                "rakvere-haigla",
+                "rakvere-teater",
+                "aqva",
+                "rakvere-linnus",
+                "vallimagi",
+            )
+
+        val byId = RakvereCityAdapterMetadata.metadata.places.associateBy { it.placeId }
+        uncertainPlaceIds.forEach { placeId ->
+            val place = byId[placeId]
+            assertNotNull(place, "Missing expected POI '$placeId'.")
+            assertTrue(place.preferredStopGroupNames.isEmpty(), "POI '$placeId' should remain unresolved in PASS 17.")
+        }
+    }
+
+    @Test
     fun `rakvere aliases include basic variants`() {
         val aliases = RakvereCityAdapterMetadata.metadata.aliases
         assertTrue("Rakvere" in aliases)

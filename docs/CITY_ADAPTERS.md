@@ -15,6 +15,7 @@
 
 - `city-adapters` now contains a pure Kotlin metadata contract and registry.
 - Rakvere metadata is implemented as the first active city metadata provider.
+- `city-adapters` metadata module depends on `core-domain` only.
 - No city adapter runtime integration has been added yet.
 
 ## PASS 04 City/Feed Mapping Baseline (2026-05-09)
@@ -34,7 +35,7 @@
 | Tallinn | Future-only | `tallinn.zip` | `harjumaa.zip` | PARTIAL | Future adapter only. |
 | Tartu | Future-only | `tartu.zip` | `tartumaa.zip` | PARTIAL | Future adapter only. |
 
-## PASS 09 Rakvere Metadata Baseline
+## PASS 09 to PASS 17 Rakvere Metadata State
 
 Implemented metadata includes:
 
@@ -50,8 +51,25 @@ Implemented metadata includes:
   - includes city-center, station, healthcare, shopping, and tourism targets
   - coordinates intentionally unset (`null` / `UNKNOWN`) until verified
 
+PASS 17 added conservative `preferredStopGroupNames` only for real `rakvere.zip` `stops.txt` exact matches:
+
+- `Rakvere bussijaam` -> `Rakvere bussijaam`
+- `Polikliinik` -> `Polikliinik`
+- `Põhjakeskus` -> `Põhjakeskus`
+
+POIs left unresolved in PASS 17 (no confident exact stop-name mapping):
+
+- `Kesklinn`
+- `Rakvere raudteejaam`
+- `Rakvere haigla`
+- `Rakvere teater`
+- `Vaala keskus`
+- `Aqva`
+- `Rakvere linnus`
+- `Vallimägi`
+
 ## Next Adapter Pass Scope
 
-`PASS 10 — DESTINATION_TARGET_MODEL_AND_PLACE_RESOLVER_SPEC` should define destination-target resolution behavior using metadata.
+`PASS 18 — VERIFIED_STOPPOINT_SELECTION_AND_BRIDGE_WIRING_STRATEGY` should define how multiple verified stop-point candidates are selected and wired into production bridge flow.
 
-PASS 10 should not add UI, realtime, Room, or production downloader logic.
+PASS 18 should not add UI, realtime, Room, or production downloader logic.
