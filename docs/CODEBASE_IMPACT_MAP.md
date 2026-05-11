@@ -1,6 +1,6 @@
 # CODEBASE_IMPACT_MAP
 
-State synchronized after `PASS 24` docs-only decision candidate.
+State synchronized after `PASS 25` app bootstrap implementation candidate.
 
 ## Module Responsibilities
 
@@ -13,7 +13,7 @@ State synchronized after `PASS 24` docs-only decision candidate.
 | `feature-search` | Search pipeline: resolution, enrichment, orchestration, route-query preparation | Implemented + tested |
 | `data-local` | Scoped Room feed snapshot persistence/import/provider baseline | Implemented baseline |
 | `data-remote` | Future downloader/update-check boundary | Future |
-| `app` + UI `feature-*` modules | Bundled bootstrap wiring + runtime orchestration + UI flows | Skeleton/future |
+| `app` + UI `feature-*` modules | Bundled bootstrap wiring + runtime orchestration + UI flows | App bootstrap baseline implemented; UI flows future |
 
 ## PASS 20 Impact
 
@@ -57,6 +57,18 @@ State synchronized after `PASS 24` docs-only decision candidate.
   - search bootstrap owner prepares provider before search
 - No source/build/schema/runtime behavior changes were introduced in PASS 24.
 
+## PASS 25 Impact
+
+- `app` gained bundled bootstrap baseline implementation:
+  - synthetic bundled JSON asset
+  - bootstrap DTOs and domain mapping
+  - `FeedBootstrapLoader` (`import` + `prepare`) with safe missing-asset handling
+  - pre-Hilt `AndrobussApplication` startup wiring
+- `data-local` gained temporary `AppDatabase.create(context)` factory for pre-Hilt bootstrap.
+- `app` gained Robolectric bootstrap tests covering import/prepare success, idempotency, and anti-fabrication.
+- No parser invocation was added in app production code.
+- No UI/ViewModel/Hilt/WorkManager/downloader/realtime behavior was added.
+
 ## Feature-Search Snapshot
 
 - Destination resolver implemented.
@@ -67,6 +79,7 @@ State synchronized after `PASS 24` docs-only decision candidate.
 - Direct-route query preparation use-case implemented.
 - Parser-derived integration proven in tests only (`rakvere-smoke`).
 - No app/ViewModel runtime wiring yet.
+- App pre-Hilt bootstrap runtime wiring exists via `AndrobussApplication`.
 - Feed contract move to `core-domain` and Room baseline are now implemented.
 - Feature-search remains consumer of prepared `DomainFeedSnapshot`; it does not bootstrap/import feed data.
 
@@ -88,7 +101,8 @@ Test-only dependency:
 Runtime responsibility note:
 - `data-local` owns Room import/read baseline and does not read bundled assets.
 - `data-local` production code does not parse GTFS directly.
-- `app` is future owner of bundled-asset bootstrap import orchestration.
+- `app` now owns bundled-asset bootstrap import orchestration (pre-Hilt baseline).
+- `app` UI/ViewModel consumption of prepared snapshot remains future work.
 
 Forbidden directions:
 - Core modules must not depend on feature modules.

@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -29,11 +30,21 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity)
+    implementation(libs.room.runtime)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(project(":core-domain"))
 
     implementation(project(":feature-map"))
     implementation(project(":feature-search"))
@@ -45,4 +56,10 @@ dependencies {
     implementation(project(":data-local"))
     implementation(project(":data-remote"))
     implementation(project(":city-adapters"))
+
+    testImplementation(libs.robolectric)
+    testImplementation(libs.androidx.test.core)
+    testImplementation(kotlin("test"))
+    testImplementation(project(":data-local"))
+    testImplementation(project(":core-domain"))
 }

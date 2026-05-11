@@ -4,12 +4,12 @@
 
 - Expected repo root: `C:\Users\Kasutaja\Desktop\ANDROBUSS`
 - Expected branch: `main`
-- Latest accepted HEAD: `0d09b36` (`PASS_23`)
+- Latest accepted HEAD: `fdf4668` (`PASS_24`)
 - Working tree must be clean before a new pass
 
 ## Latest Accepted Pass
 
-- `PASS_23 — FEED_SNAPSHOT_IMPORTER_AND_CI_TEST`
+- `PASS_24 — FEED_BOOTSTRAP_AND_RUNTIME_WIRING_DECISION` (docs-only)
 
 PASS 21 added a parser-agnostic feed boundary and in-memory provider bootstrap.
 
@@ -36,20 +36,26 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 - PASS 23 added production `FeedSnapshotImporter` so domain snapshots can be written into Room.
 - PASS 23 also added parser -> domain snapshot -> Room -> provider -> search-pipeline integration coverage and CI `./gradlew test` step.
 - PASS 24 documents MVP runtime bootstrap policy: bundled APK feed asset first, runtime downloader later.
+- PASS 25 implements the pre-Hilt app bootstrap baseline:
+  - bundled synthetic JSON bootstrap asset
+  - app DTO -> `DomainFeedSnapshot` mapper
+  - `FeedBootstrapLoader` (`import` + `prepare`) on app startup
+  - `AndrobussApplication` runtime wiring and `AppDatabase.create(context)` factory
+  - Robolectric tests for bootstrap success/idempotency/missing-asset safety/anti-fabrication
 
 ## Not Implemented Yet
 
 - Production route-pattern source/provider wiring
 - Production feed downloader/refresh flow
-- App/ViewModel runtime wiring of the pipeline
-- Bundled feed bootstrap app-layer implementation
+- Hilt/DI bootstrap wiring
+- ViewModel/Compose runtime wiring of the pipeline
 - Nearest-stop/geospatial resolution
 - UI feature flows
 
 ## Current Risks
 
-- Room-backed snapshot/provider baseline is implemented but not wired into app runtime.
-- Room baseline exists, but runtime wiring, freshness metadata, and feed lifecycle policy are not implemented.
+- Runtime bootstrap is pre-Hilt and anchored in `Application.onCreate` until dedicated DI/runtime lifecycle pass.
+- Room baseline exists, but freshness metadata and feed lifecycle evolution are not implemented.
 - Production `RoutePattern` source is not implemented.
 - UI/ViewModel wiring is not implemented.
 - Nearest-stop/geospatial behavior is not implemented.
@@ -58,7 +64,7 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Current Pass
 
-- `PASS_24 — FEED_BOOTSTRAP_AND_RUNTIME_WIRING_DECISION` (docs-only)
+- `PASS_25 — BUNDLED_FEED_BOOTSTRAP_SERIALIZATION_AND_APP_LAYER`
 
 ## Governance Bootstrap (PASS_G01)
 
@@ -77,4 +83,4 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Next Technical Pass
 
-- `PASS 25 — BUNDLED_FEED_BOOTSTRAP_APP_LAYER`
+- `PASS 26 — REAL_RAKVERE_FEED_ASSET_OR_HILT_BOOTSTRAP_DECISION`

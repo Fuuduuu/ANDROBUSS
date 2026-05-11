@@ -2,13 +2,13 @@ project:
   name: ANDROBUSS
   branch: main
   remote: https://github.com/Fuuduuu/ANDROBUSS.git
-  last_accepted_commit: 0d09b36
-  last_known_good_commit: 0d09b36
-  current_pass: PASS_24
-  next_recommended_pass: PASS_25_BUNDLED_FEED_BOOTSTRAP_APP_LAYER
+  last_accepted_commit: fdf4668
+  last_known_good_commit: fdf4668
+  current_pass: PASS_25
+  next_recommended_pass: PASS_26_REAL_RAKVERE_FEED_ASSET_OR_HILT_BOOTSTRAP_DECISION
 
 scope:
-  current_goal: "Document bundled-feed MVP bootstrap and runtime wiring lifecycle without runtime code changes."
+  current_goal: "Implement bundled-feed MVP bootstrap serialization and app-layer runtime wiring without Hilt/UI/network."
   allowed_surfaces:
     - docs/PROJECT_STATE.yml
     - docs/CURRENT_STATE.md
@@ -78,7 +78,8 @@ invariants:
 risks:
   active:
     - "Room provider cache is city-keyed; last prepare(city, feed) selects active feed per city."
-    - "MVP runtime bootstrap implementation is pending: bundled asset read + import + prepare lifecycle."
+    - "App bootstrap wiring is pre-Hilt and currently anchored in Application.onCreate."
+    - "Bundled bootstrap asset is synthetic; real Rakvere production asset pipeline is pending."
     - "Room schema/import baseline has no freshness/hash/version metadata yet."
     - "Docs are growing; docs hygiene should be a later explicit pass."
   deferred:
@@ -90,6 +91,12 @@ risks:
 validation:
   required_commands:
     - "py -3 tools/validate_project_state.py"
+    - ".\\gradlew.bat :app:test"
+    - ".\\gradlew.bat :data-local:test"
+    - ".\\gradlew.bat :core-domain:test"
+    - ".\\gradlew.bat :feature-search:test"
+    - ".\\gradlew.bat build"
+    - ".\\gradlew.bat test"
     - "git diff --check"
     - "git status --short --untracked-files=all"
 

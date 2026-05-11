@@ -225,6 +225,20 @@
   - Room-loaded route patterns driving `DirectRouteQueryPreparationUseCase`
   - `RouteFound` and anti-fabrication assertions
 
+## App Bootstrap Coverage Focus (PASS 25)
+
+- `BootstrapFeedDtoTest` covers:
+  - DTO -> `DomainFeedSnapshot` city/count mapping
+  - anti-fabrication (`StopPointId` sourced from DTO `id`, never display name)
+  - route-pattern stop order preservation
+  - duplicate stop ID preservation for loop pattern data
+- `FeedBootstrapLoaderTest` (Robolectric) covers:
+  - bundled asset bootstrap import + provider prepare -> non-null snapshot
+  - anti-fabrication checks for loaded stop IDs (`RKV_*`, not `"Jaam"`)
+  - idempotent repeated bootstrap calls (no duplicate persisted rows)
+  - missing-asset safe no-crash FeedNotReady-style behavior
+- PASS 25 app runtime tests remain pre-Hilt and do not include UI/ViewModel/Compose/WorkManager.
+
 ## Near-Term Test Gaps
 
 - Production destination enrichment orchestration wiring into app/ViewModel flow (future).

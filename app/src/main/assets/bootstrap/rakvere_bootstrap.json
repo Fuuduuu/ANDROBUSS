@@ -1,0 +1,56 @@
+{
+  "cityId": "rakvere",
+  "feedId": "rakvere-bootstrap-v1",
+  "stopPoints": [
+    {
+      "id": "RKV_A_OUT",
+      "stopGroupId": "group:keskpeatus-out",
+      "displayName": "Keskpeatus",
+      "lat": 59.3461,
+      "lon": 26.3552
+    },
+    {
+      "id": "RKV_A_IN",
+      "stopGroupId": "group:keskpeatus-in",
+      "displayName": "Keskpeatus",
+      "lat": 59.3463,
+      "lon": 26.3555
+    },
+    {
+      "id": "RKV_B",
+      "stopGroupId": "group:spordikeskus",
+      "displayName": "Spordikeskus",
+      "lat": 59.35,
+      "lon": 26.36
+    },
+    {
+      "id": "RKV_C",
+      "stopGroupId": "group:jaam",
+      "displayName": "Jaam",
+      "lat": 59.355,
+      "lon": 26.365
+    }
+  ],
+  "routePatterns": [
+    {
+      "id": "pattern:T1",
+      "routeLineId": "line:T1",
+      "displayName": "T1",
+      "stopIds": [
+        "RKV_A_OUT",
+        "RKV_B",
+        "RKV_C"
+      ]
+    },
+    {
+      "id": "pattern:T3",
+      "routeLineId": "line:T3",
+      "displayName": "T3",
+      "stopIds": [
+        "RKV_A_OUT",
+        "RKV_B",
+        "RKV_A_OUT"
+      ]
+    }
+  ]
+}

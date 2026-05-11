@@ -85,6 +85,23 @@ GTFS pipeline status after PASS 24 docs decision.
 - Real `rakvere.zip` itself must not be committed; bundled asset generation details are future pass work.
 - Feed freshness/hash/version metadata is future and not part of PASS 24.
 
+## PASS 25 Bundled Bootstrap Implementation Baseline
+
+- PASS 25 implements a synthetic bundled JSON bootstrap in the app layer:
+  - `app/src/main/assets/bootstrap/rakvere_bootstrap.json`
+  - app DTOs (`BootstrapFeedDto`, `StopPointDto`, `RoutePatternDto`)
+  - DTO -> `DomainFeedSnapshot` mapping without `core-domain` serialization annotations
+  - `FeedBootstrapLoader` startup flow:
+    1. read bundled asset
+    2. decode DTO
+    3. convert to `DomainFeedSnapshot`
+    4. call `FeedSnapshotImporter.import(cityId, feedId, snapshot)`
+    5. call `RoomDomainFeedSnapshotProvider.prepare(cityId, feedId)`
+- `FeedBootstrapLoader.bootstrapIfNeeded()` is safe on repeated calls and handles missing asset as FeedNotReady-style no-crash return.
+- `AndrobussApplication` performs pre-Hilt bootstrap on background dispatcher.
+- `AppDatabase.create(context)` exists as temporary pre-Hilt factory.
+- PASS 25 does not use real `rakvere.zip`, does not invoke parser in app production code, and does not add freshness/hash/version metadata.
+
 ## PASS 17 Metadata Discovery Note
 
 - Real `rakvere.zip` `stops.txt` was inspected in a temp folder for conservative Rakvere POI stop-name discovery.

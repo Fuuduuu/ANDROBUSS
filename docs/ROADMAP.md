@@ -33,26 +33,24 @@ Pass status:
 29. PASS 22A - FEED_IDENTITY_AND_STORAGE_KEY_STRATEGY: completed
 30. PASS 22B - FEED_CONTRACT_MOVE_AND_ROOM_SCHEMA_WITH_SCOPED_KEYS: completed
 31. PASS 23 - FEED_SNAPSHOT_IMPORTER_AND_CI_TEST: completed
-32. PASS 24 - FEED_BOOTSTRAP_AND_RUNTIME_WIRING_DECISION (docs-only): current candidate
+32. PASS 24 - FEED_BOOTSTRAP_AND_RUNTIME_WIRING_DECISION (docs-only): completed
+33. PASS 25 - BUNDLED_FEED_BOOTSTRAP_SERIALIZATION_AND_APP_LAYER: current candidate
 
 Next pass:
 
-33. PASS 25 - BUNDLED_FEED_BOOTSTRAP_APP_LAYER
-   - add app-layer `FeedBootstrapLoader`
-   - choose serialized bundled `DomainFeedSnapshot` format
-   - import bundled Rakvere feed snapshot (generated offline from real GTFS)
-   - call `FeedSnapshotImporter.import(...)`
-   - call `RoomDomainFeedSnapshotProvider.prepare(...)`
-   - prove `getSnapshot(cityId)` is non-null after bootstrap
-   - keep Hilt/ViewModel/UI out unless explicitly approved
+34. PASS 26 - REAL_RAKVERE_FEED_ASSET_OR_HILT_BOOTSTRAP_DECISION
+   - decide whether PASS 26 prioritizes:
+     - real Rakvere bundled asset generation/import path, or
+     - Hilt/bootstrap ownership boundary hardening
+   - keep WorkManager/downloader/realtime out unless explicitly approved
 
 Likely following passes:
 
-34. PASS 26+ - HILT_DI_AND_BOOTSTRAP_BOUNDARY_DECISION
-35. PASS 27+ - SEARCH_VIEWMODEL_AND_UI_BOOTSTRAP
-36. PASS 28+ - DOWNLOADER_WORKMANAGER_REFRESH_LIFECYCLE
-37. PASS 29+ - FEED_FRESHNESS_HASH_VERSION_METADATA
-38. PASS UI-01 - DESTINATION_FIRST_HOME_AND_RESULT_CARDS_IMPLEMENTATION (after production feed/provider/query path is stable)
+35. PASS 27+ - HILT_DI_AND_BOOTSTRAP_BOUNDARY_DECISION
+36. PASS 28+ - SEARCH_VIEWMODEL_AND_UI_BOOTSTRAP
+37. PASS 29+ - DOWNLOADER_WORKMANAGER_REFRESH_LIFECYCLE
+38. PASS 30+ - FEED_FRESHNESS_HASH_VERSION_METADATA
+39. PASS UI-01 - DESTINATION_FIRST_HOME_AND_RESULT_CARDS_IMPLEMENTATION (after production feed/provider/query path is stable)
 
 Planning rule:
 - Any UI pass must align with `PASS UX-01` destination-first, list-first MVP blueprint.

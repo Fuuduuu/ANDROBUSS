@@ -31,7 +31,7 @@ Architecture baseline and implementation status snapshot.
 - `feature-alerts`
 - `city-adapters`
 
-## Implementation Status (After PASS 23)
+## Implementation Status (After PASS 25)
 
 - Implemented pure Kotlin logic:
   - `core-domain`
@@ -43,13 +43,18 @@ Architecture baseline and implementation status snapshot.
   - `feature-search` in-memory feed provider (`InMemoryDomainFeedSnapshot`)
 - Implemented Android baseline:
   - `data-local` scoped Room schema + DAO + mapper + load-then-serve provider baseline.
+  - `app` pre-Hilt bundled bootstrap baseline:
+    - synthetic bundled JSON snapshot asset
+    - DTO -> `DomainFeedSnapshot` conversion
+    - bootstrap import + provider `prepare(...)` flow in `AndrobussApplication`
+    - temporary `AppDatabase.create(context)` factory
 - Skeleton/future:
-  - `app`, `data-remote`, UI `feature-*` runtime wiring.
+  - `data-remote`, UI `feature-*` runtime wiring.
 - Not implemented yet:
-  - app runtime wiring that calls Room provider `prepare(...)` before search flows.
-  - app runtime bootstrap that imports bundled feed snapshot into Room on first launch.
+  - Hilt/DI ownership for bootstrap lifecycle and provider access.
+  - ViewModel/Compose integration consuming prepared snapshot state.
   - downloader/cache orchestration and feed refresh lifecycle.
-  - Compose feature flows and ViewModel wiring beyond minimal shell.
+  - production real-Rakvere bundled asset generation/import path.
 
 ## Storage Identity Strategy (PASS 22A)
 
@@ -92,15 +97,17 @@ Test-only rule:
 
 | Step | Responsible component | Module layer | Trigger |
 | --- | --- | --- | --- |
-| Read bundled feed asset | `FeedBootstrapLoader` (future) | `app` | First launch / Room empty |
-| Call `FeedSnapshotImporter.import(...)` | `FeedBootstrapLoader` (future) | `app` | After bundled asset read |
-| Call `RoomDomainFeedSnapshotProvider.prepare(...)` | Search ViewModel or search bootstrap owner (future) | app/feature boundary | Before first search |
+| Read bundled feed asset | `FeedBootstrapLoader` | `app` | First launch / Room empty |
+| Call `FeedSnapshotImporter.import(...)` | `FeedBootstrapLoader` | `app` | After bundled asset read |
+| Call `RoomDomainFeedSnapshotProvider.prepare(...)` | `FeedBootstrapLoader` (startup baseline) | app/feature boundary | During startup bootstrap |
 | Use `getSnapshot(cityId)` | `DirectRouteQueryPreparationUseCase` caller | feature-search/app caller | Sync after `prepare(...)` |
 | Feed refresh | `data-remote` / WorkManager (future) | `data-remote` | Future background update |
 
 Notes:
-- No Hilt/DI wiring is added until bundled bootstrap path is proven.
-- No ViewModel/Compose wiring is added until bootstrap lifecycle is implemented and tested.
+- PASS 25 wiring is intentionally pre-Hilt and lives in `AndrobussApplication`.
+- `AndrobussApplication.onCreate` is now a protected runtime wiring surface.
+- No Hilt/DI wiring is added until dedicated bootstrap ownership pass.
+- No ViewModel/Compose wiring is added until bootstrap lifecycle ownership is finalized.
 - No WorkManager/downloader is added until bundled bootstrap baseline works.
 - `data-local` production code remains parser-agnostic.
 - `data-local` tests may use `core-gtfs`, but production must not import parser types.
