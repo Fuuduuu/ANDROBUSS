@@ -28,7 +28,6 @@ android {
 
 dependencies {
     implementation(project(":core-domain"))
-    implementation(project(":core-gtfs"))
 
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
@@ -36,6 +35,8 @@ dependencies {
     ksp(libs.room.compiler)
 
     testImplementation(kotlin("test"))
+    testImplementation(project(":core-gtfs"))
+    testImplementation(project(":feature-search"))
     testImplementation(project(":core-routing"))
     testImplementation(libs.room.testing)
     testImplementation(libs.androidx.test.core)

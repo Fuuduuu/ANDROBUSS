@@ -4,12 +4,12 @@
 
 - Expected repo root: `C:\Users\Kasutaja\Desktop\ANDROBUSS`
 - Expected branch: `main`
-- Latest accepted HEAD: `89a471d` (`PASS_G02`)
+- Latest accepted HEAD: `49dd54d` (`PASS_22B`)
 - Working tree must be clean before a new pass
 
 ## Latest Accepted Pass
 
-- `PASS_G02 — PROJECT_STATE_VALIDATION_HOOKS`
+- `PASS_22B — FEED_CONTRACT_MOVE_AND_ROOM_SCHEMA_WITH_SCOPED_KEYS`
 
 PASS 21 added a parser-agnostic feed boundary and in-memory provider bootstrap.
 
@@ -33,6 +33,8 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
   - `testImplementation(project(":core-gtfs"))`
 - No production parser dependency from feature-search runtime code.
 - `RoomDomainFeedSnapshotProvider` caches snapshots by `CityId` and is prepared by explicit `prepare(cityId, feedId)` calls.
+- PASS 23 candidate adds production `FeedSnapshotImporter` so domain snapshots can be written into Room.
+- PASS 23 candidate also adds parser -> domain snapshot -> Room -> provider -> search-pipeline integration coverage and CI `./gradlew test` step.
 
 ## Not Implemented Yet
 
@@ -53,7 +55,7 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Current Pass
 
-- `PASS_22B — FEED_CONTRACT_MOVE_AND_ROOM_SCHEMA_WITH_SCOPED_KEYS`
+- `PASS_23 — FEED_SNAPSHOT_IMPORTER_AND_CI_TEST` (candidate, not yet committed)
 
 ## Governance Bootstrap (PASS_G01)
 
@@ -72,4 +74,4 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Next Technical Pass
 
-- `PASS 23 — FEED_SNAPSHOT_IMPORT_OR_APP_WIRING_DECISION`
+- `PASS 24 — FEED_IMPORT_APP_WIRING_DECISION_DOCS`

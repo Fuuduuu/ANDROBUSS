@@ -18,7 +18,8 @@
 - `feature-search` direct-route query preparation use-case tests exist and run.
 - `feature-search` parser-to-search pipeline integration tests using `core-gtfs` `rakvere-smoke` fixture exist and run.
 - `feature-search` feed snapshot/provider contract tests exist and run.
-- CI baseline runs Gradle build/lint.
+- `data-local` importer and parser-to-Room-to-provider integration tests exist and run.
+- CI baseline runs Gradle build/test/lint.
 
 ## Core-Domain Coverage Focus
 
@@ -208,6 +209,22 @@
   - route-pattern order and duplicate-stop preservation through Room load
   - route-search parity check using Room-loaded `routePatterns`
 
+## Data-Local Import Writer Coverage Focus (PASS 23)
+
+- `FeedSnapshotImporterTest` covers:
+  - domain snapshot write into Room
+  - route-pattern/pattern-stop persistence
+  - scoped replace behavior on repeated import for same city/feed
+  - anti-fabrication (`StopPointId` remains persisted ID, never display-name derived)
+  - same local `stopId` across different city/feed scopes
+- `RoomFeedImportIntegrationTest` covers parser fixture to Room and back into query flow:
+  - `GtfsFeedParser` + `GtfsDomainMapper` (test scope only)
+  - `DomainFeedSnapshot` import via `FeedSnapshotImporter`
+  - provider `prepare(cityId, feedId)` + cache `getSnapshot(cityId)`
+  - Room-loaded stop points seeding `InMemoryStopPointIndex`
+  - Room-loaded route patterns driving `DirectRouteQueryPreparationUseCase`
+  - `RouteFound` and anti-fabrication assertions
+
 ## Near-Term Test Gaps
 
 - Production destination enrichment orchestration wiring into app/ViewModel flow (future).
@@ -225,3 +242,4 @@
 - No `PyYAML` or other third-party dependency is required.
 - Commit hash mismatch is warning-only, not a hard failure.
 - GitHub Actions CI runs the validator.
+- GitHub Actions CI also runs `./gradlew test`.

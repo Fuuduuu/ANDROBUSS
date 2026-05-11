@@ -53,6 +53,22 @@ GTFS pipeline status after PASS 20.
 - PASS 22B adds `data-local` baseline Room entities/DAO/mapper/loader/provider using these scoped keys.
 - Routing identity semantics remain unchanged (`StopPointId` still comes from persisted/verified stop IDs only).
 
+## PASS 23 Import Writer Baseline
+
+- PASS 23 adds `data-local` production `FeedSnapshotImporter`:
+  - input: `DomainFeedSnapshot` + explicit `CityId` + explicit `FeedId`
+  - write: scoped Room replace transaction in `FeedSnapshotDao`
+- Importer remains parser-agnostic in production code:
+  - no `MappedGtfsFeed`
+  - no `GtfsFeedParser`
+  - no `GtfsDomainMapper`
+- PASS 23 integration coverage proves fixture-based roundtrip:
+  - `GtfsFeedParser` + `GtfsDomainMapper` (test scope only)
+  - `DomainFeedSnapshot`
+  - Room importer write
+  - Room provider prepare/load
+  - feature-search route query preparation from Room-loaded patterns
+
 ## PASS 17 Metadata Discovery Note
 
 - Real `rakvere.zip` `stops.txt` was inspected in a temp folder for conservative Rakvere POI stop-name discovery.

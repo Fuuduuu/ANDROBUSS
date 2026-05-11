@@ -30,5 +30,8 @@ jobs:
       - name: Build
         run: ./gradlew build
 
+      - name: Test
+        run: ./gradlew test
+
       - name: Lint
         run: ./gradlew lint

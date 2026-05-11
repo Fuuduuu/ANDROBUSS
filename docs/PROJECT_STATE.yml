@@ -2,47 +2,42 @@ project:
   name: ANDROBUSS
   branch: main
   remote: https://github.com/Fuuduuu/ANDROBUSS.git
-  last_accepted_commit: 89a471d
-  last_known_good_commit: 89a471d
-  current_pass: PASS_22B
-  next_recommended_pass: PASS_23_FEED_SNAPSHOT_IMPORT_OR_APP_WIRING_DECISION
+  last_accepted_commit: 49dd54d
+  last_known_good_commit: 49dd54d
+  current_pass: PASS_23
+  next_recommended_pass: PASS_24_FEED_IMPORT_APP_WIRING_DECISION_DOCS
 
 scope:
-  current_goal: "Move feed contract to core-domain and add scoped-key Room baseline in data-local."
+  current_goal: "Add DomainFeedSnapshot -> Room import writer and parser-to-Room-to-provider integration coverage."
   allowed_surfaces:
-    - core-domain/src/main/kotlin/ee/androbus/core/domain/DomainFeedSnapshot.kt
-    - core-domain/src/main/kotlin/ee/androbus/core/domain/DomainFeedSnapshotProvider.kt
-    - feature-search/src/main/kotlin/ee/androbus/feature/search/feed/InMemoryDomainFeedSnapshot.kt
-    - feature-search/src/test/kotlin/ee/androbus/feature/search/feed/InMemoryDomainFeedSnapshotTest.kt
     - data-local/build.gradle.kts
-    - data-local/src/main/kotlin/ee/androbus/data/local/**
-    - data-local/src/test/kotlin/ee/androbus/data/local/**
-    - gradle/libs.versions.toml
+    - data-local/src/main/kotlin/ee/androbus/data/local/importer/FeedSnapshotImporter.kt
+    - data-local/src/main/kotlin/ee/androbus/data/local/dao/FeedSnapshotDao.kt
+    - data-local/src/test/kotlin/ee/androbus/data/local/importer/FeedSnapshotImporterTest.kt
+    - data-local/src/test/kotlin/ee/androbus/data/local/integration/RoomFeedImportIntegrationTest.kt
+    - .github/workflows/ci.yml
     - docs/PROJECT_STATE.yml
     - docs/CURRENT_STATE.md
     - docs/ROADMAP.md
     - docs/TRUTH_INDEX.md
-    - docs/ANDROID_ARCHITECTURE.md
     - docs/GTFS_PIPELINE.md
-    - docs/ROUTING_LOGIC.md
     - docs/TESTING_STRATEGY.md
-    - docs/PROTECTED_SURFACES.md
     - docs/CODEBASE_IMPACT_MAP.md
-    - docs/INVARIANTS.md
-    - docs/audit/PASS_22B_FEED_CONTRACT_MOVE_AND_ROOM_SCHEMA_WITH_SCOPED_KEYS.md
+    - docs/audit/PASS_23_FEED_SNAPSHOT_IMPORTER_AND_CI_TEST.md
   forbidden_surfaces:
     - app/src/
     - core-gtfs/src/
     - core-routing/src/
     - city-adapters/src/
     - data-remote/src/
-    - feature-search/src/main/kotlin/ee/androbus/feature/search/bridge/**
-    - feature-search/src/main/kotlin/ee/androbus/feature/search/resolution/**
-    - feature-search/src/main/kotlin/ee/androbus/feature/search/orchestration/**
+    - feature-search/src/main/**
+    - core-domain/src/
     - build.gradle.kts
     - settings.gradle.kts
     - gradle/wrapper/
-    - .github/
+    - data-local/src/main/kotlin/ee/androbus/data/local/entity/**
+    - data-local/src/main/kotlin/ee/androbus/data/local/database/AppDatabase.kt
+    - data-local/src/main/kotlin/ee/androbus/data/local/provider/**
 
 architecture:
   pure_kotlin_modules:
@@ -88,7 +83,8 @@ invariants:
 risks:
   active:
     - "Room provider cache is city-keyed; last prepare(city, feed) selects active feed per city."
-    - "Room schema is baseline only and has no freshness/hash/version metadata yet."
+    - "Room schema/import baseline has no freshness/hash/version metadata yet."
+    - "App runtime wiring for importer/provider preparation is not implemented."
     - "Docs are growing; docs hygiene should be a later explicit pass."
   deferred:
     - "Production feed downloader."
@@ -99,10 +95,11 @@ risks:
 validation:
   required_commands:
     - "py -3 tools/validate_project_state.py"
+    - ".\\gradlew.bat :data-local:test"
     - ".\\gradlew.bat :core-domain:test"
     - ".\\gradlew.bat :feature-search:test"
-    - ".\\gradlew.bat :data-local:test"
     - ".\\gradlew.bat build"
+    - ".\\gradlew.bat test"
     - "git diff --check"
 
 debug:

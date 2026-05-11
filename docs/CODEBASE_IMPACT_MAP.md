@@ -1,6 +1,6 @@
 # CODEBASE_IMPACT_MAP
 
-State synchronized after `PASS 22B`.
+State synchronized after `PASS 23` candidate.
 
 ## Module Responsibilities
 
@@ -11,7 +11,7 @@ State synchronized after `PASS 22B`.
 | `core-routing` | Direct-route search core | Implemented + tested |
 | `city-adapters` | City metadata contract + Rakvere metadata | Implemented + tested |
 | `feature-search` | Search pipeline: resolution, enrichment, orchestration, route-query preparation | Implemented + tested |
-| `data-local` | Scoped Room feed snapshot persistence/provider baseline | Implemented baseline |
+| `data-local` | Scoped Room feed snapshot persistence/import/provider baseline | Implemented baseline |
 | `data-remote` | Future downloader/update-check boundary | Future |
 | `app` + UI `feature-*` modules | Runtime wiring + UI flows | Skeleton/future |
 
@@ -38,6 +38,14 @@ State synchronized after `PASS 22B`.
   - load-then-serve provider (`RoomDomainFeedSnapshotLoader`, `RoomDomainFeedSnapshotProvider`)
 - No parser/routing/search algorithm behavior changed.
 
+## PASS 23 Impact
+
+- `data-local` gained production write path:
+  - `FeedSnapshotImporter` writes `DomainFeedSnapshot` into scoped Room tables via DAO transaction replace.
+- `data-local` gained parser-fixture integration coverage in tests:
+  - parser/mapper (test scope) -> `DomainFeedSnapshot` -> Room importer -> Room provider -> search query preparation.
+- CI now runs explicit `./gradlew test` step in addition to build/lint.
+
 ## Feature-Search Snapshot
 
 - Destination resolver implemented.
@@ -57,12 +65,13 @@ Production dependencies:
 - `core-gtfs` -> `core-domain`
 - `city-adapters` -> `core-domain`
 - `feature-search` -> `core-domain`, `core-routing`, `city-adapters`
-- `data-local` -> `core-domain`, `core-gtfs` (future)
+- `data-local` -> `core-domain`
 - `data-remote` -> `core-domain`, `core-gtfs` (future)
 - `app` orchestrates `feature-*`, `data-*`, and `city-adapters`
 
 Test-only dependency:
 - `feature-search` tests may depend on `core-gtfs`
+- `data-local` tests may depend on `core-gtfs` and `feature-search` for importer/provider integration coverage
 
 Forbidden directions:
 - Core modules must not depend on feature modules.
@@ -88,7 +97,6 @@ flowchart LR
     feature_search --> core_routing
     feature_search --> city_adapters
     data_local --> core_domain
-    data_local --> core_gtfs
     data_remote --> core_domain
     data_remote --> core_gtfs
     app_ui --> feature_search

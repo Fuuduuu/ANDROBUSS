@@ -65,11 +65,15 @@ Truth hierarchy (highest to lowest for decision-making):
 - `DomainFeedSnapshot` and `DomainFeedSnapshotProvider` live in `core-domain` as parser-agnostic feed boundary contracts.
 - `DomainFeedSnapshot.stopPoints` and `DomainFeedSnapshot.routePatterns` must come from the same feed snapshot/version.
 - `InMemoryDomainFeedSnapshot` remains in `feature-search` as single-city in-memory implementation.
+- `FeedSnapshotImporter` lives in `data-local` and writes `DomainFeedSnapshot` into Room by scoped `cityId + feedId` replacement.
+- `FeedSnapshotImporter` accepts domain snapshot types only; parser types (`MappedGtfsFeed`, `GtfsFeedParser`, `GtfsDomainMapper`) are test-only.
 - `RoomDomainFeedSnapshotProvider` lives in `data-local` and uses load-then-serve behavior:
   - `prepare(cityId, feedId)` performs Room IO via suspend loader
   - `getSnapshot(cityId)` serves in-memory cache only (no DAO calls)
+- PASS 23 integration tests prove parser fixture output can flow through:
+  - parser/mapper -> `DomainFeedSnapshot` -> Room importer -> Room provider -> feature-search route query preparation
 - `feature-search` production code must not depend on `core-gtfs` parser implementation.
-- `testImplementation(project(":core-gtfs"))` is allowed only for feature-search integration tests.
+- `testImplementation(project(":core-gtfs"))` is allowed for integration tests (`feature-search`, `data-local`) and must not leak into production dependencies.
 - `feature-search` and `data-local` remain independent in production dependencies.
 - Stop-candidate enrichment does not upgrade `StopCandidate.confidence`; confidence still describes how the original name-level candidate was produced.
 - Presence of `stopPointIds` indicates resolution happened through verified candidates.

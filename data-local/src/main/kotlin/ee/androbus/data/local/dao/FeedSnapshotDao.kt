@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import ee.androbus.data.local.entity.PatternStopEntity
 import ee.androbus.data.local.entity.RoutePatternEntity
 import ee.androbus.data.local.entity.StopPointEntity
@@ -75,4 +76,19 @@ interface FeedSnapshotDao {
         cityId: String,
         feedId: String,
     )
+
+    @Transaction
+    suspend fun replaceSnapshot(
+        cityId: String,
+        feedId: String,
+        stops: List<StopPointEntity>,
+        patterns: List<RoutePatternEntity>,
+        patternStops: List<PatternStopEntity>,
+    ) {
+        deleteRoutePatterns(cityId = cityId, feedId = feedId)
+        deleteStopPoints(cityId = cityId, feedId = feedId)
+        insertStopPoints(stops)
+        insertRoutePatterns(patterns)
+        insertPatternStops(patternStops)
+    }
 }
