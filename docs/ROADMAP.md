@@ -32,17 +32,27 @@ Pass status:
 28. PASS 21 - DOMAIN_FEED_SNAPSHOT_AND_PROVIDER_CONTRACT: completed
 29. PASS 22A - FEED_IDENTITY_AND_STORAGE_KEY_STRATEGY: completed
 30. PASS 22B - FEED_CONTRACT_MOVE_AND_ROOM_SCHEMA_WITH_SCOPED_KEYS: completed
-31. PASS 23 - FEED_SNAPSHOT_IMPORTER_AND_CI_TEST: current candidate
+31. PASS 23 - FEED_SNAPSHOT_IMPORTER_AND_CI_TEST: completed
+32. PASS 24 - FEED_BOOTSTRAP_AND_RUNTIME_WIRING_DECISION (docs-only): current candidate
 
 Next pass:
 
-32. PASS 24 - FEED_IMPORT_APP_WIRING_DECISION_DOCS
+33. PASS 25 - BUNDLED_FEED_BOOTSTRAP_APP_LAYER
+   - add app-layer `FeedBootstrapLoader`
+   - choose serialized bundled `DomainFeedSnapshot` format
+   - import bundled Rakvere feed snapshot (generated offline from real GTFS)
+   - call `FeedSnapshotImporter.import(...)`
+   - call `RoomDomainFeedSnapshotProvider.prepare(...)`
+   - prove `getSnapshot(cityId)` is non-null after bootstrap
+   - keep Hilt/ViewModel/UI out unless explicitly approved
 
 Likely following passes:
 
-33. PASS 25 - VERIFIED_STOPPOINT_SELECTION_AND_BRIDGE_WIRING_STRATEGY
-34. PASS 26+ - RUNTIME FEED IMPORT + CACHE LIFECYCLE (after provider boundary and wiring decision are stable)
-35. PASS UI-01 - DESTINATION_FIRST_HOME_AND_RESULT_CARDS_IMPLEMENTATION (after production feed/provider/query path is stable)
+34. PASS 26+ - HILT_DI_AND_BOOTSTRAP_BOUNDARY_DECISION
+35. PASS 27+ - SEARCH_VIEWMODEL_AND_UI_BOOTSTRAP
+36. PASS 28+ - DOWNLOADER_WORKMANAGER_REFRESH_LIFECYCLE
+37. PASS 29+ - FEED_FRESHNESS_HASH_VERSION_METADATA
+38. PASS UI-01 - DESTINATION_FIRST_HOME_AND_RESULT_CARDS_IMPLEMENTATION (after production feed/provider/query path is stable)
 
 Planning rule:
 - Any UI pass must align with `PASS UX-01` destination-first, list-first MVP blueprint.

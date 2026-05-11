@@ -67,9 +67,17 @@ Truth hierarchy (highest to lowest for decision-making):
 - `InMemoryDomainFeedSnapshot` remains in `feature-search` as single-city in-memory implementation.
 - `FeedSnapshotImporter` lives in `data-local` and writes `DomainFeedSnapshot` into Room by scoped `cityId + feedId` replacement.
 - `FeedSnapshotImporter` accepts domain snapshot types only; parser types (`MappedGtfsFeed`, `GtfsFeedParser`, `GtfsDomainMapper`) are test-only.
+- MVP feed bootstrap source is a bundled APK asset, not a live network download.
 - `RoomDomainFeedSnapshotProvider` lives in `data-local` and uses load-then-serve behavior:
   - `prepare(cityId, feedId)` performs Room IO via suspend loader
   - `getSnapshot(cityId)` serves in-memory cache only (no DAO calls)
+- `prepare(cityId, feedId)` must complete before `getSnapshot(cityId)` can return a non-null snapshot.
+- Empty Room / unprepared provider is a valid first-launch state named `FeedNotReady`.
+- `FeedNotReady` is not an error and must not be rendered as an empty search result.
+- Active feed policy for MVP is last-prepared feed per city.
+- `FeedSnapshotImporter` writes Room data only; it does not read assets or parse GTFS.
+- `RoomDomainFeedSnapshotProvider` prepares/serves snapshots only; it does not import or download feeds.
+- Network refresh/downloader/WorkManager remain future, not MVP baseline.
 - PASS 23 integration tests prove parser fixture output can flow through:
   - parser/mapper -> `DomainFeedSnapshot` -> Room importer -> Room provider -> feature-search route query preparation
 - `feature-search` production code must not depend on `core-gtfs` parser implementation.

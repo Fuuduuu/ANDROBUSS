@@ -1,6 +1,6 @@
 # CODEBASE_IMPACT_MAP
 
-State synchronized after `PASS 23` candidate.
+State synchronized after `PASS 24` docs-only decision candidate.
 
 ## Module Responsibilities
 
@@ -13,7 +13,7 @@ State synchronized after `PASS 23` candidate.
 | `feature-search` | Search pipeline: resolution, enrichment, orchestration, route-query preparation | Implemented + tested |
 | `data-local` | Scoped Room feed snapshot persistence/import/provider baseline | Implemented baseline |
 | `data-remote` | Future downloader/update-check boundary | Future |
-| `app` + UI `feature-*` modules | Runtime wiring + UI flows | Skeleton/future |
+| `app` + UI `feature-*` modules | Bundled bootstrap wiring + runtime orchestration + UI flows | Skeleton/future |
 
 ## PASS 20 Impact
 
@@ -46,6 +46,17 @@ State synchronized after `PASS 23` candidate.
   - parser/mapper (test scope) -> `DomainFeedSnapshot` -> Room importer -> Room provider -> search query preparation.
 - CI now runs explicit `./gradlew test` step in addition to build/lint.
 
+## PASS 24 Impact (Docs-Only Decision)
+
+- MVP bootstrap source decision recorded:
+  - bundled APK asset first
+  - downloader/WorkManager refresh later
+- Runtime lifecycle responsibilities are now explicit:
+  - app-layer future bootstrap owner reads bundled asset
+  - app-layer future bootstrap owner calls importer
+  - search bootstrap owner prepares provider before search
+- No source/build/schema/runtime behavior changes were introduced in PASS 24.
+
 ## Feature-Search Snapshot
 
 - Destination resolver implemented.
@@ -57,6 +68,7 @@ State synchronized after `PASS 23` candidate.
 - Parser-derived integration proven in tests only (`rakvere-smoke`).
 - No app/ViewModel runtime wiring yet.
 - Feed contract move to `core-domain` and Room baseline are now implemented.
+- Feature-search remains consumer of prepared `DomainFeedSnapshot`; it does not bootstrap/import feed data.
 
 ## Dependency Direction Rules
 
@@ -72,6 +84,11 @@ Production dependencies:
 Test-only dependency:
 - `feature-search` tests may depend on `core-gtfs`
 - `data-local` tests may depend on `core-gtfs` and `feature-search` for importer/provider integration coverage
+
+Runtime responsibility note:
+- `data-local` owns Room import/read baseline and does not read bundled assets.
+- `data-local` production code does not parse GTFS directly.
+- `app` is future owner of bundled-asset bootstrap import orchestration.
 
 Forbidden directions:
 - Core modules must not depend on feature modules.

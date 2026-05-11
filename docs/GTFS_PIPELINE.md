@@ -1,6 +1,6 @@
 # GTFS_PIPELINE
 
-GTFS pipeline status after PASS 20.
+GTFS pipeline status after PASS 24 docs decision.
 
 ## Current Implemented Scope
 
@@ -68,6 +68,22 @@ GTFS pipeline status after PASS 20.
   - Room importer write
   - Room provider prepare/load
   - feature-search route query preparation from Room-loaded patterns
+
+## PASS 24 Bundled Asset Bootstrap Strategy
+
+- MVP feed bootstrap source is a bundled APK asset, not a live network download.
+- Bundled asset is produced offline from real GTFS and represented as serialized `DomainFeedSnapshot` (or equivalent app-readable format).
+- PASS 24 does not choose JSON vs protobuf vs other serialization; that is PASS 25 scope.
+- First launch / Room empty flow:
+  1. app layer reads bundled feed asset
+  2. app layer converts it to `DomainFeedSnapshot`
+  3. app layer calls `FeedSnapshotImporter.import(cityId, feedId, snapshot)`
+  4. app layer or search bootstrap owner calls `RoomDomainFeedSnapshotProvider.prepare(cityId, feedId)`
+  5. after prepare, `getSnapshot(cityId)` may return non-null synchronously
+- Production download/refresh remains future work via `data-remote` + WorkManager.
+- This strategy satisfies offline-first MVP without requiring network bootstrap infrastructure.
+- Real `rakvere.zip` itself must not be committed; bundled asset generation details are future pass work.
+- Feed freshness/hash/version metadata is future and not part of PASS 24.
 
 ## PASS 17 Metadata Discovery Note
 

@@ -4,12 +4,12 @@
 
 - Expected repo root: `C:\Users\Kasutaja\Desktop\ANDROBUSS`
 - Expected branch: `main`
-- Latest accepted HEAD: `49dd54d` (`PASS_22B`)
+- Latest accepted HEAD: `0d09b36` (`PASS_23`)
 - Working tree must be clean before a new pass
 
 ## Latest Accepted Pass
 
-- `PASS_22B — FEED_CONTRACT_MOVE_AND_ROOM_SCHEMA_WITH_SCOPED_KEYS`
+- `PASS_23 — FEED_SNAPSHOT_IMPORTER_AND_CI_TEST`
 
 PASS 21 added a parser-agnostic feed boundary and in-memory provider bootstrap.
 
@@ -33,14 +33,16 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
   - `testImplementation(project(":core-gtfs"))`
 - No production parser dependency from feature-search runtime code.
 - `RoomDomainFeedSnapshotProvider` caches snapshots by `CityId` and is prepared by explicit `prepare(cityId, feedId)` calls.
-- PASS 23 candidate adds production `FeedSnapshotImporter` so domain snapshots can be written into Room.
-- PASS 23 candidate also adds parser -> domain snapshot -> Room -> provider -> search-pipeline integration coverage and CI `./gradlew test` step.
+- PASS 23 added production `FeedSnapshotImporter` so domain snapshots can be written into Room.
+- PASS 23 also added parser -> domain snapshot -> Room -> provider -> search-pipeline integration coverage and CI `./gradlew test` step.
+- PASS 24 documents MVP runtime bootstrap policy: bundled APK feed asset first, runtime downloader later.
 
 ## Not Implemented Yet
 
 - Production route-pattern source/provider wiring
 - Production feed downloader/refresh flow
 - App/ViewModel runtime wiring of the pipeline
+- Bundled feed bootstrap app-layer implementation
 - Nearest-stop/geospatial resolution
 - UI feature flows
 
@@ -52,10 +54,11 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 - UI/ViewModel wiring is not implemented.
 - Nearest-stop/geospatial behavior is not implemented.
 - `rakvere-smoke` names are synthetic and separate from real Rakvere POI metadata names.
+- First-launch `FeedNotReady` state is expected before bootstrap prepare and is not an error state.
 
 ## Current Pass
 
-- `PASS_23 — FEED_SNAPSHOT_IMPORTER_AND_CI_TEST` (candidate, not yet committed)
+- `PASS_24 — FEED_BOOTSTRAP_AND_RUNTIME_WIRING_DECISION` (docs-only)
 
 ## Governance Bootstrap (PASS_G01)
 
@@ -74,4 +77,4 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Next Technical Pass
 
-- `PASS 24 — FEED_IMPORT_APP_WIRING_DECISION_DOCS`
+- `PASS 25 — BUNDLED_FEED_BOOTSTRAP_APP_LAYER`

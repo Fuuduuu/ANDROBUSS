@@ -1,16 +1,15 @@
 # MERMAID_DIAGRAMS
 
-Synchronized after `PASS 20B`.
+Synchronized after `PASS 24` candidate.
 
 ## Pass Timeline (Latest)
 
 ```mermaid
 flowchart LR
-    P17["PASS 17"] --> P18["PASS 18"]
-    P18 --> P19["PASS 19"]
-    P19 --> P20["PASS 20"]
-    P20 --> P20B["PASS 20B (docs-only)"]
-    P20B --> P21["PASS 21 (planned)"]
+    P21["PASS 21"] --> P22A["PASS 22A"]
+    P22A --> P22B["PASS 22B"]
+    P22B --> P23["PASS 23"]
+    P23 --> P24["PASS 24 (docs-only)"]
 ```
 
 ## PASS 20 Fixture-to-Search Pipeline
@@ -80,3 +79,27 @@ flowchart LR
     classDef done fill:#eaf7ea,stroke:#3a7a3a,stroke-width:1px;
     classDef future fill:#f6f6f6,stroke:#8a8a8a,stroke-width:1px;
 ```
+
+## Feed Bootstrap and Runtime Load Flow (PASS 24 Decision)
+
+```mermaid
+sequenceDiagram
+    participant App as app layer
+    participant Importer as FeedSnapshotImporter
+    participant Dao as FeedSnapshotDao
+    participant Provider as RoomDomainFeedSnapshotProvider
+    participant Search as feature-search caller
+
+    Note over App: First launch / Room empty
+    App->>App: Read bundled DomainFeedSnapshot asset
+    App->>Importer: import(cityId, feedId, snapshot)
+    Importer->>Dao: replaceSnapshot(cityId, feedId, ...)
+    Note over Search: Before first search
+    Search->>Provider: prepare(cityId, feedId)
+    Provider->>Dao: load scoped snapshot
+    Provider-->>Search: cached
+    Search->>Provider: getSnapshot(cityId)
+    Provider-->>Search: DomainFeedSnapshot? (cache-only)
+```
+
+`getSnapshot(cityId)` is cache-only; Room IO belongs to `prepare(...)`.

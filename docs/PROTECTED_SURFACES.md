@@ -62,6 +62,18 @@ Protected surfaces (high change-control sensitivity):
 - Synthetic fixture boundary:
   - `core-gtfs/src/test/resources/gtfs/rakvere-smoke/`
 
+## App Runtime Feed Lifecycle
+
+Protected decisions:
+- who calls `FeedSnapshotImporter.import(...)`
+- who calls `RoomDomainFeedSnapshotProvider.prepare(...)`
+- when `getSnapshot(cityId)` may be called
+- active feed policy
+- `FeedNotReady` handling
+- any change from bundled-asset bootstrap to downloader-first bootstrap
+
+Changing these decisions requires a dedicated protected-surface review pass.
+
 ## Formal Protection Rule
 
 A protected surface may not change without a dedicated `PROTECTED_SURFACE_CHANGE` pass preceded by a docs-only impact review.

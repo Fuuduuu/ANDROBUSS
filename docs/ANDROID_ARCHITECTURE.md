@@ -31,7 +31,7 @@ Architecture baseline and implementation status snapshot.
 - `feature-alerts`
 - `city-adapters`
 
-## Implementation Status (After PASS 22B)
+## Implementation Status (After PASS 23)
 
 - Implemented pure Kotlin logic:
   - `core-domain`
@@ -47,6 +47,7 @@ Architecture baseline and implementation status snapshot.
   - `app`, `data-remote`, UI `feature-*` runtime wiring.
 - Not implemented yet:
   - app runtime wiring that calls Room provider `prepare(...)` before search flows.
+  - app runtime bootstrap that imports bundled feed snapshot into Room on first launch.
   - downloader/cache orchestration and feed refresh lifecycle.
   - Compose feature flows and ViewModel wiring beyond minimal shell.
 
@@ -74,7 +75,7 @@ Architecture baseline and implementation status snapshot.
 
 - `core-routing` -> `core-domain`.
 - `core-gtfs` -> `core-domain`.
-- `data-local` -> `core-domain`, `core-gtfs`.
+- `data-local` -> `core-domain`.
 - `data-remote` -> `core-domain`, `core-gtfs`.
 - `city-adapters` -> `core-domain`.
 - `feature-search` -> `core-domain`, `core-routing`, `city-adapters`.
@@ -83,8 +84,26 @@ Architecture baseline and implementation status snapshot.
 
 Test-only rule:
 - `feature-search` tests may depend on `core-gtfs` for fixture integration tests.
+- `data-local` tests may depend on `core-gtfs` for parser-fixture integration tests.
 - `feature-search` production code must not depend on parser implementation.
 - `feature-search` and `data-local` must stay independent in production dependency graph.
+
+## Runtime Wiring Responsibility Matrix (PASS 24 Decision)
+
+| Step | Responsible component | Module layer | Trigger |
+| --- | --- | --- | --- |
+| Read bundled feed asset | `FeedBootstrapLoader` (future) | `app` | First launch / Room empty |
+| Call `FeedSnapshotImporter.import(...)` | `FeedBootstrapLoader` (future) | `app` | After bundled asset read |
+| Call `RoomDomainFeedSnapshotProvider.prepare(...)` | Search ViewModel or search bootstrap owner (future) | app/feature boundary | Before first search |
+| Use `getSnapshot(cityId)` | `DirectRouteQueryPreparationUseCase` caller | feature-search/app caller | Sync after `prepare(...)` |
+| Feed refresh | `data-remote` / WorkManager (future) | `data-remote` | Future background update |
+
+Notes:
+- No Hilt/DI wiring is added until bundled bootstrap path is proven.
+- No ViewModel/Compose wiring is added until bootstrap lifecycle is implemented and tested.
+- No WorkManager/downloader is added until bundled bootstrap baseline works.
+- `data-local` production code remains parser-agnostic.
+- `data-local` tests may use `core-gtfs`, but production must not import parser types.
 
 Forbidden coupling:
 - `data-remote` must not directly depend on `city-adapters`.

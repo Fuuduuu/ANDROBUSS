@@ -2,42 +2,37 @@ project:
   name: ANDROBUSS
   branch: main
   remote: https://github.com/Fuuduuu/ANDROBUSS.git
-  last_accepted_commit: 49dd54d
-  last_known_good_commit: 49dd54d
-  current_pass: PASS_23
-  next_recommended_pass: PASS_24_FEED_IMPORT_APP_WIRING_DECISION_DOCS
+  last_accepted_commit: 0d09b36
+  last_known_good_commit: 0d09b36
+  current_pass: PASS_24
+  next_recommended_pass: PASS_25_BUNDLED_FEED_BOOTSTRAP_APP_LAYER
 
 scope:
-  current_goal: "Add DomainFeedSnapshot -> Room import writer and parser-to-Room-to-provider integration coverage."
+  current_goal: "Document bundled-feed MVP bootstrap and runtime wiring lifecycle without runtime code changes."
   allowed_surfaces:
-    - data-local/build.gradle.kts
-    - data-local/src/main/kotlin/ee/androbus/data/local/importer/FeedSnapshotImporter.kt
-    - data-local/src/main/kotlin/ee/androbus/data/local/dao/FeedSnapshotDao.kt
-    - data-local/src/test/kotlin/ee/androbus/data/local/importer/FeedSnapshotImporterTest.kt
-    - data-local/src/test/kotlin/ee/androbus/data/local/integration/RoomFeedImportIntegrationTest.kt
-    - .github/workflows/ci.yml
     - docs/PROJECT_STATE.yml
     - docs/CURRENT_STATE.md
     - docs/ROADMAP.md
     - docs/TRUTH_INDEX.md
-    - docs/GTFS_PIPELINE.md
-    - docs/TESTING_STRATEGY.md
+    - docs/PROTECTED_SURFACES.md
     - docs/CODEBASE_IMPACT_MAP.md
-    - docs/audit/PASS_23_FEED_SNAPSHOT_IMPORTER_AND_CI_TEST.md
+    - docs/MERMAID_DIAGRAMS.md
+    - docs/GTFS_PIPELINE.md
+    - docs/ANDROID_ARCHITECTURE.md
+    - docs/audit/PASS_24_FEED_BOOTSTRAP_AND_RUNTIME_WIRING_DECISION.md
   forbidden_surfaces:
-    - app/src/
+    - app/
+    - core-domain/src/
     - core-gtfs/src/
     - core-routing/src/
     - city-adapters/src/
+    - data-local/src/
     - data-remote/src/
-    - feature-search/src/main/**
-    - core-domain/src/
+    - feature-search/src/
     - build.gradle.kts
     - settings.gradle.kts
-    - gradle/wrapper/
-    - data-local/src/main/kotlin/ee/androbus/data/local/entity/**
-    - data-local/src/main/kotlin/ee/androbus/data/local/database/AppDatabase.kt
-    - data-local/src/main/kotlin/ee/androbus/data/local/provider/**
+    - gradle/
+    - .github/
 
 architecture:
   pure_kotlin_modules:
@@ -83,8 +78,8 @@ invariants:
 risks:
   active:
     - "Room provider cache is city-keyed; last prepare(city, feed) selects active feed per city."
+    - "MVP runtime bootstrap implementation is pending: bundled asset read + import + prepare lifecycle."
     - "Room schema/import baseline has no freshness/hash/version metadata yet."
-    - "App runtime wiring for importer/provider preparation is not implemented."
     - "Docs are growing; docs hygiene should be a later explicit pass."
   deferred:
     - "Production feed downloader."
@@ -95,12 +90,8 @@ risks:
 validation:
   required_commands:
     - "py -3 tools/validate_project_state.py"
-    - ".\\gradlew.bat :data-local:test"
-    - ".\\gradlew.bat :core-domain:test"
-    - ".\\gradlew.bat :feature-search:test"
-    - ".\\gradlew.bat build"
-    - ".\\gradlew.bat test"
     - "git diff --check"
+    - "git status --short --untracked-files=all"
 
 debug:
   state: clean
