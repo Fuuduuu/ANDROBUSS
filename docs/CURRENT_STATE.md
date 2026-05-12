@@ -4,12 +4,12 @@
 
 - Expected repo root: `C:\Users\Kasutaja\Desktop\ANDROBUSS`
 - Expected branch: `main`
-- Latest accepted HEAD: `fdf4668` (`PASS_24`)
+- Latest accepted HEAD: `a704bbb` (`PASS_25`)
 - Working tree must be clean before a new pass
 
 ## Latest Accepted Pass
 
-- `PASS_24 — FEED_BOOTSTRAP_AND_RUNTIME_WIRING_DECISION` (docs-only)
+- `PASS_25 — BUNDLED_FEED_BOOTSTRAP_SERIALIZATION_AND_APP_LAYER`
 
 PASS 21 added a parser-agnostic feed boundary and in-memory provider bootstrap.
 
@@ -64,7 +64,13 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Current Pass
 
-- `PASS_25 — BUNDLED_FEED_BOOTSTRAP_SERIALIZATION_AND_APP_LAYER`
+- `PASS_G03 — AUDIT_INDEX_AND_READ_ORDER_SYNC` (docs-only)
+
+## Lazy Context Note (PASS G03)
+
+- `docs/AUDIT_INDEX.md` is the lightweight lazy-context manifest for pass/audit history.
+- Full `docs/audit/PASS_*.md` files are detail sources and should be opened on-demand, not as default context.
+- `docs/archive/**` is historical-only context and should not be loaded by default.
 
 ## Governance Bootstrap (PASS_G01)
 

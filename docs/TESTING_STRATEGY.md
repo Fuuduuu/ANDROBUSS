@@ -257,3 +257,8 @@
 - Commit hash mismatch is warning-only, not a hard failure.
 - GitHub Actions CI runs the validator.
 - GitHub Actions CI also runs `./gradlew test`.
+- Docs-only memory/read-order passes should validate with:
+  - `py -3 tools/validate_project_state.py`
+  - `git diff --check`
+  - `git status --short --untracked-files=all`
+- Runtime/module tests are not required for docs-only passes unless source/build/runtime files changed unexpectedly.

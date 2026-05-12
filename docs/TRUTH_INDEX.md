@@ -14,6 +14,11 @@ Truth hierarchy (highest to lowest for decision-making):
 9. Diagrams
 10. Chat history (temporary workbench only)
 
+- `docs/PROJECT_STATE.yml` is a snapshot/state handoff file, not a standalone canonical truth source.
+- `docs/AUDIT_INDEX.md` is an index for lazy loading audit history, not canonical truth.
+- Full `docs/audit/PASS_*.md` files are detailed pass evidence and should be opened only when needed.
+- `docs/archive/**` is historical-only context and is not default runtime/planning context.
+- One fact should have one canonical home; do not create competing memory-map files that duplicate `CURRENT_STATE`, `TRUTH_INDEX`, `CODEBASE_IMPACT_MAP`, or `AUDIT_INDEX`.
 - `StopPointId` is routing identity.
 - `StopGroup` is display/search grouping.
 - Stop names and display names are never routing identity.

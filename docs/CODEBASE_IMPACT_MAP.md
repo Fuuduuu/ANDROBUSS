@@ -69,6 +69,12 @@ State synchronized after `PASS 25` app bootstrap implementation candidate.
 - No parser invocation was added in app production code.
 - No UI/ViewModel/Hilt/WorkManager/downloader/realtime behavior was added.
 
+## Governance Docs-Only Impact (PASS G03)
+
+- `docs/AUDIT_INDEX.md` and read-order sync changes are governance/docs only.
+- Audit-index updates do not change runtime behavior, dependency direction, or module contracts.
+- Memory hygiene passes must not modify runtime modules (`app`, `core-*`, `data-*`, `feature-*`).
+
 ## Feature-Search Snapshot
 
 - Destination resolver implemented.

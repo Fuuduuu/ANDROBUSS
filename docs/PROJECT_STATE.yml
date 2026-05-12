@@ -2,24 +2,22 @@ project:
   name: ANDROBUSS
   branch: main
   remote: https://github.com/Fuuduuu/ANDROBUSS.git
-  last_accepted_commit: fdf4668
-  last_known_good_commit: fdf4668
-  current_pass: PASS_25
+  last_accepted_commit: a704bbb
+  last_known_good_commit: a704bbb
+  current_pass: PASS_G03
   next_recommended_pass: PASS_26_REAL_RAKVERE_FEED_ASSET_OR_HILT_BOOTSTRAP_DECISION
 
 scope:
-  current_goal: "Implement bundled-feed MVP bootstrap serialization and app-layer runtime wiring without Hilt/UI/network."
+  current_goal: "Sync audit index and AI read-order discipline with docs-only lazy context loading."
   allowed_surfaces:
+    - docs/AUDIT_INDEX.md
     - docs/PROJECT_STATE.yml
     - docs/CURRENT_STATE.md
     - docs/ROADMAP.md
     - docs/TRUTH_INDEX.md
-    - docs/PROTECTED_SURFACES.md
+    - docs/TESTING_STRATEGY.md
     - docs/CODEBASE_IMPACT_MAP.md
-    - docs/MERMAID_DIAGRAMS.md
-    - docs/GTFS_PIPELINE.md
-    - docs/ANDROID_ARCHITECTURE.md
-    - docs/audit/PASS_24_FEED_BOOTSTRAP_AND_RUNTIME_WIRING_DECISION.md
+    - docs/audit/PASS_G03_AUDIT_INDEX_AND_READ_ORDER_SYNC.md
   forbidden_surfaces:
     - app/
     - core-domain/src/
@@ -33,6 +31,12 @@ scope:
     - settings.gradle.kts
     - gradle/
     - .github/
+
+governance:
+  project_state_role: "Snapshot-only state record; not canonical truth source by itself."
+  audit_index: "docs/AUDIT_INDEX.md"
+  audit_loading_policy: "Read audit index first; open docs/audit/PASS_*.md on demand."
+  archive_policy: "docs/archive/** is historical-only and not default context."
 
 architecture:
   pure_kotlin_modules:
@@ -91,14 +95,9 @@ risks:
 validation:
   required_commands:
     - "py -3 tools/validate_project_state.py"
-    - ".\\gradlew.bat :app:test"
-    - ".\\gradlew.bat :data-local:test"
-    - ".\\gradlew.bat :core-domain:test"
-    - ".\\gradlew.bat :feature-search:test"
-    - ".\\gradlew.bat build"
-    - ".\\gradlew.bat test"
     - "git diff --check"
     - "git status --short --untracked-files=all"
+    - "git diff --name-only"
 
 debug:
   state: clean
