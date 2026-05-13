@@ -61,3 +61,7 @@ Governance track:
 - G03 - AUDIT_INDEX_AND_READ_ORDER_SYNC (current candidate)
 - G04 - DOCS_HYGIENE_AND_ARCHIVE_PLAN
 - G05 - DETEKT_COVERAGE_HARDENING
+
+Build/tooling track:
+- AUTO-01 - DETEKT_MODULE_BOUNDARIES (completed)
+- AUTO-02 - DEPENDENCY_LOCKING (current candidate)

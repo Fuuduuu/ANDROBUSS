@@ -7,3 +7,9 @@ plugins {
     alias(libs.plugins.hilt.android) apply false
     id("io.gitlab.arturbosch.detekt") version "1.23.8" apply false
 }
+
+allprojects {
+    dependencyLocking {
+        lockAllConfigurations()
+    }
+}

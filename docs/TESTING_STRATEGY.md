@@ -262,3 +262,10 @@
   - `git diff --check`
   - `git status --short --untracked-files=all`
 - Runtime/module tests are not required for docs-only passes unless source/build/runtime files changed unexpectedly.
+
+## Dependency Locking Checks (PASS_AUTO_02)
+
+- Gradle dependency locking is enabled across all modules.
+- Lockfiles (`gradle.lockfile`) are version-controlled and should change only in explicit dependency passes.
+- Drift detection command for lock refresh:
+  - `.\gradlew.bat build --write-locks`

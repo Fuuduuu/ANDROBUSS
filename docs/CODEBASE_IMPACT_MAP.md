@@ -75,6 +75,13 @@ State synchronized after `PASS 25` app bootstrap implementation candidate.
 - Audit-index updates do not change runtime behavior, dependency direction, or module contracts.
 - Memory hygiene passes must not modify runtime modules (`app`, `core-*`, `data-*`, `feature-*`).
 
+## Build Tooling Impact (PASS_AUTO_02)
+
+- Root Gradle build enables dependency locking for all projects/configurations.
+- Each module now has a tracked `gradle.lockfile` for resolved dependency versions.
+- `settings-gradle.lockfile` tracks settings/buildscript resolution.
+- This pass hardens dependency reproducibility and transitive drift visibility only; runtime behavior is unchanged.
+
 ## Feature-Search Snapshot
 
 - Destination resolver implemented.

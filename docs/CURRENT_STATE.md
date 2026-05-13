@@ -87,6 +87,13 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 - Validator is runnable locally and is wired into CI.
 - Local Windows validator command: `py -3 tools/validate_project_state.py`.
 
+## Dependency Locking (PASS_AUTO_02 Candidate)
+
+- Gradle dependency locking is enabled project-wide (`lockAllConfigurations()`).
+- Generated `gradle.lockfile` files are version-controlled per module, plus `settings-gradle.lockfile`.
+- Dependency updates now require explicit lock refresh in a dedicated pass.
+- No runtime behavior changes were introduced by locking.
+
 ## Next Technical Pass
 
 - `PASS 26 — REAL_RAKVERE_FEED_ASSET_OR_HILT_BOOTSTRAP_DECISION`
