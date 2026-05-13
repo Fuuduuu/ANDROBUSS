@@ -239,6 +239,15 @@
   - missing-asset safe no-crash FeedNotReady-style behavior
 - PASS 25 app runtime tests remain pre-Hilt and do not include UI/ViewModel/Compose/WorkManager.
 
+## App DI Baseline Coverage Focus (PASS 27)
+
+- `:app:test` validates Hilt baseline integration at compile/runtime unit-test level:
+  - `@HiltAndroidApp` application compiles and test tasks run,
+  - app bootstrap tests still pass with injected bootstrap dependencies,
+  - runtime default synthetic asset behavior remains unchanged.
+- PASS 27 does not add ViewModel/UI Hilt tests.
+- PASS 27 does not add WorkManager/network/realtime tests.
+
 ## Near-Term Test Gaps
 
 - Production destination enrichment orchestration wiring into app/ViewModel flow (future).

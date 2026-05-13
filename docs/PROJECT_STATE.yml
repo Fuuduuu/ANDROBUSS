@@ -4,21 +4,30 @@ project:
   remote: https://github.com/Fuuduuu/ANDROBUSS.git
   last_accepted_commit: f7708ad8a81f45348c4d697b9559511ff9824a87
   last_known_good_commit: f7708ad8a81f45348c4d697b9559511ff9824a87
-  current_pass: PASS_G05_GTFS_REALTIME_AND_PEATUS_GRAPHQL_FUTURE_NOTES
-  next_recommended_pass: PASS_27_HILT_DI_BASELINE_SCOPE_AUDIT
+  current_pass: PASS_27_HILT_DI_BASELINE
+  next_recommended_pass: PASS_AUTO_03_DRIFT_AND_BOUNDARY_CHECK
 
 scope:
-  current_goal: "Document future-only GTFS realtime and Peatus GraphQL notes without runtime implementation."
+  current_goal: "Introduce app-level Hilt DI baseline for bootstrap dependencies without ViewModel/UI/runtime-scope expansion."
   allowed_surfaces:
-    - docs/GTFS_PIPELINE.md
-    - docs/ROUTING_LOGIC.md
-    - docs/PROTECTED_SURFACES.md
-    - docs/ROADMAP.md
-    - docs/AUDIT_INDEX.md
+    - gradle/libs.versions.toml
+    - build.gradle.kts
+    - app/build.gradle.kts
+    - app/src/main/kotlin/ee/androbus/app/AndrobussApplication.kt
+    - app/src/main/kotlin/ee/androbus/app/di/DatabaseModule.kt
+    - app/src/main/kotlin/ee/androbus/app/di/FeedModule.kt
+    - app/gradle.lockfile
+    - settings-gradle.lockfile
     - docs/PROJECT_STATE.yml
-    - docs/audit/PASS_G05_GTFS_REALTIME_AND_PEATUS_GRAPHQL_FUTURE_NOTES.md
+    - docs/CURRENT_STATE.md
+    - docs/ROADMAP.md
+    - docs/ANDROID_ARCHITECTURE.md
+    - docs/TESTING_STRATEGY.md
+    - docs/AUDIT_INDEX.md
+    - docs/CODEBASE_IMPACT_MAP.md
+    - docs/PROTECTED_SURFACES.md
+    - docs/audit/PASS_27_HILT_DI_BASELINE.md
   forbidden_surfaces:
-    - app/
     - core-domain/src/main/
     - core-gtfs/src/main/
     - core-routing/src/
@@ -26,7 +35,6 @@ scope:
     - data-local/src/
     - data-remote/src/
     - feature-search/src/
-    - build.gradle.kts
     - settings.gradle.kts
     - gradle/
     - .github/
@@ -42,8 +50,8 @@ governance:
     - "DRIFT_CHECK_RULE_SYNC_PASS accepted"
     - "PASS_AUTO_02 dependency locking accepted"
   drift_check_rule: "Every 5 accepted pass/checkpoints, run a docs-only drift-check before the next large implementation pass."
-  drift_check_counter: "4 / 5 (after PASS 26 + PASS 26A + PASS 26B + PASS G05 checkpoint)"
-  next_mandatory_drift_check: "After 5 accepted checkpoints from 3bb2fe1 baseline."
+  drift_check_counter: "5 / 5 (after PASS 26 + PASS 26A + PASS 26B + PASS G05 + PASS 27 checkpoint)"
+  next_mandatory_drift_check: "PASS_AUTO_03_DRIFT_AND_BOUNDARY_CHECK is required before ViewModel/UI scope expansion."
   drift_check_must_verify:
     - "CURRENT_STATE / ROADMAP / PROJECT_STATE alignment"
     - "AUDIT_INDEX includes recent passes"
@@ -98,7 +106,7 @@ invariants:
 risks:
   active:
     - "Room provider cache is city-keyed; last prepare(city, feed) selects active feed per city."
-    - "App bootstrap wiring is pre-Hilt and currently anchored in Application.onCreate."
+    - "Hilt baseline wiring exists in app, but ViewModel/UI injection scope is not implemented yet."
     - "Bundled bootstrap asset is synthetic; real Rakvere production asset pipeline is pending."
     - "Room schema/import baseline has no freshness/hash/version metadata yet."
     - "Docs are growing; docs hygiene should be a later explicit pass."
@@ -111,6 +119,13 @@ risks:
 validation:
   required_commands:
     - "py -3 tools/validate_project_state.py"
+    - ".\\gradlew.bat :app:test"
+    - ".\\gradlew.bat :data-local:test"
+    - ".\\gradlew.bat :core-domain:test"
+    - ".\\gradlew.bat :feature-search:test"
+    - ".\\gradlew.bat detekt"
+    - ".\\gradlew.bat build"
+    - ".\\gradlew.bat test"
     - "git diff --check"
     - "git status --short --untracked-files=all"
     - "git diff --name-only"

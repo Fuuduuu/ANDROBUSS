@@ -4,12 +4,12 @@
 
 - Expected repo root: `C:\Users\Kasutaja\Desktop\ANDROBUSS`
 - Expected branch: `main`
-- Latest accepted HEAD: `cedcd65` (`PASS_26A_REAL_FEED_PROFILE_PARSER_ROBUSTNESS_TESTS`)
+- Latest accepted HEAD: `7f2669a` (`PASS_G05_GTFS_REALTIME_AND_PEATUS_GRAPHQL_FUTURE_NOTES`)
 - Working tree must be clean before a new pass
 
 ## Latest Accepted Pass
 
-- `PASS_26A — REAL_FEED_PROFILE_PARSER_ROBUSTNESS_TESTS`
+- `PASS_G05 — GTFS_REALTIME_AND_PEATUS_GRAPHQL_FUTURE_NOTES`
 - Latest product/runtime pass remains `PASS_25 — BUNDLED_FEED_BOOTSTRAP_SERIALIZATION_AND_APP_LAYER`
 
 PASS 21 added a parser-agnostic feed boundary and in-memory provider bootstrap.
@@ -46,8 +46,15 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 - PASS 26 (docs-only decision) documents legal/source/freshness constraints before any real Rakvere asset generation.
 - Synthetic bundled bootstrap asset remains active; real Rakvere asset is not generated in repository state.
 - PASS 26A adds executable parser robustness fixture/tests for real-feed profile characteristics (quoted service IDs, unknown columns, optional-file absence, calendar exceptions, loop duplicate stops).
-- PASS 26B candidate introduces real-derived Rakvere dev/test profile asset under `app/src/test/resources` only.
+- PASS 26B accepted state includes real-derived Rakvere dev/test profile asset under `app/src/test/resources` only.
 - Runtime default remains synthetic `app/src/main/assets/bootstrap/rakvere_bootstrap.json`.
+- PASS 27 candidate introduces app-owned Hilt DI modules for:
+  - `AppDatabase` / `FeedSnapshotDao`
+  - `FeedSnapshotImporter`
+  - `RoomDomainFeedSnapshotLoader`
+  - `RoomDomainFeedSnapshotProvider`
+  - `FeedBootstrapLoader`
+- `AndrobussApplication` is now `@HiltAndroidApp` and triggers bootstrap via injected loader.
 - Governance/tooling guardrails accepted after PASS 25:
   - PASS G03 audit-index/read-order sync
   - PASS AUTO-01 detekt module-boundary checks
@@ -62,7 +69,6 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 - Production route-pattern source/provider wiring
 - Production feed downloader/refresh flow
-- Hilt/DI bootstrap wiring
 - ViewModel/Compose runtime wiring of the pipeline
 - Nearest-stop/geospatial resolution
 - UI feature flows
@@ -79,7 +85,7 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Current Pass
 
-- `PASS_26B — REAL_RAKVERE_DEV_TEST_ASSET_ONLY` (test-resource asset + tests + docs)
+- `PASS_27 — HILT_DI_BASELINE` (app-level DI wiring baseline)
 
 ## Lazy Context Note (PASS G03)
 
@@ -111,6 +117,6 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Next Technical Pass
 
-- `PASS 27 — HILT_DI_BASELINE_SCOPE_AUDIT`
-- `PASS 27 — HILT_DI_BASELINE` only after scope audit approval.
+- `PASS_AUTO_03 — DRIFT_AND_BOUNDARY_CHECK` before ViewModel/UI scope expansion.
+- `PASS 28+` then covers ViewModel/UI bootstrap only after drift/boundary confirmation.
 - Production real asset remains blocked by legal/freshness/update-policy constraints.

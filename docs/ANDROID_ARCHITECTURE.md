@@ -31,7 +31,7 @@ Architecture baseline and implementation status snapshot.
 - `feature-alerts`
 - `city-adapters`
 
-## Implementation Status (After PASS 25)
+## Implementation Status (After PASS 27 Candidate)
 
 - Implemented pure Kotlin logic:
   - `core-domain`
@@ -43,15 +43,15 @@ Architecture baseline and implementation status snapshot.
   - `feature-search` in-memory feed provider (`InMemoryDomainFeedSnapshot`)
 - Implemented Android baseline:
   - `data-local` scoped Room schema + DAO + mapper + load-then-serve provider baseline.
-  - `app` pre-Hilt bundled bootstrap baseline:
+  - `app` bundled bootstrap baseline with Hilt DI wiring:
     - synthetic bundled JSON snapshot asset
     - DTO -> `DomainFeedSnapshot` conversion
     - bootstrap import + provider `prepare(...)` flow in `AndrobussApplication`
-    - temporary `AppDatabase.create(context)` factory
+    - app-owned Hilt modules providing database/dao/importer/loader/provider/bootstrap-loader
+    - `AppDatabase.create(context)` remains available as pre-Hilt/test utility
 - Skeleton/future:
   - `data-remote`, UI `feature-*` runtime wiring.
 - Not implemented yet:
-  - Hilt/DI ownership for bootstrap lifecycle and provider access.
   - ViewModel/Compose integration consuming prepared snapshot state.
   - downloader/cache orchestration and feed refresh lifecycle.
   - production real-Rakvere bundled asset generation/import path.
@@ -104,9 +104,8 @@ Test-only rule:
 | Feed refresh | `data-remote` / WorkManager (future) | `data-remote` | Future background update |
 
 Notes:
-- PASS 25 wiring is intentionally pre-Hilt and lives in `AndrobussApplication`.
+- PASS 27 candidate wiring uses app-owned Hilt modules and `@HiltAndroidApp` `AndrobussApplication`.
 - `AndrobussApplication.onCreate` is now a protected runtime wiring surface.
-- No Hilt/DI wiring is added until dedicated bootstrap ownership pass.
 - No ViewModel/Compose wiring is added until bootstrap lifecycle ownership is finalized.
 - No WorkManager/downloader is added until bundled bootstrap baseline works.
 - `data-local` production code remains parser-agnostic.

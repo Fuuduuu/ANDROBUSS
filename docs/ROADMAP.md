@@ -42,29 +42,33 @@ Next pass:
    - cover quoted `service_id` commas, unknown-column tolerance, `calendar_dates` behavior, and explicit Rakvere `stop_area` filtering policy checks
    - keep WorkManager/downloader/realtime out unless explicitly approved
 
-35. PASS 26B - REAL_RAKVERE_DEV_TEST_ASSET_ONLY (current candidate)
+35. PASS 26B - REAL_RAKVERE_DEV_TEST_ASSET_ONLY (completed)
    - keep real-derived asset in test resources only
    - keep runtime default synthetic and keep real asset out of main APK assets
 
 Next recommended pass:
 
-36. PASS 27 - HILT_DI_BASELINE_SCOPE_AUDIT
-   - define strict DI scope and protected surfaces before implementation
-   - only then run PASS 27 HILT baseline implementation
+36. PASS 27 - HILT_DI_BASELINE (current candidate)
+   - app-owned Hilt modules for bootstrap dependencies
+   - keep ViewModel/UI/WorkManager/network out of scope
+
+Next recommended after PASS 27:
+
+37. PASS_AUTO_03 - DRIFT_AND_BOUNDARY_CHECK
+   - validate docs/state/boundaries before ViewModel/UI expansion
 
 Future scope candidates (not active next pass):
 
-37. PASS_RT_01 - GTFS_REALTIME_SCOPE_LOCK_AND_IDENTITY_MODEL
+38. PASS_RT_01 - GTFS_REALTIME_SCOPE_LOCK_AND_IDENTITY_MODEL
    - lock realtime identity rules (`trip_id` + `stop_sequence`) before implementation
    - keep realtime/network/workmanager out until dedicated runtime pass approval
 
-38. PASS_CITY_PROFILE_01 - PEATUS_GRAPHQL_ROUTE_METADATA_DISCOVERY
+39. PASS_CITY_PROFILE_01 - PEATUS_GRAPHQL_ROUTE_METADATA_DISCOVERY
    - evaluate Peatus.ee / Digitransit GraphQL as city-route metadata helper
    - keep static GTFS as canonical routing identity source
 
 Likely following passes:
 
-39. PASS 27+ - HILT_DI_AND_BOOTSTRAP_BOUNDARY_DECISION
 40. PASS 28+ - SEARCH_VIEWMODEL_AND_UI_BOOTSTRAP
 41. PASS 29+ - DOWNLOADER_WORKMANAGER_REFRESH_LIFECYCLE
 42. PASS 30+ - FEED_FRESHNESS_HASH_VERSION_METADATA
@@ -79,7 +83,7 @@ Governance track:
 - G03 - AUDIT_INDEX_AND_READ_ORDER_SYNC (completed)
 - DRIFT_CHECK_RULE_SYNC_PASS (completed)
 - G04 - DOCS_HYGIENE_AND_ARCHIVE_PLAN
-- G05 - DETEKT_COVERAGE_HARDENING
+- G05 - GTFS_REALTIME_AND_PEATUS_GRAPHQL_FUTURE_NOTES (completed)
 
 Build/tooling track:
 - AUTO-01 - DETEKT_MODULE_BOUNDARIES (completed)

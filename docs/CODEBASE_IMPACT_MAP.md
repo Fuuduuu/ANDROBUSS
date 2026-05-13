@@ -1,6 +1,6 @@
 # CODEBASE_IMPACT_MAP
 
-State synchronized after `PASS 25` app bootstrap implementation candidate.
+State synchronized after `PASS 27` Hilt DI baseline candidate.
 
 ## Module Responsibilities
 
@@ -13,7 +13,7 @@ State synchronized after `PASS 25` app bootstrap implementation candidate.
 | `feature-search` | Search pipeline: resolution, enrichment, orchestration, route-query preparation | Implemented + tested |
 | `data-local` | Scoped Room feed snapshot persistence/import/provider baseline | Implemented baseline |
 | `data-remote` | Future downloader/update-check boundary | Future |
-| `app` + UI `feature-*` modules | Bundled bootstrap wiring + runtime orchestration + UI flows | App bootstrap baseline implemented; UI flows future |
+| `app` + UI `feature-*` modules | Bundled bootstrap wiring + DI/runtime orchestration + UI flows | App bootstrap + Hilt DI baseline implemented; UI flows future |
 
 ## PASS 20 Impact
 
@@ -69,6 +69,21 @@ State synchronized after `PASS 25` app bootstrap implementation candidate.
 - No parser invocation was added in app production code.
 - No UI/ViewModel/Hilt/WorkManager/downloader/realtime behavior was added.
 
+## PASS 27 Impact
+
+- `app` gained Hilt DI baseline wiring:
+  - `@HiltAndroidApp` on `AndrobussApplication`
+  - app-owned DI modules provide:
+    - `AppDatabase`
+    - `FeedSnapshotDao`
+    - `FeedSnapshotImporter`
+    - `RoomDomainFeedSnapshotLoader`
+    - `RoomDomainFeedSnapshotProvider`
+    - `FeedBootstrapLoader`
+- Manual object graph construction was removed from `AndrobussApplication`.
+- `FeedBootstrapLoader` logic, synthetic runtime asset default, and Room schema remain unchanged.
+- Core modules (`core-domain`, `core-gtfs`, `core-routing`) remain Hilt-free.
+
 ## Governance Docs-Only Impact (PASS G03)
 
 - `docs/AUDIT_INDEX.md` and read-order sync changes are governance/docs only.
@@ -114,7 +129,7 @@ Test-only dependency:
 Runtime responsibility note:
 - `data-local` owns Room import/read baseline and does not read bundled assets.
 - `data-local` production code does not parse GTFS directly.
-- `app` now owns bundled-asset bootstrap import orchestration (pre-Hilt baseline).
+- `app` now owns bundled-asset bootstrap import orchestration through Hilt baseline wiring.
 - `app` UI/ViewModel consumption of prepared snapshot remains future work.
 
 Forbidden directions:
