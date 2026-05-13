@@ -1,0 +1,7 @@
+style:
+  ForbiddenImport:
+    active: true
+    # core-gtfs must remain Android-free
+    imports:
+      - 'android.*'
+      - 'androidx.*'

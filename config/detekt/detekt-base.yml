@@ -1,0 +1,12 @@
+# Shared detekt base config for ANDROBUSS module-boundary checks.
+# Keep this pass focused on forbidden-import boundaries only.
+
+naming:
+  MatchingDeclarationName:
+    active: false
+
+style:
+  MagicNumber:
+    active: false
+  ReturnCount:
+    active: false

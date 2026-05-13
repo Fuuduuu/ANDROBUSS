@@ -1,0 +1,7 @@
+style:
+  ForbiddenImport:
+    active: true
+    # core-domain must be Android-free (INV-003)
+    imports:
+      - 'android.*'
+      - 'androidx.*'

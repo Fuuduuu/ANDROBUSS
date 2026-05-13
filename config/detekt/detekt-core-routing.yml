@@ -1,0 +1,7 @@
+style:
+  ForbiddenImport:
+    active: true
+    # Room/Android DB must not enter routing layer
+    imports:
+      - 'androidx.room.*'
+      - 'android.database.*'

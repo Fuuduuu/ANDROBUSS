@@ -5,4 +5,5 @@ plugins {
     alias(libs.plugins.kotlin.jvm) apply false
     alias(libs.plugins.kotlin.serialization) apply false
     alias(libs.plugins.hilt.android) apply false
+    id("io.gitlab.arturbosch.detekt") version "1.23.8" apply false
 }
