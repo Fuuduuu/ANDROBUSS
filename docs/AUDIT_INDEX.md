@@ -22,4 +22,8 @@ Rules:
 | PASS 25 / `a704bbb` | Bundled feed bootstrap app-layer implementation | `docs/audit/PASS_25_BUNDLED_FEED_BOOTSTRAP_SERIALIZATION_AND_APP_LAYER.md` | accepted | Need concrete app bootstrap behavior/test scope |
 | PASS G01 / `ea835f0` | Governance bootstrap docs scaffold | `docs/audit/PASS_G01_GOVERNANCE_BOOTSTRAP.md` | accepted | Need governance baseline intent |
 | PASS G02 / `4be7657` | PROJECT_STATE validation hooks | `docs/audit/PASS_G02_PROJECT_STATE_VALIDATION_HOOKS.md` | accepted | Need validator contract and limits |
-| PASS G03 / current | Audit index and read-order sync | `docs/audit/PASS_G03_AUDIT_INDEX_AND_READ_ORDER_SYNC.md` | current candidate | Need lazy-context/read-order governance change details |
+| PASS G03 / `5ea802f` | Audit index and read-order sync | `docs/audit/PASS_G03_AUDIT_INDEX_AND_READ_ORDER_SYNC.md` | accepted | Need lazy-context/read-order governance change details |
+| PASS AUTO-01 / `d4cf9cb` | Detekt module-boundary checks | `N/A (audit doc missing in repo)` | accepted | Need forbidden-import guardrail scope |
+| DRIFT_CHECK_RULE_SYNC_PASS / `241439a` | Drift-check cadence/governance rule sync | `docs/audit/DRIFT_CHECK_RULE_SYNC_PASS.md` | accepted | Need checkpoint drift-check policy details |
+| PASS AUTO-02 / `3bb2fe1` | Gradle dependency locking baseline | `docs/audit/PASS_AUTO_02_DEPENDENCY_LOCKING.md` | accepted | Need lockfile/locking baseline details |
+| PASS G04 / current | Governance state sync after AUTO-02 audit findings | `docs/audit/PASS_G04_GOVERNANCE_STATE_SYNC_AFTER_AUTO_02.md` | current candidate | Need docs/governance drift-fix details |

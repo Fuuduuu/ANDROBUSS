@@ -102,6 +102,18 @@ GTFS pipeline status after PASS 24 docs decision.
 - `AppDatabase.create(context)` exists as temporary pre-Hilt factory.
 - PASS 25 does not use real `rakvere.zip`, does not invoke parser in app production code, and does not add freshness/hash/version metadata.
 
+## GTFS Data Legal Status for Production Bundled Assets
+
+- Current app bundled asset is synthetic and is not real Rakvere production data.
+- Real Rakvere bundled asset remains future work.
+- Before committing a real serialized Rakvere `DomainFeedSnapshot` asset, the project must document:
+  - source of data,
+  - license terms,
+  - attribution requirements,
+  - whether bundling inside an APK is permitted.
+- Raw `rakvere.zip` must not be committed.
+- PASS 26 must resolve/document this legal/data-source status before PASS 26A real-asset generation.
+
 ## PASS 17 Metadata Discovery Note
 
 - Real `rakvere.zip` `stops.txt` was inspected in a temp folder for conservative Rakvere POI stop-name discovery.

@@ -4,12 +4,13 @@
 
 - Expected repo root: `C:\Users\Kasutaja\Desktop\ANDROBUSS`
 - Expected branch: `main`
-- Latest accepted HEAD: `a704bbb` (`PASS_25`)
+- Latest accepted HEAD: `3bb2fe1` (`PASS_AUTO_02_DEPENDENCY_LOCKING`)
 - Working tree must be clean before a new pass
 
 ## Latest Accepted Pass
 
-- `PASS_25 — BUNDLED_FEED_BOOTSTRAP_SERIALIZATION_AND_APP_LAYER`
+- `PASS_AUTO_02 — DEPENDENCY_LOCKING`
+- Latest product/runtime pass remains `PASS_25 — BUNDLED_FEED_BOOTSTRAP_SERIALIZATION_AND_APP_LAYER`
 
 PASS 21 added a parser-agnostic feed boundary and in-memory provider bootstrap.
 
@@ -42,6 +43,15 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
   - `FeedBootstrapLoader` (`import` + `prepare`) on app startup
   - `AndrobussApplication` runtime wiring and `AppDatabase.create(context)` factory
   - Robolectric tests for bootstrap success/idempotency/missing-asset safety/anti-fabrication
+- Governance/tooling guardrails accepted after PASS 25:
+  - PASS G03 audit-index/read-order sync
+  - PASS AUTO-01 detekt module-boundary checks
+  - DRIFT_CHECK_RULE_SYNC_PASS
+  - PASS AUTO-02 dependency locking
+- Full-project audit checks are healthy at `3bb2fe1`:
+  - `./gradlew detekt` passed
+  - `./gradlew test` passed
+  - `./gradlew build` passed
 
 ## Not Implemented Yet
 
@@ -64,7 +74,7 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Current Pass
 
-- `PASS_G03 — AUDIT_INDEX_AND_READ_ORDER_SYNC` (docs-only)
+- `PASS_G04 — GOVERNANCE_STATE_SYNC_AFTER_AUTO_02` (docs-only)
 
 ## Lazy Context Note (PASS G03)
 
@@ -87,7 +97,7 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 - Validator is runnable locally and is wired into CI.
 - Local Windows validator command: `py -3 tools/validate_project_state.py`.
 
-## Dependency Locking (PASS_AUTO_02 Candidate)
+## Dependency Locking (PASS_AUTO_02 Accepted)
 
 - Gradle dependency locking is enabled project-wide (`lockAllConfigurations()`).
 - Generated `gradle.lockfile` files are version-controlled per module, plus `settings-gradle.lockfile`.
@@ -96,4 +106,5 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Next Technical Pass
 
-- `PASS 26 — REAL_RAKVERE_FEED_ASSET_OR_HILT_BOOTSTRAP_DECISION`
+- `PASS 26 — GTFS_LEGAL_AND_REAL_RAKVERE_ASSET_DECISION`
+- PASS 26 must document legal/source/attribution/bundling permissions before any real Rakvere bundled asset generation pass.

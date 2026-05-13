@@ -38,19 +38,20 @@ Pass status:
 
 Next pass:
 
-34. PASS 26 - REAL_RAKVERE_FEED_ASSET_OR_HILT_BOOTSTRAP_DECISION
-   - decide whether PASS 26 prioritizes:
-     - real Rakvere bundled asset generation/import path, or
-     - Hilt/bootstrap ownership boundary hardening
+34. PASS 26 - GTFS_LEGAL_AND_REAL_RAKVERE_ASSET_DECISION
+   - document source, license, attribution, and APK-bundling permission requirements for real Rakvere production asset work
    - keep WorkManager/downloader/realtime out unless explicitly approved
+
+35. PASS 26A - REAL_RAKVERE_BUNDLED_FEED_ASSET_GENERATION
+   - run only after PASS 26 legal/data-source decision is documented and accepted
 
 Likely following passes:
 
-35. PASS 27+ - HILT_DI_AND_BOOTSTRAP_BOUNDARY_DECISION
-36. PASS 28+ - SEARCH_VIEWMODEL_AND_UI_BOOTSTRAP
-37. PASS 29+ - DOWNLOADER_WORKMANAGER_REFRESH_LIFECYCLE
-38. PASS 30+ - FEED_FRESHNESS_HASH_VERSION_METADATA
-39. PASS UI-01 - DESTINATION_FIRST_HOME_AND_RESULT_CARDS_IMPLEMENTATION (after production feed/provider/query path is stable)
+36. PASS 27+ - HILT_DI_AND_BOOTSTRAP_BOUNDARY_DECISION
+37. PASS 28+ - SEARCH_VIEWMODEL_AND_UI_BOOTSTRAP
+38. PASS 29+ - DOWNLOADER_WORKMANAGER_REFRESH_LIFECYCLE
+39. PASS 30+ - FEED_FRESHNESS_HASH_VERSION_METADATA
+40. PASS UI-01 - DESTINATION_FIRST_HOME_AND_RESULT_CARDS_IMPLEMENTATION (after production feed/provider/query path is stable)
 
 Planning rule:
 - Any UI pass must align with `PASS UX-01` destination-first, list-first MVP blueprint.
@@ -58,10 +59,11 @@ Planning rule:
 Governance track:
 - G01 - GOVERNANCE_BOOTSTRAP_DOCS_ONLY (completed)
 - G02 - PROJECT_STATE_VALIDATION_HOOKS (completed)
-- G03 - AUDIT_INDEX_AND_READ_ORDER_SYNC (current candidate)
+- G03 - AUDIT_INDEX_AND_READ_ORDER_SYNC (completed)
+- DRIFT_CHECK_RULE_SYNC_PASS (completed)
 - G04 - DOCS_HYGIENE_AND_ARCHIVE_PLAN
 - G05 - DETEKT_COVERAGE_HARDENING
 
 Build/tooling track:
 - AUTO-01 - DETEKT_MODULE_BOUNDARIES (completed)
-- AUTO-02 - DEPENDENCY_LOCKING (current candidate)
+- AUTO-02 - DEPENDENCY_LOCKING (completed)
