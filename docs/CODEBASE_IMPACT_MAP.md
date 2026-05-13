@@ -1,6 +1,6 @@
 # CODEBASE_IMPACT_MAP
 
-State synchronized after `PASS 27` Hilt DI baseline candidate.
+State synchronized for `PASS_AUTO_03` drift and boundary check after accepted `PASS 27`.
 
 ## Module Responsibilities
 
@@ -84,6 +84,13 @@ State synchronized after `PASS 27` Hilt DI baseline candidate.
 - `FeedBootstrapLoader` logic, synthetic runtime asset default, and Room schema remain unchanged.
 - Core modules (`core-domain`, `core-gtfs`, `core-routing`) remain Hilt-free.
 
+## PASS_AUTO_03 Impact (Docs-Only)
+
+- Confirms PASS 27 as accepted baseline commit.
+- Confirms no hidden scope expansion into ViewModel/UI, network/realtime, parser, or Room schema surfaces.
+- Resets governance drift counter after docs/state alignment.
+- Opens next safe technical step as `PASS_28` scope audit, not direct UI implementation.
+
 ## Governance Docs-Only Impact (PASS G03)
 
 - `docs/AUDIT_INDEX.md` and read-order sync changes are governance/docs only.
@@ -107,7 +114,7 @@ State synchronized after `PASS 27` Hilt DI baseline candidate.
 - Direct-route query preparation use-case implemented.
 - Parser-derived integration proven in tests only (`rakvere-smoke`).
 - No app/ViewModel runtime wiring yet.
-- App pre-Hilt bootstrap runtime wiring exists via `AndrobussApplication`.
+- App bootstrap runtime wiring is now Hilt-backed via `AndrobussApplication`.
 - Feed contract move to `core-domain` and Room baseline are now implemented.
 - Feature-search remains consumer of prepared `DomainFeedSnapshot`; it does not bootstrap/import feed data.
 

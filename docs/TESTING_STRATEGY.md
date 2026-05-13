@@ -314,3 +314,13 @@
 - Lockfiles (`gradle.lockfile`) are version-controlled and should change only in explicit dependency passes.
 - Drift detection command for lock refresh:
   - `.\gradlew.bat build --write-locks`
+
+## Drift And Boundary Checks (PASS_AUTO_03)
+
+- After PASS 27 acceptance, run docs-only drift verification before ViewModel scope expansion.
+- Required boundary verification includes:
+  - `.\gradlew.bat detekt`
+  - `.\gradlew.bat test`
+  - `.\gradlew.bat build`
+  - parser/leak and Hilt-boundary grep checks across `app/src/main`, `data-local/src/main`, `core-*`, and `feature-search`.
+- PASS 28 scope audit should start only when AUTO-03 drift/boundary checks are clean.

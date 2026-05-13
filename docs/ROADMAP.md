@@ -48,31 +48,39 @@ Next pass:
 
 Next recommended pass:
 
-36. PASS 27 - HILT_DI_BASELINE (current candidate)
+36. PASS 27 - HILT_DI_BASELINE (completed)
    - app-owned Hilt modules for bootstrap dependencies
    - keep ViewModel/UI/WorkManager/network out of scope
 
-Next recommended after PASS 27:
+Current governance checkpoint:
 
-37. PASS_AUTO_03 - DRIFT_AND_BOUNDARY_CHECK
+37. PASS_AUTO_03 - DRIFT_AND_BOUNDARY_CHECK (current candidate)
    - validate docs/state/boundaries before ViewModel/UI expansion
+
+Next recommended technical pass:
+
+38. PASS_28 - SEARCH_VIEWMODEL_AND_FEED_STATE_SCOPE_AUDIT
+   - lock ViewModel/feed-state boundaries before implementation
+   - keep Compose/UI route screens out until scope audit is accepted
+
+39. PASS_28A - SEARCH_VIEWMODEL_AND_FEED_STATE
+   - implement only the audited ViewModel/feed-state scope from PASS_28
 
 Future scope candidates (not active next pass):
 
-38. PASS_RT_01 - GTFS_REALTIME_SCOPE_LOCK_AND_IDENTITY_MODEL
+40. PASS_RT_01 - GTFS_REALTIME_SCOPE_LOCK_AND_IDENTITY_MODEL
    - lock realtime identity rules (`trip_id` + `stop_sequence`) before implementation
    - keep realtime/network/workmanager out until dedicated runtime pass approval
 
-39. PASS_CITY_PROFILE_01 - PEATUS_GRAPHQL_ROUTE_METADATA_DISCOVERY
+41. PASS_CITY_PROFILE_01 - PEATUS_GRAPHQL_ROUTE_METADATA_DISCOVERY
    - evaluate Peatus.ee / Digitransit GraphQL as city-route metadata helper
    - keep static GTFS as canonical routing identity source
 
 Likely following passes:
 
-40. PASS 28+ - SEARCH_VIEWMODEL_AND_UI_BOOTSTRAP
-41. PASS 29+ - DOWNLOADER_WORKMANAGER_REFRESH_LIFECYCLE
-42. PASS 30+ - FEED_FRESHNESS_HASH_VERSION_METADATA
-43. PASS UI-01 - DESTINATION_FIRST_HOME_AND_RESULT_CARDS_IMPLEMENTATION (after production feed/provider/query path is stable)
+42. PASS 29+ - DOWNLOADER_WORKMANAGER_REFRESH_LIFECYCLE
+43. PASS 30+ - FEED_FRESHNESS_HASH_VERSION_METADATA
+44. PASS UI-01 - DESTINATION_FIRST_HOME_AND_RESULT_CARDS_IMPLEMENTATION (after production feed/provider/query path is stable)
 
 Planning rule:
 - Any UI pass must align with `PASS UX-01` destination-first, list-first MVP blueprint.

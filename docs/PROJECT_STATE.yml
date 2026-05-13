@@ -2,32 +2,23 @@ project:
   name: ANDROBUSS
   branch: main
   remote: https://github.com/Fuuduuu/ANDROBUSS.git
-  last_accepted_commit: f7708ad8a81f45348c4d697b9559511ff9824a87
-  last_known_good_commit: f7708ad8a81f45348c4d697b9559511ff9824a87
-  current_pass: PASS_27_HILT_DI_BASELINE
-  next_recommended_pass: PASS_AUTO_03_DRIFT_AND_BOUNDARY_CHECK
+  last_accepted_commit: 1f11ec3ef12f7034d2f317e978baea72f15cad47
+  last_known_good_commit: 1f11ec3ef12f7034d2f317e978baea72f15cad47
+  current_pass: PASS_AUTO_03_DRIFT_AND_BOUNDARY_CHECK
+  next_recommended_pass: PASS_28_SEARCH_VIEWMODEL_AND_FEED_STATE_SCOPE_AUDIT
 
 scope:
-  current_goal: "Introduce app-level Hilt DI baseline for bootstrap dependencies without ViewModel/UI/runtime-scope expansion."
+  current_goal: "Run docs-only governance drift and boundary verification after accepted PASS 27 Hilt baseline."
   allowed_surfaces:
-    - gradle/libs.versions.toml
-    - build.gradle.kts
-    - app/build.gradle.kts
-    - app/src/main/kotlin/ee/androbus/app/AndrobussApplication.kt
-    - app/src/main/kotlin/ee/androbus/app/di/DatabaseModule.kt
-    - app/src/main/kotlin/ee/androbus/app/di/FeedModule.kt
-    - app/gradle.lockfile
-    - settings-gradle.lockfile
     - docs/PROJECT_STATE.yml
     - docs/CURRENT_STATE.md
     - docs/ROADMAP.md
-    - docs/ANDROID_ARCHITECTURE.md
-    - docs/TESTING_STRATEGY.md
     - docs/AUDIT_INDEX.md
+    - docs/TESTING_STRATEGY.md
     - docs/CODEBASE_IMPACT_MAP.md
-    - docs/PROTECTED_SURFACES.md
-    - docs/audit/PASS_27_HILT_DI_BASELINE.md
+    - docs/audit/PASS_AUTO_03_DRIFT_AND_BOUNDARY_CHECK.md
   forbidden_surfaces:
+    - app/src/
     - core-domain/src/main/
     - core-gtfs/src/main/
     - core-routing/src/
@@ -35,6 +26,10 @@ scope:
     - data-local/src/
     - data-remote/src/
     - feature-search/src/
+    - build.gradle.kts
+    - app/build.gradle.kts
+    - gradle/libs.versions.toml
+    - app/gradle.lockfile
     - settings.gradle.kts
     - gradle/
     - .github/
@@ -49,9 +44,10 @@ governance:
     - "PASS_AUTO_01 detekt module-boundary checks accepted"
     - "DRIFT_CHECK_RULE_SYNC_PASS accepted"
     - "PASS_AUTO_02 dependency locking accepted"
+    - "PASS_27 Hilt DI baseline accepted"
   drift_check_rule: "Every 5 accepted pass/checkpoints, run a docs-only drift-check before the next large implementation pass."
-  drift_check_counter: "5 / 5 (after PASS 26 + PASS 26A + PASS 26B + PASS G05 + PASS 27 checkpoint)"
-  next_mandatory_drift_check: "PASS_AUTO_03_DRIFT_AND_BOUNDARY_CHECK is required before ViewModel/UI scope expansion."
+  drift_check_counter: "0 / 5 (reset by PASS_AUTO_03 after drift and boundary verification)"
+  next_mandatory_drift_check: "Run a docs-only drift-check again after the next five accepted checkpoints."
   drift_check_must_verify:
     - "CURRENT_STATE / ROADMAP / PROJECT_STATE alignment"
     - "AUDIT_INDEX includes recent passes"
@@ -119,13 +115,14 @@ risks:
 validation:
   required_commands:
     - "py -3 tools/validate_project_state.py"
-    - ".\\gradlew.bat :app:test"
-    - ".\\gradlew.bat :data-local:test"
-    - ".\\gradlew.bat :core-domain:test"
-    - ".\\gradlew.bat :feature-search:test"
     - ".\\gradlew.bat detekt"
-    - ".\\gradlew.bat build"
     - ".\\gradlew.bat test"
+    - ".\\gradlew.bat build"
+    - "rg -n \"GtfsFeedParser|GtfsDomainMapper|MappedGtfsFeed\" app/src/main data-local/src/main"
+    - "rg -n \"@Serializable\" core-domain/src"
+    - "rg -n \"allowMainThreadQueries\" data-local/src"
+    - "rg -n \"@HiltAndroidApp|@Module|@InstallIn|@Inject\" core-domain core-gtfs core-routing feature-search"
+    - "rg -n \"WorkManager|Retrofit|OkHttp|GTFSRealtime|TripUpdate|VehiclePosition\" app/src/main data-local/src/main data-remote/src/main feature-search/src/main"
     - "git diff --check"
     - "git status --short --untracked-files=all"
     - "git diff --name-only"

@@ -4,13 +4,13 @@
 
 - Expected repo root: `C:\Users\Kasutaja\Desktop\ANDROBUSS`
 - Expected branch: `main`
-- Latest accepted HEAD: `7f2669a` (`PASS_G05_GTFS_REALTIME_AND_PEATUS_GRAPHQL_FUTURE_NOTES`)
+- Latest accepted HEAD: `1f11ec3` (`PASS_27_HILT_DI_BASELINE`)
 - Working tree must be clean before a new pass
 
 ## Latest Accepted Pass
 
-- `PASS_G05 — GTFS_REALTIME_AND_PEATUS_GRAPHQL_FUTURE_NOTES`
-- Latest product/runtime pass remains `PASS_25 — BUNDLED_FEED_BOOTSTRAP_SERIALIZATION_AND_APP_LAYER`
+- `PASS_27 — HILT_DI_BASELINE`
+- Latest docs-only governance/future-notes pass remains `PASS_G05 — GTFS_REALTIME_AND_PEATUS_GRAPHQL_FUTURE_NOTES`
 
 PASS 21 added a parser-agnostic feed boundary and in-memory provider bootstrap.
 
@@ -48,7 +48,7 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 - PASS 26A adds executable parser robustness fixture/tests for real-feed profile characteristics (quoted service IDs, unknown columns, optional-file absence, calendar exceptions, loop duplicate stops).
 - PASS 26B accepted state includes real-derived Rakvere dev/test profile asset under `app/src/test/resources` only.
 - Runtime default remains synthetic `app/src/main/assets/bootstrap/rakvere_bootstrap.json`.
-- PASS 27 candidate introduces app-owned Hilt DI modules for:
+- PASS 27 accepted state introduces app-owned Hilt DI modules for:
   - `AppDatabase` / `FeedSnapshotDao`
   - `FeedSnapshotImporter`
   - `RoomDomainFeedSnapshotLoader`
@@ -75,7 +75,7 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Current Risks
 
-- Runtime bootstrap is pre-Hilt and anchored in `Application.onCreate` until dedicated DI/runtime lifecycle pass.
+- Runtime bootstrap is Hilt-backed but remains anchored in `Application.onCreate` until ViewModel/runtime lifecycle ownership pass.
 - Room baseline exists, but freshness metadata and feed lifecycle evolution are not implemented.
 - Production `RoutePattern` source is not implemented.
 - UI/ViewModel wiring is not implemented.
@@ -85,7 +85,7 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Current Pass
 
-- `PASS_27 — HILT_DI_BASELINE` (app-level DI wiring baseline)
+- `PASS_AUTO_03 — DRIFT_AND_BOUNDARY_CHECK` (docs-only governance sync after accepted PASS 27)
 
 ## Lazy Context Note (PASS G03)
 
@@ -117,6 +117,6 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Next Technical Pass
 
-- `PASS_AUTO_03 — DRIFT_AND_BOUNDARY_CHECK` before ViewModel/UI scope expansion.
-- `PASS 28+` then covers ViewModel/UI bootstrap only after drift/boundary confirmation.
+- `PASS_28 — SEARCH_VIEWMODEL_AND_FEED_STATE_SCOPE_AUDIT`
+- `PASS_28A — SEARCH_VIEWMODEL_AND_FEED_STATE` only after PASS_28 scope lock.
 - Production real asset remains blocked by legal/freshness/update-policy constraints.

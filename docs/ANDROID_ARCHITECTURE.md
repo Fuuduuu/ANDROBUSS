@@ -31,7 +31,7 @@ Architecture baseline and implementation status snapshot.
 - `feature-alerts`
 - `city-adapters`
 
-## Implementation Status (After PASS 27 Candidate)
+## Implementation Status (After PASS 27 Accepted)
 
 - Implemented pure Kotlin logic:
   - `core-domain`
@@ -104,7 +104,7 @@ Test-only rule:
 | Feed refresh | `data-remote` / WorkManager (future) | `data-remote` | Future background update |
 
 Notes:
-- PASS 27 candidate wiring uses app-owned Hilt modules and `@HiltAndroidApp` `AndrobussApplication`.
+- PASS 27 accepted wiring uses app-owned Hilt modules and `@HiltAndroidApp` `AndrobussApplication`.
 - `AndrobussApplication.onCreate` is now a protected runtime wiring surface.
 - No ViewModel/Compose wiring is added until bootstrap lifecycle ownership is finalized.
 - No WorkManager/downloader is added until bundled bootstrap baseline works.
