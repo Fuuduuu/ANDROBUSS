@@ -4,12 +4,12 @@
 
 - Expected repo root: `C:\Users\Kasutaja\Desktop\ANDROBUSS`
 - Expected branch: `main`
-- Latest accepted HEAD: `141d409` (`PASS_G04_GOVERNANCE_STATE_SYNC_AFTER_AUTO_02`)
+- Latest accepted HEAD: `b22e405` (`PASS_26_GTFS_LEGAL_SOURCE_AND_PARSER_ROBUSTNESS_DECISION`)
 - Working tree must be clean before a new pass
 
 ## Latest Accepted Pass
 
-- `PASS_G04 — GOVERNANCE_STATE_SYNC_AFTER_AUTO_02`
+- `PASS_26 — GTFS_LEGAL_SOURCE_AND_PARSER_ROBUSTNESS_DECISION`
 - Latest product/runtime pass remains `PASS_25 — BUNDLED_FEED_BOOTSTRAP_SERIALIZATION_AND_APP_LAYER`
 
 PASS 21 added a parser-agnostic feed boundary and in-memory provider bootstrap.
@@ -45,6 +45,7 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
   - Robolectric tests for bootstrap success/idempotency/missing-asset safety/anti-fabrication
 - PASS 26 (docs-only decision) documents legal/source/freshness constraints before any real Rakvere asset generation.
 - Synthetic bundled bootstrap asset remains active; real Rakvere asset is not generated in repository state.
+- PASS 26A candidate adds executable parser robustness fixture/tests for real-feed profile characteristics (quoted service IDs, unknown columns, optional-file absence, calendar exceptions, loop duplicate stops).
 - Governance/tooling guardrails accepted after PASS 25:
   - PASS G03 audit-index/read-order sync
   - PASS AUTO-01 detekt module-boundary checks
@@ -76,7 +77,7 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Current Pass
 
-- `PASS_26 — GTFS_LEGAL_SOURCE_AND_PARSER_ROBUSTNESS_DECISION` (docs-only)
+- `PASS_26A — REAL_FEED_PROFILE_PARSER_ROBUSTNESS_TESTS` (test-only + docs sync)
 
 ## Lazy Context Note (PASS G03)
 
@@ -108,6 +109,5 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Next Technical Pass
 
-- `PASS 26A — REAL_RAKVERE_FEED_PROFILE_AND_PARSER_ROBUSTNESS_TESTS`
-- `PASS 26B — REAL_RAKVERE_BUNDLED_FEED_ASSET_GENERATION` only after legal/source/freshness policy is explicitly accepted.
-- Next immediate work is parser-robustness/profile and legal confirmation, not Hilt wiring.
+- `PASS 26B — REAL_RAKVERE_BUNDLED_FEED_ASSET_GENERATION` only after PASS 26A robustness tests pass and legal/source/freshness policy remains accepted.
+- Real production asset is not generated yet; synthetic bootstrap remains active until PASS 26B readiness.

@@ -1,0 +1,3 @@
+route_id,agency_id,route_short_name,route_long_name,route_type,route_color,route_text_color,route_desc,route_url,continuous_pickup,continuous_drop_off,competent_authority
+ROUTE_1,TEST001,1,Jaam - Polikliinik,3,de2c42,FFFFFF,Testliin,,,,Rakvere linn
+ROUTE_2,TEST001,2,Ringlus - Ringlus,3,de2c42,FFFFFF,Ringlus,,,,Rakvere linn

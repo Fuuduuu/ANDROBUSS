@@ -27,4 +27,5 @@ Rules:
 | DRIFT_CHECK_RULE_SYNC_PASS / `241439a` | Drift-check cadence/governance rule sync | `docs/audit/DRIFT_CHECK_RULE_SYNC_PASS.md` | accepted | Need checkpoint drift-check policy details |
 | PASS AUTO-02 / `3bb2fe1` | Gradle dependency locking baseline | `docs/audit/PASS_AUTO_02_DEPENDENCY_LOCKING.md` | accepted | Need lockfile/locking baseline details |
 | PASS G04 / `141d409` | Governance state sync after AUTO-02 audit findings | `docs/audit/PASS_G04_GOVERNANCE_STATE_SYNC_AFTER_AUTO_02.md` | accepted | Need docs/governance drift-fix details |
-| PASS 26 / current | GTFS legal/source and parser robustness decision | `docs/audit/PASS_26_GTFS_LEGAL_SOURCE_AND_PARSER_ROBUSTNESS_DECISION.md` | current candidate | Need legal/source/freshness constraints and robustness policy details |
+| PASS 26 / `b22e405` | GTFS legal/source and parser robustness decision | `docs/audit/PASS_26_GTFS_LEGAL_SOURCE_AND_PARSER_ROBUSTNESS_DECISION.md` | accepted | Need legal/source/freshness constraints and robustness policy details |
+| PASS 26A / current | Real-feed profile parser robustness tests | `docs/audit/PASS_26A_REAL_FEED_PROFILE_PARSER_ROBUSTNESS_TESTS.md` | current candidate | Need executable parser robustness evidence before any real asset generation |

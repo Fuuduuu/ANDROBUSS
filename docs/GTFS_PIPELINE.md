@@ -164,6 +164,14 @@ Documented technical findings snapshot for planning (PASS 26 input baseline):
 - Parser/domain mapping must never derive stop IDs from display names.
 - `stop_area` filtering policy for Rakvere must be explicit and tested before any real asset commit.
 
+## Stop Area Filtering Policy
+
+- `GtfsFeedParser` reads all stops present in `stops.txt`.
+- `GtfsDomainMapper` maps all parsed stops into domain stop points.
+- `stop_area` filtering is not parser responsibility.
+- Rakvere MVP real-asset generation should apply explicit `stop_area = "Rakvere linn"` filtering policy.
+- Filtering belongs in future asset-generation tooling, not in parser core.
+
 ## PASS 17 Metadata Discovery Note
 
 - Real `rakvere.zip` `stops.txt` was inspected in a temp folder for conservative Rakvere POI stop-name discovery.

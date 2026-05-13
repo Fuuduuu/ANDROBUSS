@@ -257,6 +257,18 @@
 - `block_id` presence must be tolerated but must not activate routing behavior.
 - If real-asset policy uses Rakvere `stop_area` scope, generated asset tests must confirm non-Rakvere stops are excluded.
 
+## PASS 26A Parser Robustness Coverage
+
+- New fixture: `core-gtfs/src/test/resources/gtfs/rakvere-profile-smoke/`
+- Coverage focus:
+  - quoted `service_id` values with commas preserved across trips/calendar/calendar_dates,
+  - unknown/extra GTFS columns tolerated without parser failure,
+  - missing optional files (`frequencies.txt`, `transfers.txt`, `attributions.txt`) tolerated,
+  - `calendar_dates` `exception_type=1/2` behavior verified through `ServiceCalendarResolver`,
+  - loop-pattern duplicate stop preservation (`STOP_A -> STOP_B -> STOP_A`),
+  - explicit anti-fabrication checks (`StopPointId` from `stop_id` only),
+  - explicit assertion that `stop_area` filtering is not parser responsibility.
+
 ## Governance Checks
 
 - `tools/validate_project_state.py` validates `docs/PROJECT_STATE.yml` schema.

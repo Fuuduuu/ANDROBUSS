@@ -38,11 +38,12 @@ Pass status:
 
 Next pass:
 
-34. PASS 26A - REAL_RAKVERE_FEED_PROFILE_AND_PARSER_ROBUSTNESS_TESTS
+34. PASS 26A - REAL_RAKVERE_FEED_PROFILE_AND_PARSER_ROBUSTNESS_TESTS (current candidate)
    - cover quoted `service_id` commas, unknown-column tolerance, `calendar_dates` behavior, and explicit Rakvere `stop_area` filtering policy checks
    - keep WorkManager/downloader/realtime out unless explicitly approved
 
 35. PASS 26B - REAL_RAKVERE_BUNDLED_FEED_ASSET_GENERATION
+   - next pass after PASS 26A validation
    - run only after legal/source/freshness policy is explicitly accepted and PASS 26A robustness tests are in place
 
 Likely following passes:

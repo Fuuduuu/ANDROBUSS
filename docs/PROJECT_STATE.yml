@@ -2,24 +2,27 @@ project:
   name: ANDROBUSS
   branch: main
   remote: https://github.com/Fuuduuu/ANDROBUSS.git
-  last_accepted_commit: 3bb2fe1b1a86cd9dd74423670f6ef0669ffdad27
-  last_known_good_commit: 3bb2fe1b1a86cd9dd74423670f6ef0669ffdad27
-  current_pass: PASS_G04_GOVERNANCE_STATE_SYNC_AFTER_AUTO_02
-  next_recommended_pass: PASS_26_GTFS_LEGAL_AND_REAL_RAKVERE_ASSET_DECISION
+  last_accepted_commit: b22e4054eac89c1e828f97e05145a92f26f7f4ab
+  last_known_good_commit: b22e4054eac89c1e828f97e05145a92f26f7f4ab
+  current_pass: PASS_26A_REAL_FEED_PROFILE_PARSER_ROBUSTNESS_TESTS
+  next_recommended_pass: PASS_26B_REAL_RAKVERE_BUNDLED_FEED_ASSET_GENERATION
 
 scope:
-  current_goal: "Docs-only governance/state sync after AUTO-02 acceptance."
+  current_goal: "Add real-feed profile parser robustness tests before any real Rakvere asset generation."
   allowed_surfaces:
-    - docs/AUDIT_INDEX.md
+    - core-gtfs/src/test/resources/gtfs/rakvere-profile-smoke/**
+    - core-gtfs/src/test/kotlin/ee/androbus/core/gtfs/RakvereProfileSmokeTest.kt
+    - docs/GTFS_PIPELINE.md
+    - docs/TESTING_STRATEGY.md
     - docs/PROJECT_STATE.yml
     - docs/CURRENT_STATE.md
     - docs/ROADMAP.md
-    - docs/GTFS_PIPELINE.md
-    - docs/audit/PASS_G04_GOVERNANCE_STATE_SYNC_AFTER_AUTO_02.md
+    - docs/AUDIT_INDEX.md
+    - docs/audit/PASS_26A_REAL_FEED_PROFILE_PARSER_ROBUSTNESS_TESTS.md
   forbidden_surfaces:
     - app/
-    - core-domain/src/
-    - core-gtfs/src/
+    - core-domain/src/main/
+    - core-gtfs/src/main/
     - core-routing/src/
     - city-adapters/src/
     - data-local/src/

@@ -1,0 +1,2 @@
+agency_id,agency_name,agency_url,agency_timezone,agency_phone,agency_fare_url,agency_lang,agency_email
+TEST001,Test Agentuur,https://test.ee,Europe/Tallinn,+372 0000000,,et,

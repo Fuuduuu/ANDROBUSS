@@ -1,0 +1,5 @@
+stop_id,stop_code,stop_name,stop_lat,stop_lon,stop_desc,wheelchair_boarding,platform_code,location_type,parent_station,stop_timezone,stop_url,tts_stop_name,zone_id,alias,stop_area,authority,lest_x,lest_y
+STOP_A,,Jaam,59.346796,26.364483,,,,0,,,,,,,Rakvere linn,,605000,6600000
+STOP_B,,Polikliinik,59.344549,26.365334,,,,0,,,,,,,Rakvere linn,,605100,6599900
+STOP_C,,Kaugemale,59.200000,26.100000,,,,0,,,,,,,Tapa vald,,590000,6585000
+STOP_D,,Veelkaugemale,58.900000,25.900000,,,,0,,,,,,,Vinni vald,,570000,6560000
