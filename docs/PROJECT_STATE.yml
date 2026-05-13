@@ -37,6 +37,16 @@ governance:
   audit_index: "docs/AUDIT_INDEX.md"
   audit_loading_policy: "Read audit index first; open docs/audit/PASS_*.md on demand."
   archive_policy: "docs/archive/** is historical-only and not default context."
+  drift_check_rule: "Every 5 accepted pass/checkpoints, run a docs-only drift-check before the next large implementation pass."
+  drift_check_must_verify:
+    - "CURRENT_STATE / ROADMAP / PROJECT_STATE alignment"
+    - "AUDIT_INDEX includes recent passes"
+    - "No fact lives in multiple places"
+    - "\"Next step\" lives in only one canonical place"
+    - "TRUTH_INDEX / PROTECTED_SURFACES updated if needed"
+    - "Scope has not silently expanded"
+    - "Old audit/docs are not misleading future prompts"
+  drift_found_action: "Run a small docs-only cleanup/sync pass before continuing implementation."
 
 architecture:
   pure_kotlin_modules:
