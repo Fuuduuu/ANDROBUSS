@@ -2,24 +2,21 @@ project:
   name: ANDROBUSS
   branch: main
   remote: https://github.com/Fuuduuu/ANDROBUSS.git
-  last_accepted_commit: cedcd65bff953dc87a88289cc576d7abe55f2034
-  last_known_good_commit: cedcd65bff953dc87a88289cc576d7abe55f2034
-  current_pass: PASS_26B_REAL_RAKVERE_DEV_TEST_ASSET_ONLY
+  last_accepted_commit: f7708ad8a81f45348c4d697b9559511ff9824a87
+  last_known_good_commit: f7708ad8a81f45348c4d697b9559511ff9824a87
+  current_pass: PASS_G05_GTFS_REALTIME_AND_PEATUS_GRAPHQL_FUTURE_NOTES
   next_recommended_pass: PASS_27_HILT_DI_BASELINE_SCOPE_AUDIT
 
 scope:
-  current_goal: "Keep real-derived Rakvere asset in test resources only and prove DTO/domain identity safety."
+  current_goal: "Document future-only GTFS realtime and Peatus GraphQL notes without runtime implementation."
   allowed_surfaces:
-    - app/src/test/resources/bootstrap/rakvere_dev_profile_v1.json
-    - app/src/test/resources/bootstrap/README.md
-    - app/src/test/kotlin/ee/androbus/app/bootstrap/RakvereDevProfileAssetTest.kt
     - docs/GTFS_PIPELINE.md
-    - docs/TESTING_STRATEGY.md
-    - docs/PROJECT_STATE.yml
-    - docs/CURRENT_STATE.md
+    - docs/ROUTING_LOGIC.md
+    - docs/PROTECTED_SURFACES.md
     - docs/ROADMAP.md
     - docs/AUDIT_INDEX.md
-    - docs/audit/PASS_26B_REAL_RAKVERE_DEV_TEST_ASSET_ONLY.md
+    - docs/PROJECT_STATE.yml
+    - docs/audit/PASS_G05_GTFS_REALTIME_AND_PEATUS_GRAPHQL_FUTURE_NOTES.md
   forbidden_surfaces:
     - app/
     - core-domain/src/main/
@@ -45,7 +42,7 @@ governance:
     - "DRIFT_CHECK_RULE_SYNC_PASS accepted"
     - "PASS_AUTO_02 dependency locking accepted"
   drift_check_rule: "Every 5 accepted pass/checkpoints, run a docs-only drift-check before the next large implementation pass."
-  drift_check_counter: "3 / 5 (after PASS 26 + PASS 26A + PASS 26B checkpoint)"
+  drift_check_counter: "4 / 5 (after PASS 26 + PASS 26A + PASS 26B + PASS G05 checkpoint)"
   next_mandatory_drift_check: "After 5 accepted checkpoints from 3bb2fe1 baseline."
   drift_check_must_verify:
     - "CURRENT_STATE / ROADMAP / PROJECT_STATE alignment"

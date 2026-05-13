@@ -108,6 +108,13 @@ Identity rules:
 - A route is valid if any destination index is greater than any origin index.
 - Earliest valid pair per pattern is used in current implementation.
 
+## Future Realtime Matching Note
+
+- Current direct routing uses static `RoutePattern` stop order only.
+- `stop_sequence` / order must remain preserved, especially for loop patterns with repeated stop IDs.
+- Realtime `TripUpdate` matching is future-only and will require explicit `TripId + stop_sequence` modelling.
+- Current routing must not infer realtime status from static results.
+
 ## Not Implemented Yet
 
 - Time-aware/schedule-aware route filtering.

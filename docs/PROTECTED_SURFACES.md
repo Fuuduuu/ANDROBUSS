@@ -74,6 +74,17 @@ Protected decisions:
 
 Changing these decisions requires a dedicated protected-surface review pass.
 
+## Future GTFS Realtime / Remote Data Boundary
+
+Protected decisions:
+- adding GTFS Realtime parser
+- matching realtime `trip_id` to static `trip_id`
+- using `stop_sequence` for realtime stop updates
+- introducing network polling / WorkManager / freshness windows
+- switching from static-only to realtime-enhanced results
+
+Changing any of these requires a dedicated protected-surface pass.
+
 ## Formal Protection Rule
 
 A protected surface may not change without a dedicated `PROTECTED_SURFACE_CHANGE` pass preceded by a docs-only impact review.

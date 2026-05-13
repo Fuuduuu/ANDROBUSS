@@ -30,3 +30,4 @@ Rules:
 | PASS 26 / `b22e405` | GTFS legal/source and parser robustness decision | `docs/audit/PASS_26_GTFS_LEGAL_SOURCE_AND_PARSER_ROBUSTNESS_DECISION.md` | accepted | Need legal/source/freshness constraints and robustness policy details |
 | PASS 26A / `cedcd65` | Real-feed profile parser robustness tests | `docs/audit/PASS_26A_REAL_FEED_PROFILE_PARSER_ROBUSTNESS_TESTS.md` | accepted | Need executable parser robustness evidence before any real asset generation |
 | PASS 26B / current | Real Rakvere dev/test asset only (test resources) | `docs/audit/PASS_26B_REAL_RAKVERE_DEV_TEST_ASSET_ONLY.md` | current candidate | Need dev/test asset validation without changing runtime default |
+| PASS G05 / current | GTFS realtime + Peatus GraphQL future notes (docs-only) | `docs/audit/PASS_G05_GTFS_REALTIME_AND_PEATUS_GRAPHQL_FUTURE_NOTES.md` | current candidate | Need future-scope constraints without runtime implementation |

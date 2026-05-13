@@ -185,6 +185,70 @@ Documented technical findings snapshot for planning (PASS 26 input baseline):
 - Dev/test asset stop IDs are GTFS `stop_id` values only.
 - This does not resolve production freshness/update policy for real asset runtime usage.
 
+## Future GTFS Realtime and Route Metadata Notes
+
+### Loop / stop_sequence identity
+
+- In loop routes, the same `stop_id` may appear multiple times in one trip.
+- `stop_id` alone cannot identify a specific stop occurrence.
+- `stop_sequence` is the disambiguating field.
+- This confirms current Room storage design:
+  - `PatternStopEntity` primary key = `cityId + feedId + patternId + sequence`.
+- Do not change this schema.
+- `RoutePattern` stop IDs must preserve exact order and duplicates.
+- Do not de-duplicate pattern stop IDs.
+
+### Future GTFS Realtime identity
+
+- GTFS Realtime `TripUpdate` / `VehiclePosition` matching depends on static GTFS `trip_id` and `stop_sequence`.
+- If realtime is added later, Room-loaded/static `trip_id` values must match realtime `trip_id` values exactly.
+- Real-derived route-pattern IDs must not use synthetic labels such as `rakvere-dev-pattern-N`.
+- PASS 26B dev/test asset uses representative GTFS `trip_id` values for route-pattern IDs.
+- Full realtime support requires a later protected-surface pass with explicit `TripId` modelling.
+
+### Future realtime freshness
+
+- Realtime freshness is a future `data-remote` concern.
+- Realtime cannot be supported with the current offline-only static/bundled pipeline.
+- Future realtime requires network polling, freshness enforcement, and likely WorkManager or a dedicated runtime fetch layer.
+- This is not implemented now.
+
+### Future realtime enum note
+
+- If GTFS Realtime parser is implemented later, do not design it around deprecated `ADDED` semantics.
+- Use current GTFS Realtime semantics such as `NEW` / `DUPLICATED` where applicable.
+- This is not implemented now.
+
+### Future Peatus.ee / Digitransit GraphQL route metadata
+
+- Peatus.ee / Digitransit GraphQL may be useful later as a route-metadata and city-onboarding helper.
+- It is not MVP runtime source.
+- It is not canonical routing identity.
+- It is not a replacement for static GTFS.
+- It is not implemented now.
+- The endpoint must be revalidated before any future implementation pass.
+
+Potential future uses:
+- discover city routes by city/operator/`route_short_name`
+- inspect route `longName` / `desc`
+- inspect pattern `directionId` / `headsign`
+- compare pattern stop order against static GTFS-derived `RoutePattern` values
+- help build `CityRouteProfile` per city
+- validate manual route-variant data such as Linnaliinid ZIP-derived profiles
+- derive user-facing route labels such as "kaudu Keskvaljak" or "Pohjakeskus suund"
+- group E-R / L-P date-based schedule variants in a future profiling pass
+
+Future pass candidate:
+- `PASS_CITY_PROFILE_01 — PEATUS_GRAPHQL_ROUTE_METADATA_DISCOVERY`
+
+Explicit non-scope:
+- block transfer remains future-only
+- frequency-based trips remain future-only
+- service alerts remain future-only
+- vehicle positions remain future-only
+- pathways and fare attributes remain out of current MVP
+- Peatus GraphQL integration remains future-only
+
 ## PASS 17 Metadata Discovery Note
 
 - Real `rakvere.zip` `stops.txt` was inspected in a temp folder for conservative Rakvere POI stop-name discovery.

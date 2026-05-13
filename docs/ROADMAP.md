@@ -52,13 +52,23 @@ Next recommended pass:
    - define strict DI scope and protected surfaces before implementation
    - only then run PASS 27 HILT baseline implementation
 
+Future scope candidates (not active next pass):
+
+37. PASS_RT_01 - GTFS_REALTIME_SCOPE_LOCK_AND_IDENTITY_MODEL
+   - lock realtime identity rules (`trip_id` + `stop_sequence`) before implementation
+   - keep realtime/network/workmanager out until dedicated runtime pass approval
+
+38. PASS_CITY_PROFILE_01 - PEATUS_GRAPHQL_ROUTE_METADATA_DISCOVERY
+   - evaluate Peatus.ee / Digitransit GraphQL as city-route metadata helper
+   - keep static GTFS as canonical routing identity source
+
 Likely following passes:
 
-37. PASS 27+ - HILT_DI_AND_BOOTSTRAP_BOUNDARY_DECISION
-38. PASS 28+ - SEARCH_VIEWMODEL_AND_UI_BOOTSTRAP
-39. PASS 29+ - DOWNLOADER_WORKMANAGER_REFRESH_LIFECYCLE
-40. PASS 30+ - FEED_FRESHNESS_HASH_VERSION_METADATA
-41. PASS UI-01 - DESTINATION_FIRST_HOME_AND_RESULT_CARDS_IMPLEMENTATION (after production feed/provider/query path is stable)
+39. PASS 27+ - HILT_DI_AND_BOOTSTRAP_BOUNDARY_DECISION
+40. PASS 28+ - SEARCH_VIEWMODEL_AND_UI_BOOTSTRAP
+41. PASS 29+ - DOWNLOADER_WORKMANAGER_REFRESH_LIFECYCLE
+42. PASS 30+ - FEED_FRESHNESS_HASH_VERSION_METADATA
+43. PASS UI-01 - DESTINATION_FIRST_HOME_AND_RESULT_CARDS_IMPLEMENTATION (after production feed/provider/query path is stable)
 
 Planning rule:
 - Any UI pass must align with `PASS UX-01` destination-first, list-first MVP blueprint.
