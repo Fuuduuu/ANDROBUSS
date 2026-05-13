@@ -269,6 +269,20 @@
   - explicit anti-fabrication checks (`StopPointId` from `stop_id` only),
   - explicit assertion that `stop_area` filtering is not parser responsibility.
 
+## PASS 26B Real-derived Dev/Test Asset Coverage
+
+- Test-only real-derived asset location:
+  - `app/src/test/resources/bootstrap/rakvere_dev_profile_v1.json`
+- Coverage focus:
+  - asset decodes through `BootstrapFeedDto` -> `DomainFeedSnapshot`,
+  - identity markers are stable (`cityId = rakvere`, `feedId` dev/profile),
+  - expected profile size is verified (`98` stops, `7` route patterns),
+  - anti-fabrication checks ensure stop IDs come from `id` fields, not display names,
+  - route-pattern IDs are non-synthetic and references point to existing stop IDs,
+  - runtime default remains synthetic main asset (`app/src/main/assets/bootstrap/rakvere_bootstrap.json`).
+- Policy guard:
+  - real-derived asset remains in test resources only and is not production runtime default.
+
 ## Governance Checks
 
 - `tools/validate_project_state.py` validates `docs/PROJECT_STATE.yml` schema.

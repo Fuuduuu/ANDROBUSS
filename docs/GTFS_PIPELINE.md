@@ -172,6 +172,19 @@ Documented technical findings snapshot for planning (PASS 26 input baseline):
 - Rakvere MVP real-asset generation should apply explicit `stop_area = "Rakvere linn"` filtering policy.
 - Filtering belongs in future asset-generation tooling, not in parser core.
 
+## Real-derived Dev/Test Asset Policy
+
+- Real-derived Rakvere dev/test profile asset lives under:
+  - `app/src/test/resources/bootstrap/rakvere_dev_profile_v1.json`
+- It is test-scope only and is not bundled into production APK main assets.
+- Runtime default remains:
+  - `app/src/main/assets/bootstrap/rakvere_bootstrap.json` (synthetic)
+- `FeedBootstrapLoader` default asset path must remain synthetic until explicit policy change pass.
+- Raw `rakvere.zip` remains forbidden in repository commits.
+- Dev/test asset route-pattern IDs are representative GTFS `trip_id` values, not synthetic counter labels.
+- Dev/test asset stop IDs are GTFS `stop_id` values only.
+- This does not resolve production freshness/update policy for real asset runtime usage.
+
 ## PASS 17 Metadata Discovery Note
 
 - Real `rakvere.zip` `stops.txt` was inspected in a temp folder for conservative Rakvere POI stop-name discovery.

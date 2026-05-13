@@ -1,0 +1,944 @@
+{
+  "cityId": "rakvere",
+  "feedId": "rakvere-dev-profile-v1",
+  "stopPoints": [
+    {
+      "id": "109244",
+      "stopGroupId": "rakvere-arkna-tee",
+      "displayName": "Arkna tee",
+      "lat": 59.360404,
+      "lon": 26.3679593,
+      "platformCode": "5900040-1"
+    },
+    {
+      "id": "24589",
+      "stopGroupId": "rakvere-arkna-tee",
+      "displayName": "Arkna tee",
+      "lat": 59.361074,
+      "lon": 26.36783,
+      "platformCode": "5900036-1"
+    },
+    {
+      "id": "153197",
+      "stopGroupId": "rakvere-bussijaam",
+      "displayName": "Bussijaam",
+      "lat": 59.3468124,
+      "lon": 26.3650846,
+      "platformCode": "5901242-1"
+    },
+    {
+      "id": "24787",
+      "stopGroupId": "rakvere-bussijaam",
+      "displayName": "Bussijaam",
+      "lat": 59.3472746,
+      "lon": 26.3648904,
+      "platformCode": "5900055-1"
+    },
+    {
+      "id": "112864",
+      "stopGroupId": "rakvere-carl-robert-jakobsoni",
+      "displayName": "Carl Robert Jakobsoni",
+      "lat": 59.3504651,
+      "lon": 26.3562956,
+      "platformCode": "5900056-1"
+    },
+    {
+      "id": "30126",
+      "stopGroupId": "rakvere-haigla",
+      "displayName": "Haigla",
+      "lat": 59.335521,
+      "lon": 26.3732475,
+      "platformCode": "5900078-1"
+    },
+    {
+      "id": "31900",
+      "stopGroupId": "rakvere-haigla",
+      "displayName": "Haigla",
+      "lat": 59.3355446,
+      "lon": 26.3734209,
+      "platformCode": "5900079-1"
+    },
+    {
+      "id": "112865",
+      "stopGroupId": "rakvere-ilu-puiestee",
+      "displayName": "Ilu puiestee",
+      "lat": 59.3520017,
+      "lon": 26.3416978,
+      "platformCode": "5900105-1"
+    },
+    {
+      "id": "112866",
+      "stopGroupId": "rakvere-ilu-puiestee",
+      "displayName": "Ilu puiestee",
+      "lat": 59.3518298,
+      "lon": 26.3415146,
+      "platformCode": "5900104-1"
+    },
+    {
+      "id": "112867",
+      "stopGroupId": "rakvere-jaama-puiestee",
+      "displayName": "Jaama puiestee",
+      "lat": 59.3552366,
+      "lon": 26.347657,
+      "platformCode": "5900117-1"
+    },
+    {
+      "id": "112868",
+      "stopGroupId": "rakvere-jaama-puiestee",
+      "displayName": "Jaama puiestee",
+      "lat": 59.3551996,
+      "lon": 26.3464605,
+      "platformCode": "5900116-1"
+    },
+    {
+      "id": "30623",
+      "stopGroupId": "rakvere-karja",
+      "displayName": "Karja",
+      "lat": 59.3387628,
+      "lon": 26.3676995,
+      "platformCode": "5900209-1"
+    },
+    {
+      "id": "30624",
+      "stopGroupId": "rakvere-karja",
+      "displayName": "Karja",
+      "lat": 59.3393402,
+      "lon": 26.3692977,
+      "platformCode": "5900210-1"
+    },
+    {
+      "id": "154417",
+      "stopGroupId": "rakvere-kauba",
+      "displayName": "Kauba",
+      "lat": 59.3567375,
+      "lon": 26.368118,
+      "platformCode": "5901245-1"
+    },
+    {
+      "id": "30628",
+      "stopGroupId": "rakvere-kauba",
+      "displayName": "Kauba",
+      "lat": 59.3562427,
+      "lon": 26.368407,
+      "platformCode": "5900220-1"
+    },
+    {
+      "id": "32156",
+      "stopGroupId": "rakvere-kesk",
+      "displayName": "Kesk",
+      "lat": 59.3578608,
+      "lon": 26.3435607,
+      "platformCode": "5900230-1"
+    },
+    {
+      "id": "32157",
+      "stopGroupId": "rakvere-kesk",
+      "displayName": "Kesk",
+      "lat": 59.357773,
+      "lon": 26.3436536,
+      "platformCode": "5900229-1"
+    },
+    {
+      "id": "25479",
+      "stopGroupId": "rakvere-keskuse",
+      "displayName": "Keskuse",
+      "lat": 59.3467779,
+      "lon": 26.3620444,
+      "platformCode": "5900255-1"
+    },
+    {
+      "id": "25484",
+      "stopGroupId": "rakvere-keskvaljak",
+      "displayName": "Keskväljak",
+      "lat": 59.3481224,
+      "lon": 26.3611505,
+      "platformCode": "5900232-1"
+    },
+    {
+      "id": "25826",
+      "stopGroupId": "rakvere-kivi",
+      "displayName": "Kivi",
+      "lat": 59.3389898,
+      "lon": 26.3839942,
+      "platformCode": "5900286-1"
+    },
+    {
+      "id": "32177",
+      "stopGroupId": "rakvere-kivi",
+      "displayName": "Kivi",
+      "lat": 59.3390052,
+      "lon": 26.3844216,
+      "platformCode": "5900287-1"
+    },
+    {
+      "id": "153187",
+      "stopGroupId": "rakvere-kondivalu",
+      "displayName": "Kondivalu",
+      "lat": 59.3309854,
+      "lon": 26.3591538,
+      "platformCode": "5901240-1"
+    },
+    {
+      "id": "25478",
+      "stopGroupId": "rakvere-kungla",
+      "displayName": "Kungla",
+      "lat": 59.3440164,
+      "lon": 26.3717325,
+      "platformCode": "5900311-1"
+    },
+    {
+      "id": "25996",
+      "stopGroupId": "rakvere-kungla",
+      "displayName": "Kungla",
+      "lat": 59.3436445,
+      "lon": 26.3729256,
+      "platformCode": "5900310-1"
+    },
+    {
+      "id": "25480",
+      "stopGroupId": "rakvere-laada",
+      "displayName": "Laada",
+      "lat": 59.351206,
+      "lon": 26.360303,
+      "platformCode": "5900338-1"
+    },
+    {
+      "id": "25481",
+      "stopGroupId": "rakvere-lai",
+      "displayName": "Lai",
+      "lat": 59.3510893,
+      "lon": 26.3573004,
+      "platformCode": "5900346-1"
+    },
+    {
+      "id": "32250",
+      "stopGroupId": "rakvere-lai",
+      "displayName": "Lai",
+      "lat": 59.350718,
+      "lon": 26.357803,
+      "platformCode": "5900347-1"
+    },
+    {
+      "id": "111187",
+      "stopGroupId": "rakvere-lilleoru",
+      "displayName": "Lilleoru",
+      "lat": 59.3282167,
+      "lon": 26.3652624,
+      "platformCode": "5900542-1"
+    },
+    {
+      "id": "111188",
+      "stopGroupId": "rakvere-lilleoru",
+      "displayName": "Lilleoru",
+      "lat": 59.3282578,
+      "lon": 26.3632307,
+      "platformCode": "5900541-1"
+    },
+    {
+      "id": "25827",
+      "stopGroupId": "rakvere-laane",
+      "displayName": "Lääne",
+      "lat": 59.3585946,
+      "lon": 26.3370889,
+      "platformCode": "5900415-1"
+    },
+    {
+      "id": "32403",
+      "stopGroupId": "rakvere-laane",
+      "displayName": "Lääne",
+      "lat": 59.358779,
+      "lon": 26.3368277,
+      "platformCode": "5900416-1"
+    },
+    {
+      "id": "32423",
+      "stopGroupId": "rakvere-mae",
+      "displayName": "Mäe",
+      "lat": 59.334133,
+      "lon": 26.361422,
+      "platformCode": "5900464-1"
+    },
+    {
+      "id": "32424",
+      "stopGroupId": "rakvere-mae",
+      "displayName": "Mäe",
+      "lat": 59.3338501,
+      "lon": 26.3614365,
+      "platformCode": "5900465-1"
+    },
+    {
+      "id": "30294",
+      "stopGroupId": "rakvere-narva",
+      "displayName": "Narva",
+      "lat": 59.3576757,
+      "lon": 26.3803118,
+      "platformCode": "5900485-1"
+    },
+    {
+      "id": "30439",
+      "stopGroupId": "rakvere-narva",
+      "displayName": "Narva",
+      "lat": 59.3578339,
+      "lon": 26.3805031,
+      "platformCode": "5900484-1"
+    },
+    {
+      "id": "109242",
+      "stopGroupId": "rakvere-napi",
+      "displayName": "Näpi",
+      "lat": 59.3598284,
+      "lon": 26.3871624,
+      "platformCode": "5900507-1"
+    },
+    {
+      "id": "32522",
+      "stopGroupId": "rakvere-napi",
+      "displayName": "Näpi",
+      "lat": 59.3599114,
+      "lon": 26.3867943,
+      "platformCode": "5900508-1"
+    },
+    {
+      "id": "32268",
+      "stopGroupId": "rakvere-palermo",
+      "displayName": "Palermo",
+      "lat": 59.329253,
+      "lon": 26.363713,
+      "platformCode": "5900382-1"
+    },
+    {
+      "id": "32269",
+      "stopGroupId": "rakvere-palermo",
+      "displayName": "Palermo",
+      "lat": 59.3276236,
+      "lon": 26.3637897,
+      "platformCode": "5900381-1"
+    },
+    {
+      "id": "147043",
+      "stopGroupId": "rakvere-papiaru",
+      "displayName": "Papiaru",
+      "lat": 59.3639952,
+      "lon": 26.3688522,
+      "platformCode": "5901201-1"
+    },
+    {
+      "id": "147044",
+      "stopGroupId": "rakvere-papiaru",
+      "displayName": "Papiaru",
+      "lat": 59.3642313,
+      "lon": 26.3692117,
+      "platformCode": "5901202-1"
+    },
+    {
+      "id": "138064",
+      "stopGroupId": "rakvere-pauluse-kalmistu",
+      "displayName": "Pauluse kalmistu",
+      "lat": 59.3265554,
+      "lon": 26.353767,
+      "platformCode": "5901107-1"
+    },
+    {
+      "id": "140585",
+      "stopGroupId": "rakvere-pauluse-kalmistu",
+      "displayName": "Pauluse kalmistu",
+      "lat": 59.3265891,
+      "lon": 26.3541308,
+      "platformCode": "5901156-1"
+    },
+    {
+      "id": "21835",
+      "stopGroupId": "rakvere-piiri",
+      "displayName": "Piiri",
+      "lat": 59.3419261,
+      "lon": 26.3776348,
+      "platformCode": "5900566-1"
+    },
+    {
+      "id": "25987",
+      "stopGroupId": "rakvere-piiri",
+      "displayName": "Piiri",
+      "lat": 59.3417425,
+      "lon": 26.3777702,
+      "platformCode": "5900567-1"
+    },
+    {
+      "id": "25482",
+      "stopGroupId": "rakvere-polikliinik",
+      "displayName": "Polikliinik",
+      "lat": 59.3445495,
+      "lon": 26.3653342,
+      "platformCode": "5900576-1"
+    },
+    {
+      "id": "25483",
+      "stopGroupId": "rakvere-polikliinik",
+      "displayName": "Polikliinik",
+      "lat": 59.3445611,
+      "lon": 26.3644414,
+      "platformCode": "5900577-1"
+    },
+    {
+      "id": "32583",
+      "stopGroupId": "rakvere-pohja",
+      "displayName": "Põhja",
+      "lat": 59.3599385,
+      "lon": 26.344425,
+      "platformCode": "5900597-1"
+    },
+    {
+      "id": "32584",
+      "stopGroupId": "rakvere-pohja",
+      "displayName": "Põhja",
+      "lat": 59.3597993,
+      "lon": 26.3446426,
+      "platformCode": "5900596-1"
+    },
+    {
+      "id": "154418",
+      "stopGroupId": "rakvere-rahu",
+      "displayName": "Rahu",
+      "lat": 59.3359069,
+      "lon": 26.3584445,
+      "platformCode": "5901246-1"
+    },
+    {
+      "id": "34045",
+      "stopGroupId": "rakvere-rakvere",
+      "displayName": "Rakvere",
+      "lat": 59.3577948,
+      "lon": 26.3657678,
+      "platformCode": "5990017-1"
+    },
+    {
+      "id": "34242",
+      "stopGroupId": "rakvere-rakvere",
+      "displayName": "Rakvere",
+      "lat": 59.3578642,
+      "lon": 26.3654043,
+      "platformCode": "5990018-1"
+    },
+    {
+      "id": "152898",
+      "stopGroupId": "rakvere-rakvere-bussijaam",
+      "displayName": "Rakvere bussijaam",
+      "lat": 59.3465663,
+      "lon": 26.3647413,
+      "platformCode": "5900624-2"
+    },
+    {
+      "id": "152899",
+      "stopGroupId": "rakvere-rakvere-bussijaam",
+      "displayName": "Rakvere bussijaam",
+      "lat": 59.346621,
+      "lon": 26.364677,
+      "platformCode": "5900624-3"
+    },
+    {
+      "id": "152900",
+      "stopGroupId": "rakvere-rakvere-bussijaam",
+      "displayName": "Rakvere bussijaam",
+      "lat": 59.3466648,
+      "lon": 26.364634,
+      "platformCode": "5900624-4"
+    },
+    {
+      "id": "152901",
+      "stopGroupId": "rakvere-rakvere-bussijaam",
+      "displayName": "Rakvere bussijaam",
+      "lat": 59.3467085,
+      "lon": 26.3645911,
+      "platformCode": "5900624-5"
+    },
+    {
+      "id": "152902",
+      "stopGroupId": "rakvere-rakvere-bussijaam",
+      "displayName": "Rakvere bussijaam",
+      "lat": 59.3467577,
+      "lon": 26.3645267,
+      "platformCode": "5900624-6"
+    },
+    {
+      "id": "152903",
+      "stopGroupId": "rakvere-rakvere-bussijaam",
+      "displayName": "Rakvere bussijaam",
+      "lat": 59.346796,
+      "lon": 26.3644838,
+      "platformCode": "5900624-7"
+    },
+    {
+      "id": "152904",
+      "stopGroupId": "rakvere-rakvere-bussijaam",
+      "displayName": "Rakvere bussijaam",
+      "lat": 59.346796,
+      "lon": 26.3649774,
+      "platformCode": "5900624-8"
+    },
+    {
+      "id": "26255",
+      "stopGroupId": "rakvere-rakvere-bussijaam",
+      "displayName": "Rakvere bussijaam",
+      "lat": 59.346528,
+      "lon": 26.3647842,
+      "platformCode": "5900624-1"
+    },
+    {
+      "id": "153188",
+      "stopGroupId": "rakvere-raudteejaam",
+      "displayName": "Raudteejaam",
+      "lat": 59.357355,
+      "lon": 26.3637539,
+      "platformCode": "5901241-1"
+    },
+    {
+      "id": "32642",
+      "stopGroupId": "rakvere-raudteejaam",
+      "displayName": "Raudteejaam",
+      "lat": 59.3573479,
+      "lon": 26.3636288,
+      "platformCode": "5900635-1"
+    },
+    {
+      "id": "26418",
+      "stopGroupId": "rakvere-rohu",
+      "displayName": "Rohu",
+      "lat": 59.351283,
+      "lon": 26.340435,
+      "platformCode": "5900653-1"
+    },
+    {
+      "id": "32636",
+      "stopGroupId": "rakvere-rohu",
+      "displayName": "Rohu",
+      "lat": 59.351432,
+      "lon": 26.339765,
+      "platformCode": "5900655-1"
+    },
+    {
+      "id": "32653",
+      "stopGroupId": "rakvere-ragavere-tee",
+      "displayName": "Rägavere tee",
+      "lat": 59.3373385,
+      "lon": 26.3887974,
+      "platformCode": "5900670-1"
+    },
+    {
+      "id": "32689",
+      "stopGroupId": "rakvere-saueaugu",
+      "displayName": "Saueaugu",
+      "lat": 59.3380646,
+      "lon": 26.3703039,
+      "platformCode": "5900710-1"
+    },
+    {
+      "id": "32690",
+      "stopGroupId": "rakvere-saueaugu",
+      "displayName": "Saueaugu",
+      "lat": 59.3381654,
+      "lon": 26.3698835,
+      "platformCode": "5900709-1"
+    },
+    {
+      "id": "112862",
+      "stopGroupId": "rakvere-seminari",
+      "displayName": "Seminari",
+      "lat": 59.3413224,
+      "lon": 26.3721933,
+      "platformCode": "5900726-1"
+    },
+    {
+      "id": "112863",
+      "stopGroupId": "rakvere-seminari",
+      "displayName": "Seminari",
+      "lat": 59.3410184,
+      "lon": 26.3721173,
+      "platformCode": "5900727-1"
+    },
+    {
+      "id": "25993",
+      "stopGroupId": "rakvere-side",
+      "displayName": "Side",
+      "lat": 59.3417828,
+      "lon": 26.3757893,
+      "platformCode": "5900729-1"
+    },
+    {
+      "id": "25994",
+      "stopGroupId": "rakvere-side",
+      "displayName": "Side",
+      "lat": 59.3418167,
+      "lon": 26.3763972,
+      "platformCode": "5900728-1"
+    },
+    {
+      "id": "32327",
+      "stopGroupId": "rakvere-tammiku",
+      "displayName": "Tammiku",
+      "lat": 59.329584,
+      "lon": 26.349845,
+      "platformCode": "5900778-1"
+    },
+    {
+      "id": "32328",
+      "stopGroupId": "rakvere-tammiku",
+      "displayName": "Tammiku",
+      "lat": 59.3296368,
+      "lon": 26.3496333,
+      "platformCode": "5900777-1"
+    },
+    {
+      "id": "25989",
+      "stopGroupId": "rakvere-tartu",
+      "displayName": "Tartu",
+      "lat": 59.3380545,
+      "lon": 26.3603967,
+      "platformCode": "5900794-1"
+    },
+    {
+      "id": "32334",
+      "stopGroupId": "rakvere-tartu",
+      "displayName": "Tartu",
+      "lat": 59.3382102,
+      "lon": 26.3602316,
+      "platformCode": "5900795-1"
+    },
+    {
+      "id": "25995",
+      "stopGroupId": "rakvere-tarva",
+      "displayName": "Tarva",
+      "lat": 59.3483302,
+      "lon": 26.3498127,
+      "platformCode": "5900797-1"
+    },
+    {
+      "id": "30309",
+      "stopGroupId": "rakvere-tarva",
+      "displayName": "Tarva",
+      "lat": 59.3485861,
+      "lon": 26.3500545,
+      "platformCode": "5900796-1"
+    },
+    {
+      "id": "32335",
+      "stopGroupId": "rakvere-teater",
+      "displayName": "Teater",
+      "lat": 59.349968,
+      "lon": 26.346837,
+      "platformCode": "5900800-1"
+    },
+    {
+      "id": "32682",
+      "stopGroupId": "rakvere-teater",
+      "displayName": "Teater",
+      "lat": 59.350127,
+      "lon": 26.34683,
+      "platformCode": "5900801-1"
+    },
+    {
+      "id": "111861",
+      "stopGroupId": "rakvere-tulika",
+      "displayName": "Tulika",
+      "lat": 59.339202,
+      "lon": 26.3490053,
+      "platformCode": "5900816-1"
+    },
+    {
+      "id": "24953",
+      "stopGroupId": "rakvere-tulika",
+      "displayName": "Tulika",
+      "lat": 59.3390396,
+      "lon": 26.3487963,
+      "platformCode": "5900815-1"
+    },
+    {
+      "id": "31907",
+      "stopGroupId": "rakvere-tuule",
+      "displayName": "Tuule",
+      "lat": 59.355444,
+      "lon": 26.3673766,
+      "platformCode": "5900819-1"
+    },
+    {
+      "id": "133710",
+      "stopGroupId": "rakvere-vaala",
+      "displayName": "Vaala",
+      "lat": 59.353632,
+      "lon": 26.385338,
+      "platformCode": "5901039-1"
+    },
+    {
+      "id": "133711",
+      "stopGroupId": "rakvere-vaala",
+      "displayName": "Vaala",
+      "lat": 59.3535162,
+      "lon": 26.3840683,
+      "platformCode": "5901040-1"
+    },
+    {
+      "id": "30431",
+      "stopGroupId": "rakvere-vallimae",
+      "displayName": "Vallimäe",
+      "lat": 59.3438763,
+      "lon": 26.3488016,
+      "platformCode": "5900887-1"
+    },
+    {
+      "id": "32504",
+      "stopGroupId": "rakvere-vallimae",
+      "displayName": "Vallimäe",
+      "lat": 59.3429945,
+      "lon": 26.3485095,
+      "platformCode": "5900886-1"
+    },
+    {
+      "id": "32632",
+      "stopGroupId": "rakvere-vene",
+      "displayName": "Vene",
+      "lat": 59.3534626,
+      "lon": 26.3636819,
+      "platformCode": "5900918-1"
+    },
+    {
+      "id": "32633",
+      "stopGroupId": "rakvere-vene",
+      "displayName": "Vene",
+      "lat": 59.3536642,
+      "lon": 26.3639608,
+      "platformCode": "5900917-1"
+    },
+    {
+      "id": "112882",
+      "stopGroupId": "rakvere-vilepilli",
+      "displayName": "Vilepilli",
+      "lat": 59.3553914,
+      "lon": 26.3829445,
+      "platformCode": "5900867-1"
+    },
+    {
+      "id": "116211",
+      "stopGroupId": "rakvere-viru",
+      "displayName": "Viru",
+      "lat": 59.343529,
+      "lon": 26.3643966,
+      "platformCode": "5900954-1"
+    },
+    {
+      "id": "25990",
+      "stopGroupId": "rakvere-viru",
+      "displayName": "Viru",
+      "lat": 59.3433648,
+      "lon": 26.3642852,
+      "platformCode": "5900953-1"
+    },
+    {
+      "id": "25991",
+      "stopGroupId": "rakvere-voidu",
+      "displayName": "Võidu",
+      "lat": 59.355847,
+      "lon": 26.360176,
+      "platformCode": "5900979-1"
+    },
+    {
+      "id": "25992",
+      "stopGroupId": "rakvere-voidu",
+      "displayName": "Võidu",
+      "lat": 59.356103,
+      "lon": 26.359927,
+      "platformCode": "5900980-1"
+    },
+    {
+      "id": "32674",
+      "stopGroupId": "rakvere-oie",
+      "displayName": "Õie",
+      "lat": 59.334022,
+      "lon": 26.3478513,
+      "platformCode": "5901010-1"
+    },
+    {
+      "id": "32675",
+      "stopGroupId": "rakvere-oie",
+      "displayName": "Õie",
+      "lat": 59.3340631,
+      "lon": 26.3476849,
+      "platformCode": "5901011-1"
+    },
+    {
+      "id": "32676",
+      "stopGroupId": "rakvere-oli",
+      "displayName": "Õli",
+      "lat": 59.3563706,
+      "lon": 26.3729052,
+      "platformCode": "5901012-1"
+    },
+    {
+      "id": "30604",
+      "stopGroupId": "rakvere-oobiku",
+      "displayName": "Ööbiku",
+      "lat": 59.3309045,
+      "lon": 26.3762415,
+      "platformCode": "5901018-1"
+    },
+    {
+      "id": "30605",
+      "stopGroupId": "rakvere-oobiku",
+      "displayName": "Ööbiku",
+      "lat": 59.3304045,
+      "lon": 26.3756046,
+      "platformCode": "5901017-1"
+    }
+  ],
+  "routePatterns": [
+    {
+      "id": "Liinid_1,2,3,5-We-c6d03d4884b9ed8b357a2728e233944b-A-OB-1830-02eadd8",
+      "routeLineId": "c6d03d4884b9ed8b357a2728e233944b",
+      "displayName": "1 · Piira - Näpi - Piira",
+      "stopIds": [
+        "32268",
+        "32423",
+        "25989",
+        "30623",
+        "25994",
+        "25996",
+        "25483",
+        "24787",
+        "25480",
+        "25991",
+        "153188",
+        "154417",
+        "32676",
+        "112882",
+        "30294",
+        "109242",
+        "32522",
+        "30439",
+        "30628",
+        "32642",
+        "25992",
+        "25481",
+        "25479",
+        "25482",
+        "25478",
+        "25993",
+        "30624",
+        "32334",
+        "32424",
+        "32269"
+      ]
+    },
+    {
+      "id": "Liinid_1,2,3,5-We-c0c52460524608f6b2a8719e771b2647-A-IB-1700-0475429",
+      "routeLineId": "c0c52460524608f6b2a8719e771b2647",
+      "displayName": "2 · Piira - Lihakombinaat",
+      "stopIds": [
+        "32268",
+        "32423",
+        "25989",
+        "30623",
+        "112862",
+        "25483",
+        "24787",
+        "25480",
+        "25991",
+        "109244",
+        "147044"
+      ]
+    },
+    {
+      "id": "Liinid_1,2,3,5-We-c0c52460524608f6b2a8719e771b2647-A-OB-1630-643ccfd",
+      "routeLineId": "c0c52460524608f6b2a8719e771b2647",
+      "displayName": "2 · Lihakombinaat - Piira",
+      "stopIds": [
+        "147043",
+        "24589",
+        "25992",
+        "25481",
+        "25479",
+        "25482",
+        "112863",
+        "30624",
+        "32334",
+        "32424",
+        "32269"
+      ]
+    },
+    {
+      "id": "Liinid_1,2,3,5-Su-53b3ddadd670d12ddec6b8d68663656a-1-B-IB-1100-02aa6cc",
+      "routeLineId": "53b3ddadd670d12ddec6b8d68663656a-1",
+      "displayName": "3 · Tõrma - Keskväljak - Tõrma",
+      "stopIds": [
+        "140585",
+        "111187",
+        "30604",
+        "31900",
+        "32689",
+        "112862",
+        "25483",
+        "25484",
+        "112864",
+        "25995",
+        "32504",
+        "24953",
+        "32675",
+        "32328"
+      ]
+    },
+    {
+      "id": "Liinid_1,2,3,5-Sa-53b3ddadd670d12ddec6b8d68663656a-1-A-IB-1730-1a5ce60",
+      "routeLineId": "53b3ddadd670d12ddec6b8d68663656a-1",
+      "displayName": "3 · Tõrma - Koidula - Tõrma",
+      "stopIds": [
+        "32327",
+        "32674",
+        "111861",
+        "30431",
+        "30309",
+        "25481",
+        "25479",
+        "25990",
+        "32690",
+        "30126",
+        "30605",
+        "111188",
+        "138064"
+      ]
+    },
+    {
+      "id": "Liinid_1,2,3,5-We-85ef71b13cb2e28850d4f6078a369d8b-A-IB-1900-0563ab0",
+      "routeLineId": "85ef71b13cb2e28850d4f6078a369d8b",
+      "displayName": "5 · Rägavere tee - Põhjakeskus",
+      "stopIds": [
+        "32653",
+        "32177",
+        "21835",
+        "25996",
+        "25483",
+        "25484",
+        "112864",
+        "32682",
+        "32636",
+        "32403",
+        "32157",
+        "32584"
+      ]
+    },
+    {
+      "id": "Liinid_1,2,3,5-We-85ef71b13cb2e28850d4f6078a369d8b-A-OB-1326-01a1529",
+      "routeLineId": "85ef71b13cb2e28850d4f6078a369d8b",
+      "displayName": "5 · Põhjakeskus - Rägavere tee",
+      "stopIds": [
+        "32583",
+        "32156",
+        "25827",
+        "26418",
+        "32335",
+        "25481",
+        "25479",
+        "25482",
+        "25478",
+        "25987",
+        "25826",
+        "32653"
+      ]
+    }
+  ]
+}

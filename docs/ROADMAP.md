@@ -38,21 +38,27 @@ Pass status:
 
 Next pass:
 
-34. PASS 26A - REAL_RAKVERE_FEED_PROFILE_AND_PARSER_ROBUSTNESS_TESTS (current candidate)
+34. PASS 26A - REAL_RAKVERE_FEED_PROFILE_AND_PARSER_ROBUSTNESS_TESTS (completed)
    - cover quoted `service_id` commas, unknown-column tolerance, `calendar_dates` behavior, and explicit Rakvere `stop_area` filtering policy checks
    - keep WorkManager/downloader/realtime out unless explicitly approved
 
-35. PASS 26B - REAL_RAKVERE_BUNDLED_FEED_ASSET_GENERATION
-   - next pass after PASS 26A validation
-   - run only after legal/source/freshness policy is explicitly accepted and PASS 26A robustness tests are in place
+35. PASS 26B - REAL_RAKVERE_DEV_TEST_ASSET_ONLY (current candidate)
+   - keep real-derived asset in test resources only
+   - keep runtime default synthetic and keep real asset out of main APK assets
+
+Next recommended pass:
+
+36. PASS 27 - HILT_DI_BASELINE_SCOPE_AUDIT
+   - define strict DI scope and protected surfaces before implementation
+   - only then run PASS 27 HILT baseline implementation
 
 Likely following passes:
 
-36. PASS 27+ - HILT_DI_AND_BOOTSTRAP_BOUNDARY_DECISION
-37. PASS 28+ - SEARCH_VIEWMODEL_AND_UI_BOOTSTRAP
-38. PASS 29+ - DOWNLOADER_WORKMANAGER_REFRESH_LIFECYCLE
-39. PASS 30+ - FEED_FRESHNESS_HASH_VERSION_METADATA
-40. PASS UI-01 - DESTINATION_FIRST_HOME_AND_RESULT_CARDS_IMPLEMENTATION (after production feed/provider/query path is stable)
+37. PASS 27+ - HILT_DI_AND_BOOTSTRAP_BOUNDARY_DECISION
+38. PASS 28+ - SEARCH_VIEWMODEL_AND_UI_BOOTSTRAP
+39. PASS 29+ - DOWNLOADER_WORKMANAGER_REFRESH_LIFECYCLE
+40. PASS 30+ - FEED_FRESHNESS_HASH_VERSION_METADATA
+41. PASS UI-01 - DESTINATION_FIRST_HOME_AND_RESULT_CARDS_IMPLEMENTATION (after production feed/provider/query path is stable)
 
 Planning rule:
 - Any UI pass must align with `PASS UX-01` destination-first, list-first MVP blueprint.
