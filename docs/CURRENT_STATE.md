@@ -4,12 +4,12 @@
 
 - Expected repo root: `C:\Users\Kasutaja\Desktop\ANDROBUSS`
 - Expected branch: `main`
-- Latest accepted HEAD: `3bb2fe1` (`PASS_AUTO_02_DEPENDENCY_LOCKING`)
+- Latest accepted HEAD: `141d409` (`PASS_G04_GOVERNANCE_STATE_SYNC_AFTER_AUTO_02`)
 - Working tree must be clean before a new pass
 
 ## Latest Accepted Pass
 
-- `PASS_AUTO_02 — DEPENDENCY_LOCKING`
+- `PASS_G04 — GOVERNANCE_STATE_SYNC_AFTER_AUTO_02`
 - Latest product/runtime pass remains `PASS_25 — BUNDLED_FEED_BOOTSTRAP_SERIALIZATION_AND_APP_LAYER`
 
 PASS 21 added a parser-agnostic feed boundary and in-memory provider bootstrap.
@@ -43,6 +43,8 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
   - `FeedBootstrapLoader` (`import` + `prepare`) on app startup
   - `AndrobussApplication` runtime wiring and `AppDatabase.create(context)` factory
   - Robolectric tests for bootstrap success/idempotency/missing-asset safety/anti-fabrication
+- PASS 26 (docs-only decision) documents legal/source/freshness constraints before any real Rakvere asset generation.
+- Synthetic bundled bootstrap asset remains active; real Rakvere asset is not generated in repository state.
 - Governance/tooling guardrails accepted after PASS 25:
   - PASS G03 audit-index/read-order sync
   - PASS AUTO-01 detekt module-boundary checks
@@ -74,7 +76,7 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Current Pass
 
-- `PASS_G04 — GOVERNANCE_STATE_SYNC_AFTER_AUTO_02` (docs-only)
+- `PASS_26 — GTFS_LEGAL_SOURCE_AND_PARSER_ROBUSTNESS_DECISION` (docs-only)
 
 ## Lazy Context Note (PASS G03)
 
@@ -106,5 +108,6 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Next Technical Pass
 
-- `PASS 26 — GTFS_LEGAL_AND_REAL_RAKVERE_ASSET_DECISION`
-- PASS 26 must document legal/source/attribution/bundling permissions before any real Rakvere bundled asset generation pass.
+- `PASS 26A — REAL_RAKVERE_FEED_PROFILE_AND_PARSER_ROBUSTNESS_TESTS`
+- `PASS 26B — REAL_RAKVERE_BUNDLED_FEED_ASSET_GENERATION` only after legal/source/freshness policy is explicitly accepted.
+- Next immediate work is parser-robustness/profile and legal confirmation, not Hilt wiring.

@@ -247,6 +247,16 @@
 - Room persistence/invalidation tests (future).
 - UI and end-to-end flow tests (future).
 
+## PASS 26 Future Required Tests (Real Rakvere Readiness)
+
+- Quoted `service_id` values with commas must parse correctly.
+- Unknown GTFS columns must be tolerated without parser failure.
+- `calendar_dates` exception behavior must be verified against base calendar.
+- `stop_area = "Rakvere linn"` filtering policy must be explicit and test-covered.
+- Raw ZIP commit guard must remain enforced (no `rakvere.zip` committed).
+- `block_id` presence must be tolerated but must not activate routing behavior.
+- If real-asset policy uses Rakvere `stop_area` scope, generated asset tests must confirm non-Rakvere stops are excluded.
+
 ## Governance Checks
 
 - `tools/validate_project_state.py` validates `docs/PROJECT_STATE.yml` schema.

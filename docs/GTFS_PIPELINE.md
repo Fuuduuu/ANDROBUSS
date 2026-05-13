@@ -105,14 +105,64 @@ GTFS pipeline status after PASS 24 docs decision.
 ## GTFS Data Legal Status for Production Bundled Assets
 
 - Current app bundled asset is synthetic and is not real Rakvere production data.
-- Real Rakvere bundled asset remains future work.
-- Before committing a real serialized Rakvere `DomainFeedSnapshot` asset, the project must document:
-  - source of data,
-  - license terms,
-  - attribution requirements,
-  - whether bundling inside an APK is permitted.
+- Recorded PASS 26 findings indicate an official GTFS endpoint exists at Peatus/UTR.
+- Recorded PASS 26 findings indicate public transport registry open data is publicly available.
+- Recorded PASS 26 findings indicate reuse in public channels/mobile apps requires source attribution.
+- Recorded PASS 26 findings indicate public app-used data must not be older than 7 days from download.
+- Therefore production real bundled asset is not automatically green-lit.
+- Real asset generation may proceed only as:
+  - dev/test asset, or
+  - production asset with documented freshness/update policy, or
+  - after explicit manual permission/confirmation.
 - Raw `rakvere.zip` must not be committed.
+- This pass documents constraints only and does not claim legal certainty is fully resolved.
 - PASS 26 must resolve/document this legal/data-source status before PASS 26A real-asset generation.
+
+## Real Rakvere Feed Technical Profile
+
+Documented technical findings snapshot for planning (PASS 26 input baseline):
+
+- `feed_info.txt` exists; publisher is Regionaal- ja Pollumajandusministeerium.
+- `attributions.txt` is missing.
+- `calendar_dates.txt` exists (45 rows).
+- `frequencies.txt` is missing.
+- `transfers.txt` is missing.
+- `shapes.txt` exists.
+- `block_id` is present on all 361 trips.
+- No blank `arrival_time` / `departure_time` rows in current snapshot.
+- No times over `24:00:00` in current snapshot.
+- Snapshot profile counts: 4 routes / 361 trips / 1215 stops / 6292 `stop_times` rows.
+- 98 stops have `stop_area = "Rakvere linn"` (out of 1215 total).
+- `service_id` values may contain quoted commas (example style: `"Liinid_1,2,3,5-We"`).
+
+## GTFS Fields Policy for MVP
+
+| Field/file | MVP handling | Future handling | Reason |
+| --- | --- | --- | --- |
+| `stop_id`, `stop_name`, `stop_lat`, `stop_lon` | Use | Keep | Core stop identity and location baseline |
+| `stop_area` | Use for explicit Rakvere city filtering policy | Keep/extend | Scope control for real-city asset extraction |
+| `route_id`, `route_short_name` | Use | Keep/extend | Route identity and rider-facing labels |
+| `trip_id`, `direction_id` | Use | Keep/extend | Pattern/trip mapping and direction context |
+| `stop_sequence`, `arrival_time`, `departure_time` | Use | Keep/extend | Ordered routing and schedule semantics |
+| `service_id` + `calendar.txt` | Use | Keep/extend | Base service calendar |
+| `calendar_dates.txt` | Use | Keep/extend | Required service exceptions |
+| `block_id` | Tolerate/read if present, ignore for routing | Evaluate later | Operational block linkage is not MVP routing input |
+| `shapes.txt` | Ignore for MVP | Future map/geometry | Not needed for destination-first MVP |
+| `continuous_pickup`, `continuous_drop_off` | Tolerate/ignore | Evaluate later | Not required by current routing scope |
+| `trip_headsign_code`, `stop_headsign_code` | Tolerate/ignore for MVP | Evaluate later | Non-blocking metadata for current UX |
+| Accessibility/bikes/colors fields | Ignore for MVP | Evaluate later | Not required for current direct-route baseline |
+| `frequencies.txt`, `transfers.txt` | Future only | Implement in later passes | Out of current direct-route MVP scope |
+| Unknown columns | Tolerate and ignore | Keep tolerance | Forward compatibility with feed variants |
+
+## Parser Robustness Requirements Before Real Asset
+
+- Parser must tolerate unknown columns without failure.
+- Parser must correctly parse quoted CSV fields containing commas in `service_id`.
+- Parser must correctly handle `calendar_dates` exception semantics.
+- Parser must not require `attributions.txt`, `frequencies.txt`, or `transfers.txt`.
+- Parser/domain mapping must preserve `StopPointId` from `stop_id` only.
+- Parser/domain mapping must never derive stop IDs from display names.
+- `stop_area` filtering policy for Rakvere must be explicit and tested before any real asset commit.
 
 ## PASS 17 Metadata Discovery Note
 

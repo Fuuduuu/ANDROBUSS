@@ -38,12 +38,12 @@ Pass status:
 
 Next pass:
 
-34. PASS 26 - GTFS_LEGAL_AND_REAL_RAKVERE_ASSET_DECISION
-   - document source, license, attribution, and APK-bundling permission requirements for real Rakvere production asset work
+34. PASS 26A - REAL_RAKVERE_FEED_PROFILE_AND_PARSER_ROBUSTNESS_TESTS
+   - cover quoted `service_id` commas, unknown-column tolerance, `calendar_dates` behavior, and explicit Rakvere `stop_area` filtering policy checks
    - keep WorkManager/downloader/realtime out unless explicitly approved
 
-35. PASS 26A - REAL_RAKVERE_BUNDLED_FEED_ASSET_GENERATION
-   - run only after PASS 26 legal/data-source decision is documented and accepted
+35. PASS 26B - REAL_RAKVERE_BUNDLED_FEED_ASSET_GENERATION
+   - run only after legal/source/freshness policy is explicitly accepted and PASS 26A robustness tests are in place
 
 Likely following passes:
 

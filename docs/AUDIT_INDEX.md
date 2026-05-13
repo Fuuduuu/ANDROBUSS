@@ -26,4 +26,5 @@ Rules:
 | PASS AUTO-01 / `d4cf9cb` | Detekt module-boundary checks | `N/A (audit doc missing in repo)` | accepted | Need forbidden-import guardrail scope |
 | DRIFT_CHECK_RULE_SYNC_PASS / `241439a` | Drift-check cadence/governance rule sync | `docs/audit/DRIFT_CHECK_RULE_SYNC_PASS.md` | accepted | Need checkpoint drift-check policy details |
 | PASS AUTO-02 / `3bb2fe1` | Gradle dependency locking baseline | `docs/audit/PASS_AUTO_02_DEPENDENCY_LOCKING.md` | accepted | Need lockfile/locking baseline details |
-| PASS G04 / current | Governance state sync after AUTO-02 audit findings | `docs/audit/PASS_G04_GOVERNANCE_STATE_SYNC_AFTER_AUTO_02.md` | current candidate | Need docs/governance drift-fix details |
+| PASS G04 / `141d409` | Governance state sync after AUTO-02 audit findings | `docs/audit/PASS_G04_GOVERNANCE_STATE_SYNC_AFTER_AUTO_02.md` | accepted | Need docs/governance drift-fix details |
+| PASS 26 / current | GTFS legal/source and parser robustness decision | `docs/audit/PASS_26_GTFS_LEGAL_SOURCE_AND_PARSER_ROBUSTNESS_DECISION.md` | current candidate | Need legal/source/freshness constraints and robustness policy details |

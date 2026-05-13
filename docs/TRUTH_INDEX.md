@@ -73,6 +73,9 @@ Truth hierarchy (highest to lowest for decision-making):
 - `FeedSnapshotImporter` lives in `data-local` and writes `DomainFeedSnapshot` into Room by scoped `cityId + feedId` replacement.
 - `FeedSnapshotImporter` accepts domain snapshot types only; parser types (`MappedGtfsFeed`, `GtfsFeedParser`, `GtfsDomainMapper`) are test-only.
 - MVP feed bootstrap source is a bundled APK asset, not a live network download.
+- Synthetic bundled bootstrap asset remains separate from real Rakvere production data.
+- Real Rakvere production asset work is blocked until legal/source/freshness policy is explicitly accepted.
+- Public app data freshness requirement is currently treated as a blocking design constraint for production bundled real asset.
 - `RoomDomainFeedSnapshotProvider` lives in `data-local` and uses load-then-serve behavior:
   - `prepare(cityId, feedId)` performs Room IO via suspend loader
   - `getSnapshot(cityId)` serves in-memory cache only (no DAO calls)
@@ -83,6 +86,8 @@ Truth hierarchy (highest to lowest for decision-making):
 - `FeedSnapshotImporter` writes Room data only; it does not read assets or parse GTFS.
 - `RoomDomainFeedSnapshotProvider` prepares/serves snapshots only; it does not import or download feeds.
 - Network refresh/downloader/WorkManager remain future, not MVP baseline.
+- Unknown GTFS columns must be tolerated.
+- Google Transit extension columns are not MVP dependencies.
 - PASS 23 integration tests prove parser fixture output can flow through:
   - parser/mapper -> `DomainFeedSnapshot` -> Room importer -> Room provider -> feature-search route query preparation
 - `feature-search` production code must not depend on `core-gtfs` parser implementation.
