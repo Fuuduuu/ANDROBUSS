@@ -59,28 +59,36 @@ Current governance checkpoint:
 
 Next recommended technical pass:
 
-38. PASS_28A - APP_SEARCH_VIEWMODEL_FEED_AND_DESTINATION_STATE (current candidate)
+38. PASS_28A - APP_SEARCH_VIEWMODEL_FEED_AND_DESTINATION_STATE (completed candidate)
    - add app SearchViewModel feed/destination state baseline only
    - keep Compose/UI/navigation and route-query wiring out
 
-39. PASS_28B - ROUTE_QUERY_AND_EXPLICIT_ORIGIN_BASELINE
-   - add route-query and explicit origin baseline after PASS 28A state layer
+39. PASS_28B - ROUTE_QUERY_WITH_EXPLICIT_ORIGIN (current candidate)
+   - add explicit route query trigger and explicit origin requirement
+   - keep FeedNotAvailable / DestinationNotReady / OriginNotProvided distinct from RouteNotFound
+   - use DirectRouteQueryPreparationUseCase path from app ViewModel
+
+40. PASS_AUTO_04_BOOTSTRAP_ROOM_FIRST_CHECK (recommended next)
+   - governance/boundary checkpoint after PASS 28B before UI scope opening
+
+41. PASS_28C_COMPOSE_SEARCH_SCREEN_SCOPE_AUDIT (alternative next)
+   - define UI scope only after AUTO-04 checkpoint is accepted
 
 Future scope candidates (not active next pass):
 
-40. PASS_RT_01 - GTFS_REALTIME_SCOPE_LOCK_AND_IDENTITY_MODEL
+42. PASS_RT_01 - GTFS_REALTIME_SCOPE_LOCK_AND_IDENTITY_MODEL
    - lock realtime identity rules (`trip_id` + `stop_sequence`) before implementation
    - keep realtime/network/workmanager out until dedicated runtime pass approval
 
-41. PASS_CITY_PROFILE_01 - PEATUS_GRAPHQL_ROUTE_METADATA_DISCOVERY
+43. PASS_CITY_PROFILE_01 - PEATUS_GRAPHQL_ROUTE_METADATA_DISCOVERY
    - evaluate Peatus.ee / Digitransit GraphQL as city-route metadata helper
    - keep static GTFS as canonical routing identity source
 
 Likely following passes:
 
-42. PASS 29+ - DOWNLOADER_WORKMANAGER_REFRESH_LIFECYCLE
-43. PASS 30+ - FEED_FRESHNESS_HASH_VERSION_METADATA
-44. PASS UI-01 - DESTINATION_FIRST_HOME_AND_RESULT_CARDS_IMPLEMENTATION (after production feed/provider/query path is stable)
+44. PASS 29+ - DOWNLOADER_WORKMANAGER_REFRESH_LIFECYCLE
+45. PASS 30+ - FEED_FRESHNESS_HASH_VERSION_METADATA
+46. PASS UI-01 - DESTINATION_FIRST_HOME_AND_RESULT_CARDS_IMPLEMENTATION (after production feed/provider/query path is stable)
 
 Planning rule:
 - Any UI pass must align with `PASS UX-01` destination-first, list-first MVP blueprint.

@@ -8,10 +8,13 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ee.androbus.app.bootstrap.FeedBootstrapLoader
 import ee.androbus.core.domain.DomainFeedSnapshotProvider
+import ee.androbus.core.routing.DirectRouteSearch
 import ee.androbus.data.local.dao.FeedSnapshotDao
 import ee.androbus.data.local.importer.FeedSnapshotImporter
 import ee.androbus.data.local.provider.RoomDomainFeedSnapshotLoader
 import ee.androbus.data.local.provider.RoomDomainFeedSnapshotProvider
+import ee.androbus.feature.search.bridge.DirectRouteQueryBridge
+import ee.androbus.feature.search.orchestration.DirectRouteQueryPreparationUseCase
 import javax.inject.Singleton
 
 @Module
@@ -40,6 +43,13 @@ object FeedModule {
     fun provideDomainFeedSnapshotProvider(
         provider: RoomDomainFeedSnapshotProvider,
     ): DomainFeedSnapshotProvider = provider
+
+    @Provides
+    @Singleton
+    fun provideDirectRouteQueryPreparationUseCase(): DirectRouteQueryPreparationUseCase =
+        DirectRouteQueryPreparationUseCase(
+            bridge = DirectRouteQueryBridge(DirectRouteSearch()),
+        )
 
     @Provides
     @Singleton

@@ -49,10 +49,12 @@ Architecture baseline and implementation status snapshot.
     - bootstrap import + provider `prepare(...)` flow in `AndrobussApplication`
     - app-owned Hilt modules providing database/dao/importer/loader/provider/bootstrap-loader
     - `AppDatabase.create(context)` remains available as pre-Hilt/test utility
-  - `app` presentation baseline (PASS 28A candidate):
+  - `app` presentation baseline (PASS 28A + PASS 28B candidate):
     - `SearchViewModel` exposes `FeedState` and destination input state
     - destination resolution uses feature-search pure Kotlin enrichment pipeline
-    - no route-query execution from ViewModel yet
+    - route query state is handled in ViewModel with explicit `searchRoute()` trigger
+    - route query requires explicit origin and distinguishes precondition states from `RouteNotFound`
+    - route query executes through `DirectRouteQueryPreparationUseCase`
 - Skeleton/future:
   - `data-remote`, UI `feature-*` runtime wiring.
 - Not implemented yet:
@@ -111,7 +113,9 @@ Test-only rule:
 Notes:
 - PASS 27 accepted wiring uses app-owned Hilt modules and `@HiltAndroidApp` `AndrobussApplication`.
 - `AndrobussApplication.onCreate` is now a protected runtime wiring surface.
-- PASS 28A adds ViewModel state baseline only; Compose/navigation wiring remains future.
+- PASS 28A/28B ViewModel baseline exists without UI layer wiring.
+- No Compose/navigation screen wiring is implemented yet.
+- No GPS/nearest-stop/network/realtime route-query extensions are implemented.
 - No WorkManager/downloader is added until bundled bootstrap baseline works.
 - `data-local` production code remains parser-agnostic.
 - `data-local` tests may use `core-gtfs`, but production must not import parser types.

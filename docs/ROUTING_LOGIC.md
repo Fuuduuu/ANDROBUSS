@@ -115,6 +115,18 @@ Identity rules:
 - Realtime `TripUpdate` matching is future-only and will require explicit `TripId + stop_sequence` modelling.
 - Current routing must not infer realtime status from static results.
 
+## App Route Query State Baseline (PASS 28B Candidate)
+
+- App `SearchViewModel` route query trigger is explicit: `searchRoute()`.
+- Route query does not auto-run on origin or destination input changes.
+- Explicit origin is required; missing origin maps to `OriginNotProvided`.
+- Feed/provider unavailable maps to `FeedNotAvailable`.
+- Unresolved or ambiguous destination maps to `DestinationNotReady`.
+- Empty pattern set maps to `NoPatternsAvailable`.
+- These precondition states are distinct from `RouteNotFound`.
+- Route execution path uses `DirectRouteQueryPreparationUseCase`.
+- Destination IDs used for query come from verified candidate IDs, not display text.
+
 ## Not Implemented Yet
 
 - Time-aware/schedule-aware route filtering.

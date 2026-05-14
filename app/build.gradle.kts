@@ -48,6 +48,7 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.coroutines.android)
     implementation(project(":core-domain"))
+    implementation(project(":core-routing"))
 
     implementation(project(":feature-map"))
     implementation(project(":feature-search"))

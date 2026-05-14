@@ -257,10 +257,27 @@
   - non-ambiguous destination resolution (`Jaam` -> `RKV_C`) without ID fabrication,
   - ambiguous destination resolution (`Keskpeatus` -> multiple options) without auto-select,
   - explicit ambiguous option selection to a single resolved option,
-  - feed-not-ready destination input safety (no crash, no fabricated IDs),
-  - guard that ViewModel does not reference `DirectRouteQueryPreparationUseCase` / `DirectRouteQueryBridge`.
+  - feed-not-ready destination input safety (no crash, no fabricated IDs).
 - PASS 28A does not add Compose/navigation/UI tests.
-- PASS 28A does not add route-query execution tests.
+
+## App Route Query + Explicit Origin Coverage Focus (PASS 28B Candidate)
+
+- `SearchViewModelTest` now covers route-query baseline behavior:
+  - `searchRoute()` with no origin -> `OriginNotProvided` (not `RouteNotFound`),
+  - `searchRoute()` with feed unavailable -> `FeedNotAvailable` (not `RouteNotFound`),
+  - `searchRoute()` with ambiguous destination -> `DestinationNotReady` (not `RouteNotFound`),
+  - verified destination `StopPointId` path is used for query (not display-name fabrication),
+  - route query path uses `DirectRouteQueryPreparationUseCase`,
+  - ambiguous destination is never auto-selected.
+- Route-query precondition states are explicitly distinct from `RouteNotFound`:
+  - `FeedNotAvailable`
+  - `DestinationNotReady`
+  - `OriginNotProvided`
+  - `NoPatternsAvailable`
+- PASS 28B remains ViewModel/state-only:
+  - no Compose/navigation/UI tests,
+  - no GPS/nearest-stop tests,
+  - no network/realtime tests.
 
 ## Near-Term Test Gaps
 

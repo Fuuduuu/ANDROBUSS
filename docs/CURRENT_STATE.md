@@ -56,11 +56,17 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
   - `RoomDomainFeedSnapshotProvider`
   - `FeedBootstrapLoader`
 - `AndrobussApplication` is now `@HiltAndroidApp` and triggers bootstrap via injected loader.
-- PASS 28A candidate adds first app presentation state baseline:
+- PASS 28A adds first app presentation state baseline:
   - `SearchViewModel` in app module
   - `SearchUiState` with `FeedState` and `DestinationInputState`
   - destination enrichment uses existing feature-search pure Kotlin resolver/orchestrator components
-  - no route-query call, no UI/navigation wiring
+  - no UI/navigation wiring
+- PASS 28B candidate extends SearchViewModel with explicit route-query state baseline:
+  - `RouteQueryState` added with separate `FeedNotAvailable`, `DestinationNotReady`, `OriginNotProvided`, `NoPatternsAvailable`, and `RouteNotFound`
+  - `searchRoute()` is explicit trigger only (no auto-run on input/origin changes)
+  - explicit origin is required for route query
+  - route query uses `DirectRouteQueryPreparationUseCase`
+  - no UI/GPS/nearest-stop/network/realtime scope opened
 - Governance/tooling guardrails accepted after PASS 25:
   - PASS G03 audit-index/read-order sync
   - PASS AUTO-01 detekt module-boundary checks
@@ -91,7 +97,7 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Current Pass
 
-- `PASS_28A — APP_SEARCH_VIEWMODEL_FEED_AND_DESTINATION_STATE`
+- `PASS_28B — ROUTE_QUERY_WITH_EXPLICIT_ORIGIN`
 
 ## Lazy Context Note (PASS G03)
 
@@ -123,5 +129,6 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Next Technical Pass
 
-- `PASS_28B — ROUTE_QUERY_AND_EXPLICIT_ORIGIN_BASELINE`
+- `PASS_AUTO_04_BOOTSTRAP_ROOM_FIRST_CHECK` (recommended governance checkpoint before UI expansion)
+- Alternative track: `PASS_28C_COMPOSE_SEARCH_SCREEN_SCOPE_AUDIT`
 - Production real asset remains blocked by legal/freshness/update-policy constraints.
