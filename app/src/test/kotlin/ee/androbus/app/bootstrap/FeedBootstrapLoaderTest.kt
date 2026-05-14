@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import ee.androbus.core.domain.CityId
+import ee.androbus.core.domain.DomainFeedSnapshot
+import ee.androbus.core.domain.FeedId
 import ee.androbus.core.domain.StopPointId
 import ee.androbus.data.local.database.AppDatabase
 import ee.androbus.data.local.importer.FeedSnapshotImporter
@@ -11,6 +13,7 @@ import ee.androbus.data.local.provider.RoomDomainFeedSnapshotLoader
 import ee.androbus.data.local.provider.RoomDomainFeedSnapshotProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.json.Json
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -88,6 +91,32 @@ class FeedBootstrapLoaderTest {
         }
 
     @Test
+    fun `bootstrapIfNeeded prepares existing Room snapshot before asset fallback`() =
+        runDb {
+            val snapshot = loadBundledSnapshot()
+            importer.import(
+                cityId = CityId("rakvere"),
+                feedId = FeedId("rakvere-bootstrap-v1"),
+                snapshot = snapshot,
+            )
+
+            val freshProvider = RoomDomainFeedSnapshotProvider(RoomDomainFeedSnapshotLoader(database.feedSnapshotDao()))
+            val loader =
+                FeedBootstrapLoader(
+                    context = context,
+                    importer = importer,
+                    provider = freshProvider,
+                    assetPath = "bootstrap/missing.json",
+                )
+
+            loader.bootstrapIfNeeded()
+
+            val loaded = assertNotNull(freshProvider.getSnapshot(CityId("rakvere")))
+            assertEquals(snapshot.stopPoints.size, loaded.stopPoints.size)
+            assertEquals(snapshot.routePatterns.size, loaded.routePatterns.size)
+        }
+
+    @Test
     fun `missing asset is safe FeedNotReady style result`() =
         runDb {
             val loader =
@@ -105,5 +134,14 @@ class FeedBootstrapLoaderTest {
 
     private fun runDb(block: suspend () -> Unit) {
         runBlocking(Dispatchers.IO) { block() }
+    }
+
+    private fun loadBundledSnapshot(): DomainFeedSnapshot {
+        val dtoText =
+            context.assets.open("bootstrap/rakvere_bootstrap.json").use { stream ->
+                stream.bufferedReader().readText()
+            }
+        val dto = Json.decodeFromString<BootstrapFeedDto>(dtoText)
+        return dto.toDomainFeedSnapshot()
     }
 }

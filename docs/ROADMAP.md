@@ -68,27 +68,31 @@ Next recommended technical pass:
    - keep FeedNotAvailable / DestinationNotReady / OriginNotProvided distinct from RouteNotFound
    - use DirectRouteQueryPreparationUseCase path from app ViewModel
 
-40. PASS_AUTO_04_BOOTSTRAP_ROOM_FIRST_CHECK (recommended next)
-   - governance/boundary checkpoint after PASS 28B before UI scope opening
+40. PASS_AUTO_04_BOOTSTRAP_ROOM_FIRST_CHECK (current candidate)
+   - harden bootstrap lifecycle: cache -> Room prepare -> bundled import fallback
+   - avoid unnecessary bundled re-import on cold process restart when Room snapshot already exists
 
-41. PASS_28C_COMPOSE_SEARCH_SCREEN_SCOPE_AUDIT (alternative next)
+41. PASS_28C_COMPOSE_SEARCH_SCREEN_SCOPE_AUDIT (recommended next)
    - define UI scope only after AUTO-04 checkpoint is accepted
+
+42. PASS_AUTO_05_EXTEND_DETEKT_BOUNDARY_COVERAGE (alternative next)
+   - tighten static boundary rules before broader UI/runtime scope expansion
 
 Future scope candidates (not active next pass):
 
-42. PASS_RT_01 - GTFS_REALTIME_SCOPE_LOCK_AND_IDENTITY_MODEL
+43. PASS_RT_01 - GTFS_REALTIME_SCOPE_LOCK_AND_IDENTITY_MODEL
    - lock realtime identity rules (`trip_id` + `stop_sequence`) before implementation
    - keep realtime/network/workmanager out until dedicated runtime pass approval
 
-43. PASS_CITY_PROFILE_01 - PEATUS_GRAPHQL_ROUTE_METADATA_DISCOVERY
+44. PASS_CITY_PROFILE_01 - PEATUS_GRAPHQL_ROUTE_METADATA_DISCOVERY
    - evaluate Peatus.ee / Digitransit GraphQL as city-route metadata helper
    - keep static GTFS as canonical routing identity source
 
 Likely following passes:
 
-44. PASS 29+ - DOWNLOADER_WORKMANAGER_REFRESH_LIFECYCLE
-45. PASS 30+ - FEED_FRESHNESS_HASH_VERSION_METADATA
-46. PASS UI-01 - DESTINATION_FIRST_HOME_AND_RESULT_CARDS_IMPLEMENTATION (after production feed/provider/query path is stable)
+45. PASS 29+ - DOWNLOADER_WORKMANAGER_REFRESH_LIFECYCLE
+46. PASS 30+ - FEED_FRESHNESS_HASH_VERSION_METADATA
+47. PASS UI-01 - DESTINATION_FIRST_HOME_AND_RESULT_CARDS_IMPLEMENTATION (after production feed/provider/query path is stable)
 
 Planning rule:
 - Any UI pass must align with `PASS UX-01` destination-first, list-first MVP blueprint.

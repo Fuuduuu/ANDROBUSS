@@ -4,7 +4,7 @@
 
 - Expected repo root: `C:\Users\Kasutaja\Desktop\ANDROBUSS`
 - Expected branch: `main`
-- Latest accepted HEAD: `ff2a88e` (`PASS_AUTO_03_DRIFT_AND_BOUNDARY_CHECK`)
+- Latest accepted HEAD: `0965cc3` (`PASS_28B_ROUTE_QUERY_WITH_EXPLICIT_ORIGIN`)
 - Working tree must be clean before a new pass
 
 ## Latest Accepted Pass
@@ -61,12 +61,15 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
   - `SearchUiState` with `FeedState` and `DestinationInputState`
   - destination enrichment uses existing feature-search pure Kotlin resolver/orchestrator components
   - no UI/navigation wiring
-- PASS 28B candidate extends SearchViewModel with explicit route-query state baseline:
+- PASS 28B accepted state extends SearchViewModel with explicit route-query state baseline:
   - `RouteQueryState` added with separate `FeedNotAvailable`, `DestinationNotReady`, `OriginNotProvided`, `NoPatternsAvailable`, and `RouteNotFound`
   - `searchRoute()` is explicit trigger only (no auto-run on input/origin changes)
   - explicit origin is required for route query
   - route query uses `DirectRouteQueryPreparationUseCase`
   - no UI/GPS/nearest-stop/network/realtime scope opened
+- PASS_AUTO_04 candidate hardens bootstrap lifecycle:
+  - cold start now checks provider cache, then `prepare(cityId, feedId)` from Room, and only then falls back to bundled import
+  - bundled synthetic asset remains fallback path, not first choice when Room already has bootstrap snapshot
 - Governance/tooling guardrails accepted after PASS 25:
   - PASS G03 audit-index/read-order sync
   - PASS AUTO-01 detekt module-boundary checks
@@ -97,7 +100,7 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Current Pass
 
-- `PASS_28B — ROUTE_QUERY_WITH_EXPLICIT_ORIGIN`
+- `PASS_AUTO_04 — BOOTSTRAP_ROOM_FIRST_CHECK`
 
 ## Lazy Context Note (PASS G03)
 
@@ -129,6 +132,6 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Next Technical Pass
 
-- `PASS_AUTO_04_BOOTSTRAP_ROOM_FIRST_CHECK` (recommended governance checkpoint before UI expansion)
-- Alternative track: `PASS_28C_COMPOSE_SEARCH_SCREEN_SCOPE_AUDIT`
+- `PASS_28C_COMPOSE_SEARCH_SCREEN_SCOPE_AUDIT` (recommended)
+- Alternative track: `PASS_AUTO_05_EXTEND_DETEKT_BOUNDARY_COVERAGE`
 - Production real asset remains blocked by legal/freshness/update-policy constraints.

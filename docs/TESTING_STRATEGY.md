@@ -239,6 +239,17 @@
   - missing-asset safe no-crash FeedNotReady-style behavior
 - PASS 25 app runtime tests remain pre-Hilt and do not include UI/ViewModel/Compose/WorkManager.
 
+## App Bootstrap Room-First Hardening Coverage (PASS_AUTO_04 Candidate)
+
+- `FeedBootstrapLoaderTest` adds cold-start Room-first coverage:
+  - when provider cache is empty but Room already has snapshot for bootstrap feed scope,
+  - `bootstrapIfNeeded()` calls `prepare(cityId, feedId)` and uses Room-loaded snapshot,
+  - bundled asset fallback is not required for this path.
+- Missing-asset behavior remains safe:
+  - with empty Room and missing asset, no crash and snapshot remains null.
+- Idempotency remains verified:
+  - repeated `bootstrapIfNeeded()` calls do not duplicate persisted rows.
+
 ## App DI Baseline Coverage Focus (PASS 27)
 
 - `:app:test` validates Hilt baseline integration at compile/runtime unit-test level:

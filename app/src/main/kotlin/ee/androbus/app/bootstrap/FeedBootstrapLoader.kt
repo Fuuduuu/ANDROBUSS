@@ -18,12 +18,21 @@ class FeedBootstrapLoader(
     private val json = Json
 
     /**
-     * Imports bundled feed into Room if no snapshot is already prepared.
+     * Ensures bootstrap snapshot is available with cold-start-safe ordering.
+     *
+     * Order:
+     * 1) If in-memory provider cache already has snapshot, return.
+     * 2) Prepare provider from Room for this bootstrap feed scope.
+     * 3) If Room load populated cache, return.
+     * 4) Fallback to bundled asset import.
+     * 5) Prepare again so cache serves imported snapshot.
      *
      * Safe to call repeatedly.
      * Missing/invalid asset is treated as FeedNotReady and does not crash.
      */
     suspend fun bootstrapIfNeeded() {
+        if (provider.getSnapshot(cityId) != null) return
+        provider.prepare(cityId = cityId, feedId = feedId)
         if (provider.getSnapshot(cityId) != null) return
 
         val dto = loadDto() ?: return

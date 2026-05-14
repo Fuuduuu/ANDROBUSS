@@ -46,7 +46,11 @@ Architecture baseline and implementation status snapshot.
   - `app` bundled bootstrap baseline with Hilt DI wiring:
     - synthetic bundled JSON snapshot asset
     - DTO -> `DomainFeedSnapshot` conversion
-    - bootstrap import + provider `prepare(...)` flow in `AndrobussApplication`
+    - bootstrap lifecycle hardening:
+      - check provider cache first
+      - if empty, call provider `prepare(cityId, feedId)` to load Room snapshot
+      - import bundled snapshot only when Room has no snapshot for bootstrap feed scope
+      - after import, call provider `prepare(...)` to populate cache
     - app-owned Hilt modules providing database/dao/importer/loader/provider/bootstrap-loader
     - `AppDatabase.create(context)` remains available as pre-Hilt/test utility
   - `app` presentation baseline (PASS 28A + PASS 28B candidate):
@@ -104,7 +108,8 @@ Test-only rule:
 
 | Step | Responsible component | Module layer | Trigger |
 | --- | --- | --- | --- |
-| Read bundled feed asset | `FeedBootstrapLoader` | `app` | First launch / Room empty |
+| Check cache + prepare Room snapshot | `FeedBootstrapLoader` | `app` | Cold start / process restart |
+| Read bundled feed asset (fallback only) | `FeedBootstrapLoader` | `app` | Room has no snapshot for bootstrap feed scope |
 | Call `FeedSnapshotImporter.import(...)` | `FeedBootstrapLoader` | `app` | After bundled asset read |
 | Call `RoomDomainFeedSnapshotProvider.prepare(...)` | `FeedBootstrapLoader` (startup baseline) | app/feature boundary | During startup bootstrap |
 | Use `getSnapshot(cityId)` | `DirectRouteQueryPreparationUseCase` caller | feature-search/app caller | Sync after `prepare(...)` |

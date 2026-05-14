@@ -2,32 +2,27 @@ project:
   name: ANDROBUSS
   branch: main
   remote: https://github.com/Fuuduuu/ANDROBUSS.git
-  last_accepted_commit: ff2a88efff0ca4dc258e9fba39fd7dc6dde071b4
-  last_known_good_commit: ff2a88efff0ca4dc258e9fba39fd7dc6dde071b4
-  current_pass: PASS_28B_ROUTE_QUERY_WITH_EXPLICIT_ORIGIN
-  next_recommended_pass: PASS_AUTO_04_BOOTSTRAP_ROOM_FIRST_CHECK
+  last_accepted_commit: 0965cc3be77f5355bce16ea4cf1f35f50e2a1932
+  last_known_good_commit: 0965cc3be77f5355bce16ea4cf1f35f50e2a1932
+  current_pass: PASS_AUTO_04_BOOTSTRAP_ROOM_FIRST_CHECK
+  next_recommended_pass: PASS_28C_COMPOSE_SEARCH_SCREEN_SCOPE_AUDIT
 
 scope:
-  current_goal: "Add app-layer explicit route query state with explicit origin requirement and no UI/navigation/GPS/network expansion."
+  current_goal: "Harden app bootstrap lifecycle to prefer existing Room snapshot before bundled asset import fallback."
   allowed_surfaces:
-    - app/build.gradle.kts
-    - app/src/main/kotlin/ee/androbus/app/di/FeedModule.kt
-    - app/src/main/kotlin/ee/androbus/app/presentation/search/
-    - app/src/test/kotlin/ee/androbus/app/presentation/search/
+    - app/src/main/kotlin/ee/androbus/app/bootstrap/FeedBootstrapLoader.kt
+    - app/src/test/kotlin/ee/androbus/app/bootstrap/FeedBootstrapLoaderTest.kt
     - docs/PROJECT_STATE.yml
     - docs/CURRENT_STATE.md
     - docs/ANDROID_ARCHITECTURE.md
-    - docs/ROUTING_LOGIC.md
     - docs/ROADMAP.md
     - docs/TESTING_STRATEGY.md
     - docs/AUDIT_INDEX.md
-    - docs/audit/PASS_28A_APP_SEARCH_VIEWMODEL_FEED_AND_DESTINATION_STATE.md
-    - docs/audit/PASS_28B_ROUTE_QUERY_WITH_EXPLICIT_ORIGIN.md
+    - docs/audit/PASS_AUTO_04_BOOTSTRAP_ROOM_FIRST_CHECK.md
   forbidden_surfaces:
-    - app/src/main/kotlin/ee/androbus/app/bootstrap/
-    - app/src/main/kotlin/ee/androbus/app/ui/
-    - app/src/main/kotlin/ee/androbus/app/navigation/
     - app/src/main/assets/
+    - app/src/main/kotlin/ee/androbus/app/presentation/search/
+    - app/src/main/kotlin/ee/androbus/app/di/
     - core-domain/src/main/
     - core-gtfs/src/main/
     - core-routing/src/
@@ -55,7 +50,7 @@ governance:
     - "PASS_27 Hilt DI baseline accepted"
     - "PASS_AUTO_03 drift and boundary verification accepted"
   drift_check_rule: "Every 5 accepted pass/checkpoints, run a docs-only drift-check before the next large implementation pass."
-  drift_check_counter: "0 / 5 (reset by PASS_AUTO_03 after drift and boundary verification)"
+  drift_check_counter: "3 / 5 (PASS 28A, PASS 28B, and PASS_AUTO_04 accepted since PASS_AUTO_03 reset)"
   next_mandatory_drift_check: "Run a docs-only drift-check again after the next five accepted checkpoints."
   drift_check_must_verify:
     - "CURRENT_STATE / ROADMAP / PROJECT_STATE alignment"
@@ -111,9 +106,9 @@ invariants:
 risks:
   active:
     - "Room provider cache is city-keyed; last prepare(city, feed) selects active feed per city."
-    - "Hilt baseline wiring exists in app; PASS 28B route query state is ViewModel-only with no UI/navigation integration yet."
-    - "Route query now requires explicit origin; automatic origin/GPS/nearest-stop flow is not implemented."
-    - "Route query state distinguishes FeedNotAvailable, DestinationNotReady, OriginNotProvided, NoPatternsAvailable, and RouteNotFound."
+    - "Bootstrap cold start currently depends on Room-first prepare policy for configured bootstrap feed scope."
+    - "AUTO-04 hardening checks only configured bootstrap feedId; active-feed/freshness policy remains future work."
+    - "Hilt baseline wiring exists in app; UI/navigation integration is not implemented yet."
     - "Bundled bootstrap asset is synthetic; real Rakvere production asset pipeline is pending."
     - "Room schema/import baseline has no freshness/hash/version metadata yet."
     - "Docs are growing; docs hygiene should be a later explicit pass."
