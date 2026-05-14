@@ -4,12 +4,13 @@
 
 - Expected repo root: `C:\Users\Kasutaja\Desktop\ANDROBUSS`
 - Expected branch: `main`
-- Latest accepted HEAD: `1f11ec3` (`PASS_27_HILT_DI_BASELINE`)
+- Latest accepted HEAD: `ff2a88e` (`PASS_AUTO_03_DRIFT_AND_BOUNDARY_CHECK`)
 - Working tree must be clean before a new pass
 
 ## Latest Accepted Pass
 
-- `PASS_27 — HILT_DI_BASELINE`
+- `PASS_AUTO_03 — DRIFT_AND_BOUNDARY_CHECK` (docs-only governance/boundary verification)
+- Latest technical implementation pass: `PASS_27 — HILT_DI_BASELINE`
 - Latest docs-only governance/future-notes pass remains `PASS_G05 — GTFS_REALTIME_AND_PEATUS_GRAPHQL_FUTURE_NOTES`
 
 PASS 21 added a parser-agnostic feed boundary and in-memory provider bootstrap.
@@ -55,6 +56,11 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
   - `RoomDomainFeedSnapshotProvider`
   - `FeedBootstrapLoader`
 - `AndrobussApplication` is now `@HiltAndroidApp` and triggers bootstrap via injected loader.
+- PASS 28A candidate adds first app presentation state baseline:
+  - `SearchViewModel` in app module
+  - `SearchUiState` with `FeedState` and `DestinationInputState`
+  - destination enrichment uses existing feature-search pure Kotlin resolver/orchestrator components
+  - no route-query call, no UI/navigation wiring
 - Governance/tooling guardrails accepted after PASS 25:
   - PASS G03 audit-index/read-order sync
   - PASS AUTO-01 detekt module-boundary checks
@@ -69,7 +75,7 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 - Production route-pattern source/provider wiring
 - Production feed downloader/refresh flow
-- ViewModel/Compose runtime wiring of the pipeline
+- Compose/navigation runtime wiring of the pipeline
 - Nearest-stop/geospatial resolution
 - UI feature flows
 
@@ -78,14 +84,14 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 - Runtime bootstrap is Hilt-backed but remains anchored in `Application.onCreate` until ViewModel/runtime lifecycle ownership pass.
 - Room baseline exists, but freshness metadata and feed lifecycle evolution are not implemented.
 - Production `RoutePattern` source is not implemented.
-- UI/ViewModel wiring is not implemented.
+- Compose/UI wiring is not implemented.
 - Nearest-stop/geospatial behavior is not implemented.
 - `rakvere-smoke` names are synthetic and separate from real Rakvere POI metadata names.
 - First-launch `FeedNotReady` state is expected before bootstrap prepare and is not an error state.
 
 ## Current Pass
 
-- `PASS_AUTO_03 — DRIFT_AND_BOUNDARY_CHECK` (docs-only governance sync after accepted PASS 27)
+- `PASS_28A — APP_SEARCH_VIEWMODEL_FEED_AND_DESTINATION_STATE`
 
 ## Lazy Context Note (PASS G03)
 
@@ -117,6 +123,5 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Next Technical Pass
 
-- `PASS_28 — SEARCH_VIEWMODEL_AND_FEED_STATE_SCOPE_AUDIT`
-- `PASS_28A — SEARCH_VIEWMODEL_AND_FEED_STATE` only after PASS_28 scope lock.
+- `PASS_28B — ROUTE_QUERY_AND_EXPLICIT_ORIGIN_BASELINE`
 - Production real asset remains blocked by legal/freshness/update-policy constraints.

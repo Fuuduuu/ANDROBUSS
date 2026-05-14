@@ -248,6 +248,20 @@
 - PASS 27 does not add ViewModel/UI Hilt tests.
 - PASS 27 does not add WorkManager/network/realtime tests.
 
+## App Search ViewModel State Coverage Focus (PASS 28A)
+
+- `SearchViewModelTest` covers:
+  - initial `FeedState.NotReady` + empty destination input state,
+  - `refreshFeedState()` transitions (`Ready` / `NotReady`) from provider snapshot availability,
+  - destination text handling (`Empty`, `Typed`),
+  - non-ambiguous destination resolution (`Jaam` -> `RKV_C`) without ID fabrication,
+  - ambiguous destination resolution (`Keskpeatus` -> multiple options) without auto-select,
+  - explicit ambiguous option selection to a single resolved option,
+  - feed-not-ready destination input safety (no crash, no fabricated IDs),
+  - guard that ViewModel does not reference `DirectRouteQueryPreparationUseCase` / `DirectRouteQueryBridge`.
+- PASS 28A does not add Compose/navigation/UI tests.
+- PASS 28A does not add route-query execution tests.
+
 ## Near-Term Test Gaps
 
 - Production destination enrichment orchestration wiring into app/ViewModel flow (future).

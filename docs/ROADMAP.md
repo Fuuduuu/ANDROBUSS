@@ -54,17 +54,17 @@ Next recommended pass:
 
 Current governance checkpoint:
 
-37. PASS_AUTO_03 - DRIFT_AND_BOUNDARY_CHECK (current candidate)
+37. PASS_AUTO_03 - DRIFT_AND_BOUNDARY_CHECK (completed)
    - validate docs/state/boundaries before ViewModel/UI expansion
 
 Next recommended technical pass:
 
-38. PASS_28 - SEARCH_VIEWMODEL_AND_FEED_STATE_SCOPE_AUDIT
-   - lock ViewModel/feed-state boundaries before implementation
-   - keep Compose/UI route screens out until scope audit is accepted
+38. PASS_28A - APP_SEARCH_VIEWMODEL_FEED_AND_DESTINATION_STATE (current candidate)
+   - add app SearchViewModel feed/destination state baseline only
+   - keep Compose/UI/navigation and route-query wiring out
 
-39. PASS_28A - SEARCH_VIEWMODEL_AND_FEED_STATE
-   - implement only the audited ViewModel/feed-state scope from PASS_28
+39. PASS_28B - ROUTE_QUERY_AND_EXPLICIT_ORIGIN_BASELINE
+   - add route-query and explicit origin baseline after PASS 28A state layer
 
 Future scope candidates (not active next pass):
 

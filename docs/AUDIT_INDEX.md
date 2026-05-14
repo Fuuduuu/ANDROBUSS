@@ -32,4 +32,5 @@ Rules:
 | PASS 26B / `f7708ad` | Real Rakvere dev/test asset only (test resources) | `docs/audit/PASS_26B_REAL_RAKVERE_DEV_TEST_ASSET_ONLY.md` | accepted | Need dev/test asset validation without changing runtime default |
 | PASS G05 / `7f2669a` | GTFS realtime + Peatus GraphQL future notes (docs-only) | `docs/audit/PASS_G05_GTFS_REALTIME_AND_PEATUS_GRAPHQL_FUTURE_NOTES.md` | accepted | Need future-scope constraints without runtime implementation |
 | PASS 27 / `1f11ec3` | App-level Hilt DI baseline for bootstrap | `docs/audit/PASS_27_HILT_DI_BASELINE.md` | accepted | Need app-owned DI baseline and boundaries before ViewModel/UI |
-| PASS AUTO-03 / current | Drift + boundary verification after PASS 27 | `docs/audit/PASS_AUTO_03_DRIFT_AND_BOUNDARY_CHECK.md` | current candidate | Need docs/governance/state alignment before PASS 28 scope opening |
+| PASS AUTO-03 / `ff2a88e` | Drift + boundary verification after PASS 27 | `docs/audit/PASS_AUTO_03_DRIFT_AND_BOUNDARY_CHECK.md` | accepted | Need docs/governance/state alignment before PASS 28 scope opening |
+| PASS 28A / current | App SearchViewModel feed + destination state baseline | `docs/audit/PASS_28A_APP_SEARCH_VIEWMODEL_FEED_AND_DESTINATION_STATE.md` | current candidate | Need first app-layer feed-ready and destination resolution state before route-query/UI wiring |
