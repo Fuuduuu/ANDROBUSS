@@ -53,17 +53,24 @@ Architecture baseline and implementation status snapshot.
       - after import, call provider `prepare(...)` to populate cache
     - app-owned Hilt modules providing database/dao/importer/loader/provider/bootstrap-loader
     - `AppDatabase.create(context)` remains available as pre-Hilt/test utility
-  - `app` presentation baseline (PASS 28A + PASS 28B candidate):
+  - `app` presentation baseline (PASS 28A + PASS 28B accepted):
     - `SearchViewModel` exposes `FeedState` and destination input state
     - destination resolution uses feature-search pure Kotlin enrichment pipeline
     - route query state is handled in ViewModel with explicit `searchRoute()` trigger
     - route query requires explicit origin and distinguishes precondition states from `RouteNotFound`
     - route query executes through `DirectRouteQueryPreparationUseCase`
+  - `app` Compose baseline (PASS 28C candidate):
+    - `MainActivity` uses `@AndroidEntryPoint` and hosts first `SearchScreen`
+    - screen uses `hiltViewModel<SearchViewModel>()`
+    - destination text is local UI state and is resolved only when user presses "Vali sihtkoht"
+    - route query is triggered only by explicit "Otsi" press
+    - origin selection is MVP/dev-only hardcoded stop chips (temporary)
+    - no navigation graph and no multi-screen setup
 - Skeleton/future:
   - `data-remote`, UI `feature-*` runtime wiring.
 - Not implemented yet:
   - Route-query execution wiring from app presentation state.
-  - Compose/navigation integration consuming prepared snapshot state.
+  - Multi-screen Compose/navigation integration consuming prepared snapshot state.
   - downloader/cache orchestration and feed refresh lifecycle.
   - production real-Rakvere bundled asset generation/import path.
 
@@ -118,8 +125,9 @@ Test-only rule:
 Notes:
 - PASS 27 accepted wiring uses app-owned Hilt modules and `@HiltAndroidApp` `AndrobussApplication`.
 - `AndrobussApplication.onCreate` is now a protected runtime wiring surface.
-- PASS 28A/28B ViewModel baseline exists without UI layer wiring.
-- No Compose/navigation screen wiring is implemented yet.
+- PASS 28A/28B ViewModel baseline exists.
+- PASS 28C adds first single-screen Compose wiring in `app`.
+- No navigation graph / multi-screen wiring is implemented yet.
 - No GPS/nearest-stop/network/realtime route-query extensions are implemented.
 - No WorkManager/downloader is added until bundled bootstrap baseline works.
 - `data-local` production code remains parser-agnostic.

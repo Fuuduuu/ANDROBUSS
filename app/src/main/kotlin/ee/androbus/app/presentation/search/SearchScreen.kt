@@ -1,0 +1,283 @@
+package ee.androbus.app.presentation.search
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import ee.androbus.core.domain.StopPointId
+
+@Composable
+fun SearchScreen(
+    viewModel: SearchViewModel = hiltViewModel(),
+) {
+    val uiState by viewModel.uiState.collectAsState()
+
+    SearchContent(
+        uiState = uiState,
+        onRefreshFeed = viewModel::refreshFeedState,
+        onDestinationSelect = viewModel::onDestinationChanged,
+        onOriginSelected = viewModel::onOriginStopPointChanged,
+        onAmbiguousOptionSelected = viewModel::onAmbiguousOptionSelected,
+        onSearch = viewModel::searchRoute,
+    )
+}
+
+@Composable
+fun SearchContent(
+    uiState: SearchUiState,
+    onRefreshFeed: () -> Unit,
+    onDestinationSelect: (String) -> Unit,
+    onOriginSelected: (StopPointId?) -> Unit,
+    onAmbiguousOptionSelected: (ResolvedDestinationOption) -> Unit,
+    onSearch: () -> Unit,
+) {
+    var destinationText by rememberSaveable { androidx.compose.runtime.mutableStateOf("") }
+
+    Column(
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        Text(
+            text = "ANDROBUSS",
+            style = MaterialTheme.typography.headlineMedium,
+        )
+        Text(
+            text = "Vali sihtkoht ja päritolu ning otsi marsruuti sõiduplaani järgi.",
+            style = MaterialTheme.typography.bodyMedium,
+        )
+
+        FeedStatusBanner(
+            feedState = uiState.feedState,
+            onRefreshFeed = onRefreshFeed,
+        )
+
+        DestinationSection(
+            destinationText = destinationText,
+            onDestinationTextChanged = { destinationText = it },
+            onDestinationSelect = { onDestinationSelect(destinationText) },
+            destinationInputState = uiState.destinationInput,
+            onAmbiguousOptionSelected = onAmbiguousOptionSelected,
+        )
+
+        OriginSection(
+            selectedOrigin = uiState.originStopPointId,
+            onOriginSelected = onOriginSelected,
+        )
+
+        Button(
+            onClick = onSearch,
+            modifier = Modifier.fillMaxWidth(),
+            contentPadding = PaddingValues(vertical = 12.dp),
+        ) {
+            Text("Otsi")
+        }
+
+        RouteResultSection(
+            routeQueryState = uiState.routeQueryState,
+        )
+    }
+}
+
+@Composable
+fun FeedStatusBanner(
+    feedState: FeedState,
+    onRefreshFeed: () -> Unit,
+) {
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Column(
+            modifier = Modifier.padding(12.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            Text(
+                text = feedStateTitle(feedState),
+                style = MaterialTheme.typography.titleMedium,
+            )
+            Text(
+                text = feedStateMessage(feedState),
+                style = MaterialTheme.typography.bodyMedium,
+            )
+            if (feedState is FeedState.NotReady || feedState is FeedState.Error) {
+                Button(onClick = onRefreshFeed) {
+                    Text("Kontrolli uuesti")
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun DestinationSection(
+    destinationText: String,
+    onDestinationTextChanged: (String) -> Unit,
+    onDestinationSelect: () -> Unit,
+    destinationInputState: DestinationInputState,
+    onAmbiguousOptionSelected: (ResolvedDestinationOption) -> Unit,
+) {
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Column(
+            modifier = Modifier.padding(12.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            Text("Sihtkoht", style = MaterialTheme.typography.titleMedium)
+            OutlinedTextField(
+                value = destinationText,
+                onValueChange = onDestinationTextChanged,
+                modifier = Modifier.fillMaxWidth(),
+                label = { Text("Sisesta sihtkoht") },
+                singleLine = true,
+            )
+            Button(
+                onClick = onDestinationSelect,
+                enabled = destinationText.isNotBlank(),
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text("Vali sihtkoht")
+            }
+            Text(
+                text = destinationStateMessage(destinationInputState),
+                style = MaterialTheme.typography.bodyMedium,
+            )
+            if (destinationInputState is DestinationInputState.Ambiguous) {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    destinationInputState.options.forEachIndexed { index, option ->
+                        Button(
+                            onClick = { onAmbiguousOptionSelected(option) },
+                            modifier = Modifier.fillMaxWidth(),
+                        ) {
+                            Text("${index + 1}. ${option.stopGroupName}")
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun OriginSection(
+    selectedOrigin: StopPointId?,
+    onOriginSelected: (StopPointId?) -> Unit,
+) {
+    val options =
+        listOf(
+            OriginOption("RKV A välja", StopPointId("RKV_A_OUT")),
+            OriginOption("RKV A sisse", StopPointId("RKV_A_IN")),
+            OriginOption("RKV B", StopPointId("RKV_B")),
+            OriginOption("RKV C", StopPointId("RKV_C")),
+        )
+
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Column(
+            modifier = Modifier.padding(12.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            Text("Päritolu (MVP/dev)", style = MaterialTheme.typography.titleMedium)
+            // TODO PASS 29+: replace with proper origin resolver / nearest-stop selection.
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                options.forEach { option ->
+                    FilterChip(
+                        selected = selectedOrigin == option.stopPointId,
+                        modifier = Modifier.fillMaxWidth(),
+                        onClick = { onOriginSelected(option.stopPointId) },
+                        label = { Text(option.label) },
+                    )
+                }
+            }
+            if (selectedOrigin != null) {
+                Button(onClick = { onOriginSelected(null) }) {
+                    Text("Eemalda päritolu valik")
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun RouteResultSection(
+    routeQueryState: RouteQueryState,
+) {
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Column(
+            modifier = Modifier.padding(12.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            Text("Tulemus", style = MaterialTheme.typography.titleMedium)
+            Text(
+                text = routeStateMessage(routeQueryState),
+                style = MaterialTheme.typography.bodyMedium,
+            )
+            if (routeQueryState is RouteQueryState.RouteFound) {
+                val route = routeQueryState.route
+                Text("marsruut leitud", style = MaterialTheme.typography.bodyLarge)
+                Text("Muster: ${route.routePatternId.value}", style = MaterialTheme.typography.bodyMedium)
+                Text("Lähtepeatus: ${route.originStopPointId.value}", style = MaterialTheme.typography.bodyMedium)
+                Text("Sihtpeatus: ${route.destinationStopPointId.value}", style = MaterialTheme.typography.bodyMedium)
+                Text("Lõigu peatuste arv: ${route.segmentStopCount}", style = MaterialTheme.typography.bodyMedium)
+            }
+        }
+    }
+}
+
+internal data class OriginOption(
+    val label: String,
+    val stopPointId: StopPointId,
+)
+
+internal fun feedStateTitle(feedState: FeedState): String =
+    when (feedState) {
+        FeedState.NotReady -> "Bussiandmeid laaditakse"
+        FeedState.Ready -> "Bussiandmed valmis"
+        is FeedState.Error -> "Bussiandmeid ei saanud hetkel ette valmistada"
+    }
+
+internal fun feedStateMessage(feedState: FeedState): String =
+    when (feedState) {
+        FeedState.NotReady -> "Andmed valmistatakse ette. Otsi marsruuti sõiduplaani järgi pärast andmete valmimist."
+        FeedState.Ready -> "Saad otsida marsruuti sõiduplaani järgi."
+        is FeedState.Error -> "Andmete ettevalmistus ebaõnnestus: ${feedState.message}"
+    }
+
+internal fun destinationStateMessage(state: DestinationInputState): String =
+    when (state) {
+        DestinationInputState.Empty -> "Sisesta sihtkoht ja vajuta \"Vali sihtkoht\"."
+        is DestinationInputState.Typed -> "Valitud tekst: ${state.text}"
+        DestinationInputState.Resolving -> "Sihtkoha vasteid kontrollitakse."
+        is DestinationInputState.Resolved -> "Sihtkoht valitud: ${state.displayName}"
+        is DestinationInputState.Ambiguous -> "Leiti mitu varianti. Vali sobiv peatus."
+        DestinationInputState.NotFound -> "Sihtkohta ei leitud."
+    }
+
+internal fun routeStateMessage(state: RouteQueryState): String =
+    when (state) {
+        RouteQueryState.Idle -> "Vali sihtkoht ja päritolu, seejärel vajuta \"Otsi\"."
+        RouteQueryState.Searching -> "Marsruuti otsitakse sõiduplaani järgi."
+        RouteQueryState.FeedNotAvailable -> "Bussiandmed pole veel valmis."
+        RouteQueryState.DestinationNotReady -> "Sihtkoht pole route-otsinguks valmis."
+        RouteQueryState.OriginNotProvided -> "Määra päritolu enne otsingut."
+        RouteQueryState.NoPatternsAvailable -> "Sõiduplaani mustrid puuduvad."
+        is RouteQueryState.RouteFound -> "marsruut leitud"
+        is RouteQueryState.RouteNotFound -> "Marsruuti ei leitud antud valikuga."
+        is RouteQueryState.Error -> "Viga marsruudi otsingul: ${state.message}"
+    }

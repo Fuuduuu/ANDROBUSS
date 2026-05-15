@@ -72,28 +72,33 @@ Next recommended technical pass:
    - harden bootstrap lifecycle: cache -> Room prepare -> bundled import fallback
    - avoid unnecessary bundled re-import on cold process restart when Room snapshot already exists
 
-41. PASS_AUTO_05_EXTEND_DETEKT_BOUNDARY_COVERAGE (current candidate)
+41. PASS_AUTO_05_EXTEND_DETEKT_BOUNDARY_COVERAGE (completed)
    - extend Detekt boundary-only coverage to app/data-local/feature-search/city-adapters
    - keep runtime/source behavior unchanged
 
-42. PASS_28C_COMPOSE_SEARCH_SCREEN_SCOPE_AUDIT (recommended next)
-   - define UI scope only after AUTO-05 checkpoint is accepted
+42. PASS_28C_COMPOSE_SEARCH_SCREEN_BASELINE (current candidate)
+   - first Compose search screen in app with explicit destination selection and explicit route search trigger
+   - no navigation graph, GPS, network, realtime, or WorkManager scope
 
 Future scope candidates (not active next pass):
 
-43. PASS_RT_01 - GTFS_REALTIME_SCOPE_LOCK_AND_IDENTITY_MODEL
+43. PASS_29_ORIGIN_RESOLUTION_OR_SEARCH_UI_REFINEMENT (recommended next)
+   - replace dev-only origin chips with proper origin resolution flow
+   - refine first-screen UX states without opening realtime/network scope
+
+44. PASS_RT_01 - GTFS_REALTIME_SCOPE_LOCK_AND_IDENTITY_MODEL
    - lock realtime identity rules (`trip_id` + `stop_sequence`) before implementation
    - keep realtime/network/workmanager out until dedicated runtime pass approval
 
-44. PASS_CITY_PROFILE_01 - PEATUS_GRAPHQL_ROUTE_METADATA_DISCOVERY
+45. PASS_CITY_PROFILE_01 - PEATUS_GRAPHQL_ROUTE_METADATA_DISCOVERY
    - evaluate Peatus.ee / Digitransit GraphQL as city-route metadata helper
    - keep static GTFS as canonical routing identity source
 
 Likely following passes:
 
-45. PASS 29+ - DOWNLOADER_WORKMANAGER_REFRESH_LIFECYCLE
-46. PASS 30+ - FEED_FRESHNESS_HASH_VERSION_METADATA
-47. PASS UI-01 - DESTINATION_FIRST_HOME_AND_RESULT_CARDS_IMPLEMENTATION (after production feed/provider/query path is stable)
+46. PASS 30+ - DOWNLOADER_WORKMANAGER_REFRESH_LIFECYCLE
+47. PASS 31+ - FEED_FRESHNESS_HASH_VERSION_METADATA
+48. PASS UI-01 - DESTINATION_FIRST_HOME_AND_RESULT_CARDS_IMPLEMENTATION (after production feed/provider/query path is stable)
 
 Planning rule:
 - Any UI pass must align with `PASS UX-01` destination-first, list-first MVP blueprint.
@@ -109,4 +114,4 @@ Governance track:
 Build/tooling track:
 - AUTO-01 - DETEKT_MODULE_BOUNDARIES (completed)
 - AUTO-02 - DEPENDENCY_LOCKING (completed)
-- AUTO-05 - EXTEND_DETEKT_BOUNDARY_COVERAGE (current candidate)
+- AUTO-05 - EXTEND_DETEKT_BOUNDARY_COVERAGE (completed)

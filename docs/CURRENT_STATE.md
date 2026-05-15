@@ -4,13 +4,13 @@
 
 - Expected repo root: `C:\Users\Kasutaja\Desktop\ANDROBUSS`
 - Expected branch: `main`
-- Latest accepted HEAD: `108f747` (`PASS_AUTO_04_BOOTSTRAP_ROOM_FIRST_CHECK`)
+- Latest accepted HEAD: `ff00717` (`PASS_AUTO_05_EXTEND_DETEKT_BOUNDARY_COVERAGE`)
 - Working tree must be clean before a new pass
 
 ## Latest Accepted Pass
 
-- `PASS_AUTO_04 — BOOTSTRAP_ROOM_FIRST_CHECK` (accepted implementation hardening pass)
-- Latest governance checkpoint pass: `PASS_AUTO_03 — DRIFT_AND_BOUNDARY_CHECK` (docs-only governance/boundary verification)
+- `PASS_AUTO_05 — EXTEND_DETEKT_BOUNDARY_COVERAGE` (accepted build/tooling hardening pass)
+- Latest governance checkpoint pass: `PASS_AUTO_03 — DRIFT_AND_BOUNDARY_CHECK` (docs-only drift/boundary verification)
 - Latest docs-only governance/future-notes pass remains `PASS_G05 — GTFS_REALTIME_AND_PEATUS_GRAPHQL_FUTURE_NOTES`
 
 PASS 21 added a parser-agnostic feed boundary and in-memory provider bootstrap.
@@ -70,12 +70,18 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 - PASS_AUTO_04 accepted state hardens bootstrap lifecycle:
   - cold start now checks provider cache, then `prepare(cityId, feedId)` from Room, and only then falls back to bundled import
   - bundled synthetic asset remains fallback path, not first choice when Room already has bootstrap snapshot
-- PASS_AUTO_05 current candidate extends Detekt boundary coverage to:
+- PASS_AUTO_05 accepted state extends Detekt boundary coverage to:
   - `app`
   - `data-local`
   - `feature-search`
   - `city-adapters`
   while keeping Detekt scope boundary-only (no default style/complexity bleed)
+- PASS_28C current candidate adds first Compose search screen baseline in app:
+  - `MainActivity` sets Compose content and is `@AndroidEntryPoint`
+  - Search screen uses existing `SearchViewModel` via `hiltViewModel()`
+  - destination input uses local text state with explicit "Vali sihtkoht" action
+  - route search remains explicit via separate "Otsi" action
+  - origin selector is MVP/dev-only hardcoded chip list (no GPS/permissions)
 - Governance/tooling guardrails accepted after PASS 25:
   - PASS G03 audit-index/read-order sync
   - PASS AUTO-01 detekt module-boundary checks
@@ -106,7 +112,7 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Current Pass
 
-- `PASS_AUTO_05 — EXTEND_DETEKT_BOUNDARY_COVERAGE`
+- `PASS_28C — COMPOSE_SEARCH_SCREEN_BASELINE`
 
 ## Lazy Context Note (PASS G03)
 
@@ -138,6 +144,6 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Next Technical Pass
 
-- `PASS_28C_COMPOSE_SEARCH_SCREEN_SCOPE_AUDIT` (recommended)
-- Alternative track: `PASS_29` (if roadmap naming chooses direct post-audit UI/state execution)
+- `PASS_29_ORIGIN_RESOLUTION_OR_SEARCH_UI_REFINEMENT` (recommended)
+- Alternative track: `PASS_AUTO_06_DRIFT_AND_BOUNDARY_CHECK`
 - Production real asset remains blocked by legal/freshness/update-policy constraints.

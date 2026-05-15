@@ -307,6 +307,18 @@
   - no GPS/nearest-stop tests,
   - no network/realtime tests.
 
+## App Compose Search Screen Baseline Coverage (PASS 28C Candidate)
+
+- PASS 28C adds first app Compose screen wiring without navigation graph.
+- Baseline tests are lightweight state-to-text mapping checks:
+  - feed status wording remains static schedule-safe
+  - route-found headline rendering text is stable
+  - destination prompt keeps explicit "Vali sihtkoht" action
+- PASS 28C keeps behavior constraints:
+  - destination resolution is not triggered on every keystroke
+  - route query remains explicit button action
+  - origin selection stays temporary dev-only chips (no GPS/permissions)
+
 ## Near-Term Test Gaps
 
 - Production destination enrichment orchestration wiring into app/ViewModel flow (future).
