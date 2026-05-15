@@ -250,7 +250,7 @@
 - Idempotency remains verified:
   - repeated `bootstrapIfNeeded()` calls do not duplicate persisted rows.
 
-## Detekt Boundary Coverage Extension (PASS_AUTO_05 Candidate)
+## Detekt Boundary Coverage Extension (PASS_AUTO_05 Accepted)
 
 - Boundary-only Detekt coverage is extended to:
   - `app`
@@ -288,7 +288,7 @@
   - feed-not-ready destination input safety (no crash, no fabricated IDs).
 - PASS 28A does not add Compose/navigation/UI tests.
 
-## App Route Query + Explicit Origin Coverage Focus (PASS 28B Candidate)
+## App Route Query + Explicit Origin Coverage Focus (PASS 28B Accepted)
 
 - `SearchViewModelTest` now covers route-query baseline behavior:
   - `searchRoute()` with no origin -> `OriginNotProvided` (not `RouteNotFound`),
@@ -307,7 +307,7 @@
   - no GPS/nearest-stop tests,
   - no network/realtime tests.
 
-## App Compose Search Screen Baseline Coverage (PASS 28C Candidate)
+## App Compose Search Screen Baseline Coverage (PASS 28C Accepted)
 
 - PASS 28C adds first app Compose screen wiring without navigation graph.
 - Baseline tests are lightweight state-to-text mapping checks:
@@ -318,6 +318,16 @@
   - destination resolution is not triggered on every keystroke
   - route query remains explicit button action
   - origin selection stays temporary dev-only chips (no GPS/permissions)
+
+## Drift/Boundary Verification (PASS_AUTO_06 Candidate)
+
+- After PASS 28C acceptance, run docs-only governance drift sync before opening new UI scope.
+- Required verification set:
+  - `.\gradlew.bat detekt`
+  - `.\gradlew.bat test`
+  - `.\gradlew.bat build`
+  - parser/leak/Hilt/navigation/GPS/network/realtime boundary greps
+  - `py -3 tools/validate_project_state.py`
 
 ## Near-Term Test Gaps
 

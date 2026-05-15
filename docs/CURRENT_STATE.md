@@ -4,12 +4,12 @@
 
 - Expected repo root: `C:\Users\Kasutaja\Desktop\ANDROBUSS`
 - Expected branch: `main`
-- Latest accepted HEAD: `ff00717` (`PASS_AUTO_05_EXTEND_DETEKT_BOUNDARY_COVERAGE`)
+- Latest accepted HEAD: `fc64cdb` (`PASS_28C_COMPOSE_SEARCH_SCREEN_BASELINE`)
 - Working tree must be clean before a new pass
 
 ## Latest Accepted Pass
 
-- `PASS_AUTO_05 — EXTEND_DETEKT_BOUNDARY_COVERAGE` (accepted build/tooling hardening pass)
+- `PASS_28C — COMPOSE_SEARCH_SCREEN_BASELINE` (accepted first visible UI baseline pass)
 - Latest governance checkpoint pass: `PASS_AUTO_03 — DRIFT_AND_BOUNDARY_CHECK` (docs-only drift/boundary verification)
 - Latest docs-only governance/future-notes pass remains `PASS_G05 — GTFS_REALTIME_AND_PEATUS_GRAPHQL_FUTURE_NOTES`
 
@@ -76,12 +76,15 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
   - `feature-search`
   - `city-adapters`
   while keeping Detekt scope boundary-only (no default style/complexity bleed)
-- PASS_28C current candidate adds first Compose search screen baseline in app:
+- PASS_28C accepted state adds first Compose search screen baseline in app:
   - `MainActivity` sets Compose content and is `@AndroidEntryPoint`
   - Search screen uses existing `SearchViewModel` via `hiltViewModel()`
   - destination input uses local text state with explicit "Vali sihtkoht" action
   - route search remains explicit via separate "Otsi" action
   - origin selector is MVP/dev-only hardcoded chip list (no GPS/permissions)
+- First visible UI now exists in app, but it remains minimal MVP/diagnostic baseline.
+- No navigation graph, GPS/map permissions, downloader/network, WorkManager, or realtime behavior has been opened.
+- Synthetic runtime bootstrap asset remains default; real Rakvere profile remains test-only.
 - Governance/tooling guardrails accepted after PASS 25:
   - PASS G03 audit-index/read-order sync
   - PASS AUTO-01 detekt module-boundary checks
@@ -112,7 +115,7 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Current Pass
 
-- `PASS_28C — COMPOSE_SEARCH_SCREEN_BASELINE`
+- `PASS_AUTO_06 — DRIFT_AND_UI_BASELINE_CHECK`
 
 ## Lazy Context Note (PASS G03)
 
@@ -144,6 +147,6 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Next Technical Pass
 
-- `PASS_29_ORIGIN_RESOLUTION_OR_SEARCH_UI_REFINEMENT` (recommended)
-- Alternative track: `PASS_AUTO_06_DRIFT_AND_BOUNDARY_CHECK`
+- `PASS_UI_01_SEARCH_SCREEN_SMOKE_AND_POLISH` (recommended)
+- Alternative track: `PASS_29_RAKVERE_QUICK_DESTINATIONS_SCOPE_AUDIT`
 - Production real asset remains blocked by legal/freshness/update-policy constraints.

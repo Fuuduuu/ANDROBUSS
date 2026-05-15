@@ -1,6 +1,6 @@
 # CODEBASE_IMPACT_MAP
 
-State synchronized for `PASS_AUTO_05` detekt boundary-coverage extension candidate.
+State synchronized for `PASS_AUTO_06` docs-only drift/UI-boundary verification candidate.
 
 ## Module Responsibilities
 
@@ -13,7 +13,7 @@ State synchronized for `PASS_AUTO_05` detekt boundary-coverage extension candida
 | `feature-search` | Search pipeline: resolution, enrichment, orchestration, route-query preparation | Implemented + tested |
 | `data-local` | Scoped Room feed snapshot persistence/import/provider baseline | Implemented baseline |
 | `data-remote` | Future downloader/update-check boundary | Future |
-| `app` + UI `feature-*` modules | Bundled bootstrap wiring + DI/runtime orchestration + UI flows | App bootstrap + Hilt DI baseline implemented; UI flows future |
+| `app` + UI `feature-*` modules | Bundled bootstrap wiring + DI/runtime orchestration + UI flows | App bootstrap + Hilt DI baseline + first Compose search screen baseline implemented; broader UI flows future |
 
 ## PASS 20 Impact
 
@@ -104,7 +104,7 @@ State synchronized for `PASS_AUTO_05` detekt boundary-coverage extension candida
 - `settings-gradle.lockfile` tracks settings/buildscript resolution.
 - This pass hardens dependency reproducibility and transitive drift visibility only; runtime behavior is unchanged.
 
-## Build Tooling Impact (PASS_AUTO_05 Candidate)
+## Build Tooling Impact (PASS_AUTO_05 Accepted)
 
 - Detekt boundary-only coverage expands from core modules to:
   - `app`
@@ -113,6 +113,16 @@ State synchronized for `PASS_AUTO_05` detekt boundary-coverage extension candida
   - `city-adapters`
 - Forbidden-import rules are module-specific and focused on architecture boundaries only.
 - Runtime/source behavior is unchanged by AUTO-05 configuration.
+
+## PASS 28C Impact
+
+- `app` gained first visible Compose search UI baseline:
+  - `MainActivity` hosts `SearchScreen`
+  - destination resolution is explicit user action (`Vali sihtkoht`)
+  - route query trigger is explicit user action (`Otsi`)
+  - origin is temporary dev-only chip selection (no GPS permissions)
+- No navigation graph/multi-screen runtime was introduced.
+- No network/downloader/realtime/WorkManager scope was introduced.
 
 ## Feature-Search Snapshot
 

@@ -2,31 +2,27 @@ project:
   name: ANDROBUSS
   branch: main
   remote: https://github.com/Fuuduuu/ANDROBUSS.git
-  last_accepted_commit: ff007174c6a20addb3b0bcf2bbff15179d084f51
-  last_known_good_commit: ff007174c6a20addb3b0bcf2bbff15179d084f51
-  current_pass: PASS_28C_COMPOSE_SEARCH_SCREEN_BASELINE
-  next_recommended_pass: PASS_29_ORIGIN_RESOLUTION_OR_SEARCH_UI_REFINEMENT
+  last_accepted_commit: fc64cdb13a0f184b39fecf0cd27a81526e352907
+  last_known_good_commit: fc64cdb13a0f184b39fecf0cd27a81526e352907
+  current_pass: PASS_AUTO_06_DRIFT_AND_UI_BASELINE_CHECK
+  next_recommended_pass: PASS_UI_01_SEARCH_SCREEN_SMOKE_AND_POLISH
 
 scope:
-  current_goal: "Create first app Compose search screen baseline wired to existing SearchViewModel without navigation/GPS/network/realtime scope."
+  current_goal: "Docs-only drift and boundary verification after first Compose search screen baseline acceptance."
   allowed_surfaces:
-    - gradle/libs.versions.toml
-    - app/build.gradle.kts
-    - app/gradle.lockfile
-    - app/src/main/java/ee/androbus/app/MainActivity.kt
-    - app/src/main/kotlin/ee/androbus/app/presentation/search/SearchScreen.kt
-    - app/src/test/kotlin/ee/androbus/app/presentation/search/SearchScreenStateTextTest.kt
     - docs/PROJECT_STATE.yml
     - docs/CURRENT_STATE.md
-    - docs/ANDROID_ARCHITECTURE.md
     - docs/ROADMAP.md
-    - docs/TESTING_STRATEGY.md
     - docs/AUDIT_INDEX.md
-    - docs/audit/PASS_28C_COMPOSE_SEARCH_SCREEN_BASELINE.md
+    - docs/TESTING_STRATEGY.md
+    - docs/CODEBASE_IMPACT_MAP.md
+    - docs/ANDROID_ARCHITECTURE.md
+    - docs/audit/PASS_AUTO_06_DRIFT_AND_UI_BASELINE_CHECK.md
+    - docs/PROTECTED_SURFACES.md
+    - docs/UX_PRINCIPLES.md
+    - docs/ROUTING_LOGIC.md
   forbidden_surfaces:
-    - app/src/main/assets/
-    - app/src/main/kotlin/ee/androbus/app/bootstrap/
-    - app/src/main/kotlin/ee/androbus/app/di/
+    - app/src/
     - core-domain/src/main/
     - core-gtfs/src/main/
     - core-routing/src/
@@ -40,8 +36,12 @@ scope:
     - feature-favourites/src/
     - feature-alerts/src/
     - build.gradle.kts
+    - app/build.gradle.kts
+    - gradle/libs.versions.toml
     - settings.gradle.kts
+    - config/detekt/
     - settings-gradle.lockfile
+    - app/gradle.lockfile
     - .github/
 
 governance:
@@ -56,9 +56,10 @@ governance:
     - "PASS_AUTO_02 dependency locking accepted"
     - "PASS_27 Hilt DI baseline accepted"
     - "PASS_AUTO_03 drift and boundary verification accepted"
+    - "PASS_28C first Compose search screen baseline accepted"
   drift_check_rule: "Every 5 accepted pass/checkpoints, run a docs-only drift-check before the next large implementation pass."
-  drift_check_counter: "5 / 5 (PASS 28A, PASS 28B, PASS_AUTO_04, PASS_AUTO_05 accepted since PASS_AUTO_03 reset; PASS_28C is current candidate)"
-  next_mandatory_drift_check: "Run a docs-only drift-check again after the next five accepted checkpoints."
+  drift_check_counter: "0 / 5 (reset by PASS_AUTO_06 after PASS_28C acceptance and governance sync)"
+  next_mandatory_drift_check: "Run a docs-only drift-check after five new accepted checkpoints."
   drift_check_must_verify:
     - "CURRENT_STATE / ROADMAP / PROJECT_STATE alignment"
     - "AUDIT_INDEX includes recent passes"
@@ -116,8 +117,8 @@ risks:
     - "Bootstrap cold start depends on Room-first prepare policy for configured bootstrap feed scope."
     - "AUTO-04 hardening checks only configured bootstrap feedId; active-feed/freshness policy remains future work."
     - "AUTO-05 detekt rules are boundary-only and intentionally do not enforce style/complexity hygiene."
-    - "Hilt baseline wiring exists in app; UI/navigation integration is not implemented yet."
-    - "PASS 28C baseline UI keeps dev-only explicit origin chips; nearest-stop/GPS origin flow is not implemented."
+    - "PASS 28C introduces first Compose search UI baseline, but it remains MVP/diagnostic-only and single-screen."
+    - "Origin selection remains dev-only hardcoded chips; nearest-stop/GPS origin flow is not implemented."
     - "Bundled bootstrap asset is synthetic; real Rakvere production asset pipeline is pending."
     - "Room schema/import baseline has no freshness/hash/version metadata yet."
     - "Docs are growing; docs hygiene should be a later explicit pass."
@@ -130,18 +131,16 @@ risks:
 validation:
   required_commands:
     - "py -3 tools/validate_project_state.py"
-    - ".\\gradlew.bat :app:test"
-    - ".\\gradlew.bat :feature-search:test"
-    - ".\\gradlew.bat :core-domain:test"
-    - ".\\gradlew.bat :data-local:test"
     - ".\\gradlew.bat detekt"
     - ".\\gradlew.bat test"
     - ".\\gradlew.bat build"
     - "rg -n \"GtfsFeedParser|GtfsDomainMapper|MappedGtfsFeed\" app/src/main data-local/src/main"
     - "rg -n \"@Serializable\" core-domain/src"
     - "rg -n \"allowMainThreadQueries\" data-local/src"
-    - "rg -n \"WorkManager|Retrofit|OkHttp|GTFSRealtime|TripUpdate|VehiclePosition\" app/src/main data-local/src/main feature-search/src/main data-remote/src/main"
-    - "rg -n \"hiltViewModel\\(\" app/src/main"
+    - "rg -n \"@HiltAndroidApp|@Module|@InstallIn|@Inject\" core-domain core-gtfs core-routing feature-search"
+    - "rg -n \"LocationManager|FusedLocation|ACCESS_FINE_LOCATION|ACCESS_COARSE_LOCATION|WorkManager|Retrofit|OkHttp|GTFSRealtime|TripUpdate|VehiclePosition\" app/src/main data-local/src/main feature-search/src/main"
+    - "rg -n \"NavHost|NavController|rememberNavController|navigation-compose\" app/src/main app/build.gradle.kts"
+    - "rg -n \"reaalajas|pärisajas|live|realtime\" app/src/main docs/UX_PRINCIPLES.md docs/CURRENT_STATE.md"
     - "git diff --check"
     - "git status --short --untracked-files=all"
     - "git diff --name-only"

@@ -81,12 +81,13 @@ Out of MVP scope:
 - Current location is an origin coordinate seed until explicit stop-point resolution/nearest-stop logic is implemented.
 - Live vehicle map remains future-only until data freshness semantics are proven.
 
-## Current Implementation Alignment (After PASS 15)
+## Current Implementation Alignment (After PASS 28C)
 
 - Core routing and candidate pipeline logic exists in pure Kotlin modules.
-- No production UI flow is implemented yet.
+- First app-level Compose search screen baseline exists (single-screen, MVP/diagnostic).
+- No navigation graph, GPS/map permissions, network/downloader, or realtime behavior is implemented.
 - No Room cache, network downloader, realtime integration, or nearest-stop geospatial resolution exists yet.
-- PASS 16 remains the next technical pass before UI implementation phases.
+- Additional UI passes remain required before production-ready rider flow.
 
 ## Future UI Phases
 

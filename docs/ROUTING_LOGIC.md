@@ -115,7 +115,7 @@ Identity rules:
 - Realtime `TripUpdate` matching is future-only and will require explicit `TripId + stop_sequence` modelling.
 - Current routing must not infer realtime status from static results.
 
-## App Route Query State Baseline (PASS 28B Candidate)
+## App Route Query State Baseline (PASS 28B Accepted)
 
 - App `SearchViewModel` route query trigger is explicit: `searchRoute()`.
 - Route query does not auto-run on origin or destination input changes.

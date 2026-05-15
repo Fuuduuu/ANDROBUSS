@@ -31,7 +31,7 @@ Architecture baseline and implementation status snapshot.
 - `feature-alerts`
 - `city-adapters`
 
-## Implementation Status (After PASS 27 Accepted)
+## Implementation Status (After PASS 28C Accepted)
 
 - Implemented pure Kotlin logic:
   - `core-domain`
@@ -59,7 +59,7 @@ Architecture baseline and implementation status snapshot.
     - route query state is handled in ViewModel with explicit `searchRoute()` trigger
     - route query requires explicit origin and distinguishes precondition states from `RouteNotFound`
     - route query executes through `DirectRouteQueryPreparationUseCase`
-  - `app` Compose baseline (PASS 28C candidate):
+  - `app` Compose baseline (PASS 28C accepted):
     - `MainActivity` uses `@AndroidEntryPoint` and hosts first `SearchScreen`
     - screen uses `hiltViewModel<SearchViewModel>()`
     - destination text is local UI state and is resolved only when user presses "Vali sihtkoht"
@@ -69,8 +69,9 @@ Architecture baseline and implementation status snapshot.
 - Skeleton/future:
   - `data-remote`, UI `feature-*` runtime wiring.
 - Not implemented yet:
-  - Route-query execution wiring from app presentation state.
   - Multi-screen Compose/navigation integration consuming prepared snapshot state.
+  - origin resolver replacement for dev-only chip selector.
+  - dedicated search-screen polish and broader UI composition passes.
   - downloader/cache orchestration and feed refresh lifecycle.
   - production real-Rakvere bundled asset generation/import path.
 
