@@ -4,12 +4,13 @@
 
 - Expected repo root: `C:\Users\Kasutaja\Desktop\ANDROBUSS`
 - Expected branch: `main`
-- Latest accepted HEAD: `fc64cdb` (`PASS_28C_COMPOSE_SEARCH_SCREEN_BASELINE`)
+- Latest accepted HEAD: `e67e750` (`PASS_AUTO_06_DRIFT_AND_UI_BASELINE_CHECK`)
 - Working tree must be clean before a new pass
 
 ## Latest Accepted Pass
 
 - `PASS_28C — COMPOSE_SEARCH_SCREEN_BASELINE` (accepted first visible UI baseline pass)
+- `PASS_AUTO_06 — DRIFT_AND_UI_BASELINE_CHECK` (accepted docs-only drift + UI boundary verification)
 - Latest governance checkpoint pass: `PASS_AUTO_03 — DRIFT_AND_BOUNDARY_CHECK` (docs-only drift/boundary verification)
 - Latest docs-only governance/future-notes pass remains `PASS_G05 — GTFS_REALTIME_AND_PEATUS_GRAPHQL_FUTURE_NOTES`
 
@@ -115,7 +116,7 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Current Pass
 
-- `PASS_AUTO_06 — DRIFT_AND_UI_BASELINE_CHECK`
+- `PASS_UI_01 — SEARCH_SCREEN_SMOKE_AND_POLISH`
 
 ## Lazy Context Note (PASS G03)
 
@@ -147,6 +148,5 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Next Technical Pass
 
-- `PASS_UI_01_SEARCH_SCREEN_SMOKE_AND_POLISH` (recommended)
-- Alternative track: `PASS_29_RAKVERE_QUICK_DESTINATIONS_SCOPE_AUDIT`
+- `PASS_29_RAKVERE_QUICK_DESTINATIONS_SCOPE_AUDIT`
 - Production real asset remains blocked by legal/freshness/update-policy constraints.

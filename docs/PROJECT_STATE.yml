@@ -2,27 +2,25 @@ project:
   name: ANDROBUSS
   branch: main
   remote: https://github.com/Fuuduuu/ANDROBUSS.git
-  last_accepted_commit: fc64cdb13a0f184b39fecf0cd27a81526e352907
-  last_known_good_commit: fc64cdb13a0f184b39fecf0cd27a81526e352907
-  current_pass: PASS_AUTO_06_DRIFT_AND_UI_BASELINE_CHECK
-  next_recommended_pass: PASS_UI_01_SEARCH_SCREEN_SMOKE_AND_POLISH
+  last_accepted_commit: e67e750d7cb2d150239df9116beed4bf88c71044
+  last_known_good_commit: e67e750d7cb2d150239df9116beed4bf88c71044
+  current_pass: PASS_UI_01_SEARCH_SCREEN_SMOKE_AND_POLISH
+  next_recommended_pass: PASS_29_RAKVERE_QUICK_DESTINATIONS_SCOPE_AUDIT
 
 scope:
-  current_goal: "Docs-only drift and boundary verification after first Compose search screen baseline acceptance."
+  current_goal: "Small Compose search screen polish without opening new runtime scope."
   allowed_surfaces:
+    - app/src/main/kotlin/ee/androbus/app/presentation/search/SearchScreen.kt
+    - app/src/test/kotlin/ee/androbus/app/presentation/search/SearchScreenStateTextTest.kt
     - docs/PROJECT_STATE.yml
     - docs/CURRENT_STATE.md
     - docs/ROADMAP.md
     - docs/AUDIT_INDEX.md
     - docs/TESTING_STRATEGY.md
-    - docs/CODEBASE_IMPACT_MAP.md
-    - docs/ANDROID_ARCHITECTURE.md
-    - docs/audit/PASS_AUTO_06_DRIFT_AND_UI_BASELINE_CHECK.md
-    - docs/PROTECTED_SURFACES.md
-    - docs/UX_PRINCIPLES.md
-    - docs/ROUTING_LOGIC.md
+    - docs/audit/PASS_UI_01_SEARCH_SCREEN_SMOKE_AND_POLISH.md
   forbidden_surfaces:
-    - app/src/
+    - app/src/main/kotlin/ee/androbus/app/presentation/search/SearchViewModel.kt
+    - app/src/main/kotlin/ee/androbus/app/presentation/search/SearchUiState.kt
     - core-domain/src/main/
     - core-gtfs/src/main/
     - core-routing/src/
@@ -57,8 +55,9 @@ governance:
     - "PASS_27 Hilt DI baseline accepted"
     - "PASS_AUTO_03 drift and boundary verification accepted"
     - "PASS_28C first Compose search screen baseline accepted"
+    - "PASS_AUTO_06 drift and UI baseline boundary verification accepted"
   drift_check_rule: "Every 5 accepted pass/checkpoints, run a docs-only drift-check before the next large implementation pass."
-  drift_check_counter: "0 / 5 (reset by PASS_AUTO_06 after PASS_28C acceptance and governance sync)"
+  drift_check_counter: "1 / 5 (PASS_UI_01 candidate checkpoint after AUTO-06 reset)"
   next_mandatory_drift_check: "Run a docs-only drift-check after five new accepted checkpoints."
   drift_check_must_verify:
     - "CURRENT_STATE / ROADMAP / PROJECT_STATE alignment"
@@ -131,16 +130,12 @@ risks:
 validation:
   required_commands:
     - "py -3 tools/validate_project_state.py"
+    - ".\\gradlew.bat :app:test"
     - ".\\gradlew.bat detekt"
-    - ".\\gradlew.bat test"
     - ".\\gradlew.bat build"
-    - "rg -n \"GtfsFeedParser|GtfsDomainMapper|MappedGtfsFeed\" app/src/main data-local/src/main"
-    - "rg -n \"@Serializable\" core-domain/src"
-    - "rg -n \"allowMainThreadQueries\" data-local/src"
-    - "rg -n \"@HiltAndroidApp|@Module|@InstallIn|@Inject\" core-domain core-gtfs core-routing feature-search"
-    - "rg -n \"LocationManager|FusedLocation|ACCESS_FINE_LOCATION|ACCESS_COARSE_LOCATION|WorkManager|Retrofit|OkHttp|GTFSRealtime|TripUpdate|VehiclePosition\" app/src/main data-local/src/main feature-search/src/main"
-    - "rg -n \"NavHost|NavController|rememberNavController|navigation-compose\" app/src/main app/build.gradle.kts"
-    - "rg -n \"reaalajas|pärisajas|live|realtime\" app/src/main docs/UX_PRINCIPLES.md docs/CURRENT_STATE.md"
+    - "rg -n \"route-otsinguks\" app/src/main"
+    - "rg -n \"routePatternId\\.value|originStopPointId\\.value|destinationStopPointId\\.value\" app/src/main/kotlin/ee/androbus/app/presentation/search/SearchScreen.kt"
+    - "rg -n \"LocationManager|FusedLocation|ACCESS_FINE_LOCATION|ACCESS_COARSE_LOCATION|WorkManager|Retrofit|OkHttp|GTFSRealtime|TripUpdate|VehiclePosition\" app/src/main"
     - "git diff --check"
     - "git status --short --untracked-files=all"
     - "git diff --name-only"

@@ -319,7 +319,7 @@
   - route query remains explicit button action
   - origin selection stays temporary dev-only chips (no GPS/permissions)
 
-## Drift/Boundary Verification (PASS_AUTO_06 Candidate)
+## Drift/Boundary Verification (PASS_AUTO_06 Accepted)
 
 - After PASS 28C acceptance, run docs-only governance drift sync before opening new UI scope.
 - Required verification set:
@@ -328,6 +328,16 @@
   - `.\gradlew.bat build`
   - parser/leak/Hilt/navigation/GPS/network/realtime boundary greps
   - `py -3 tools/validate_project_state.py`
+
+## Search Screen Smoke And Polish Coverage (PASS_UI_01 Candidate)
+
+- `SearchScreenStateTextTest` covers first-screen polish guards:
+  - search button disabled when destination is unresolved,
+  - search button disabled when origin is missing,
+  - search button enabled only when destination is resolved and origin is selected,
+  - `FeedState.Ready` banner hidden behavior,
+  - `DestinationNotReady` message avoids technical "route-otsinguks" wording,
+  - route-found summary text avoids raw machine ID exposure.
 
 ## Near-Term Test Gaps
 

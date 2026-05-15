@@ -82,16 +82,18 @@ Next recommended technical pass:
 
 Current governance checkpoint:
 
-43. PASS_AUTO_06_DRIFT_AND_UI_BASELINE_CHECK (current candidate)
+43. PASS_AUTO_06_DRIFT_AND_UI_BASELINE_CHECK (completed)
    - docs-only drift/state sync after PASS 28C UI baseline acceptance
    - verify boundaries remain closed (navigation/GPS/network/realtime not opened)
 
-Next recommended technical pass:
+Current technical pass:
 
-44. PASS_UI_01_SEARCH_SCREEN_SMOKE_AND_POLISH (recommended next)
+44. PASS_UI_01_SEARCH_SCREEN_SMOKE_AND_POLISH (current candidate)
    - narrow first-screen UX polish/smoke hardening without opening navigation/GPS/network/realtime scope
 
-45. PASS_29_RAKVERE_QUICK_DESTINATIONS_SCOPE_AUDIT (alternative)
+Next recommended technical pass:
+
+45. PASS_29_RAKVERE_QUICK_DESTINATIONS_SCOPE_AUDIT (recommended next)
    - scope-audit quick-destination shortlist and copy only
    - keep route logic/provider boundaries unchanged
 

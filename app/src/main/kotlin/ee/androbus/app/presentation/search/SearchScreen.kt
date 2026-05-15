@@ -88,6 +88,7 @@ fun SearchContent(
 
         Button(
             onClick = onSearch,
+            enabled = isSearchButtonEnabled(uiState),
             modifier = Modifier.fillMaxWidth(),
             contentPadding = PaddingValues(vertical = 12.dp),
         ) {
@@ -105,6 +106,10 @@ fun FeedStatusBanner(
     feedState: FeedState,
     onRefreshFeed: () -> Unit,
 ) {
+    if (!shouldShowFeedStatusBanner(feedState)) {
+        return
+    }
+
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(
             modifier = Modifier.padding(12.dp),
@@ -229,12 +234,11 @@ fun RouteResultSection(
                 style = MaterialTheme.typography.bodyMedium,
             )
             if (routeQueryState is RouteQueryState.RouteFound) {
-                val route = routeQueryState.route
-                Text("marsruut leitud", style = MaterialTheme.typography.bodyLarge)
-                Text("Muster: ${route.routePatternId.value}", style = MaterialTheme.typography.bodyMedium)
-                Text("Lähtepeatus: ${route.originStopPointId.value}", style = MaterialTheme.typography.bodyMedium)
-                Text("Sihtpeatus: ${route.destinationStopPointId.value}", style = MaterialTheme.typography.bodyMedium)
-                Text("Lõigu peatuste arv: ${route.segmentStopCount}", style = MaterialTheme.typography.bodyMedium)
+                val lines = routeFoundSummaryLines(routeQueryState.route)
+                Text(lines.first(), style = MaterialTheme.typography.bodyLarge)
+                lines.drop(1).forEach { line ->
+                    Text(line, style = MaterialTheme.typography.bodyMedium)
+                }
             }
         }
     }
@@ -274,10 +278,23 @@ internal fun routeStateMessage(state: RouteQueryState): String =
         RouteQueryState.Idle -> "Vali sihtkoht ja päritolu, seejärel vajuta \"Otsi\"."
         RouteQueryState.Searching -> "Marsruuti otsitakse sõiduplaani järgi."
         RouteQueryState.FeedNotAvailable -> "Bussiandmed pole veel valmis."
-        RouteQueryState.DestinationNotReady -> "Sihtkoht pole route-otsinguks valmis."
+        RouteQueryState.DestinationNotReady -> "Vali esmalt sihtkoht."
         RouteQueryState.OriginNotProvided -> "Määra päritolu enne otsingut."
         RouteQueryState.NoPatternsAvailable -> "Sõiduplaani mustrid puuduvad."
         is RouteQueryState.RouteFound -> "marsruut leitud"
         is RouteQueryState.RouteNotFound -> "Marsruuti ei leitud antud valikuga."
         is RouteQueryState.Error -> "Viga marsruudi otsingul: ${state.message}"
     }
+
+internal fun isSearchButtonEnabled(uiState: SearchUiState): Boolean =
+    uiState.destinationInput is DestinationInputState.Resolved && uiState.originStopPointId != null
+
+internal fun shouldShowFeedStatusBanner(feedState: FeedState): Boolean =
+    feedState != FeedState.Ready
+
+internal fun routeFoundSummaryLines(route: RouteFoundSummary): List<String> =
+    listOf(
+        "✓ Marsruut leitud",
+        "Vahepeatusi: ${route.segmentStopCount}",
+        "(Täielikud peatusenimed ja sõiduajad on tulemas)",
+    )
