@@ -4,7 +4,7 @@
 
 - Expected repo root: `C:\Users\Kasutaja\Desktop\ANDROBUSS`
 - Expected branch: `main`
-- Latest accepted HEAD: `50383a3` (`PASS_UI_01_SEARCH_SCREEN_SMOKE_AND_POLISH`)
+- Latest accepted HEAD: `0fca2fc` (`PASS_29A_RAKVERE_QUICK_DESTINATION_RESOLUTION_READINESS`)
 - Working tree must be clean before a new pass
 
 ## Latest Accepted Pass
@@ -12,6 +12,7 @@
 - `PASS_28C — COMPOSE_SEARCH_SCREEN_BASELINE` (accepted first visible UI baseline pass)
 - `PASS_AUTO_06 — DRIFT_AND_UI_BASELINE_CHECK` (accepted docs-only drift + UI boundary verification)
 - `PASS_UI_01 — SEARCH_SCREEN_SMOKE_AND_POLISH` (accepted first-screen polish guard pass)
+- `PASS_29A — RAKVERE_QUICK_DESTINATION_RESOLUTION_READINESS` (accepted readiness evidence pass)
 - Latest governance checkpoint pass: `PASS_AUTO_03 — DRIFT_AND_BOUNDARY_CHECK` (docs-only drift/boundary verification)
 - Latest docs-only governance/future-notes pass remains `PASS_G05 — GTFS_REALTIME_AND_PEATUS_GRAPHQL_FUTURE_NOTES`
 
@@ -117,7 +118,7 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Current Pass
 
-- `PASS_29A — RAKVERE_QUICK_DESTINATION_RESOLUTION_READINESS`
+- `PASS_29C — REAL_RUNTIME_FEED_POLICY_BEFORE_QUICK_DESTINATIONS`
 
 ## Lazy Context Note (PASS G03)
 
@@ -149,12 +150,15 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Next Technical Pass
 
-- `PASS_29B_RAKVERE_QUICK_DESTINATION_METADATA_RESOLVER_SCOPE_AUDIT`
-- Production real asset remains blocked by legal/freshness/update-policy constraints.
+- `PASS_30_REAL_RUNTIME_FEED_ENABLEMENT_SCOPE_AUDIT`
+- Quick-destination UI stays blocked until runtime feed + resolver policy unblock criteria are accepted.
 
-## Quick Destination Readiness Note (PASS 29A)
+## Quick Destination Runtime Policy Note (PASS 29C)
 
 - Current runtime bootstrap asset is synthetic (`Keskpeatus`, `Spordikeskus`, `Jaam`) and remains the production default.
-- Proposed real Rakvere quick labels are not runtime-ready through the current active snapshot.
+- Proposed real Rakvere quick labels (`Rakvere bussijaam`, `Polikliinik`, `Põhjakeskus`, `Näpi`, `Keskväljak`, `Tõrma`) are not runtime-ready through the current active snapshot.
 - Real-derived Rakvere profile stays test-only and must not be treated as runtime source.
+- Metadata alone does not unblock quick destinations while runtime snapshot is synthetic.
+- Verified routing identity must come from active runtime `StopPoint.id` resolution path, not UI-supplied IDs.
+- Production real runtime usage remains blocked until legal/source/attribution/freshness policy is explicitly accepted.
 - Safe future path remains: quick label/query text -> `SearchViewModel.onDestinationChanged(queryText)` -> existing resolver flow.

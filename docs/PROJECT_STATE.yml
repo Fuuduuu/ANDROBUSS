@@ -2,28 +2,24 @@ project:
   name: ANDROBUSS
   branch: main
   remote: https://github.com/Fuuduuu/ANDROBUSS.git
-  last_accepted_commit: 50383a3f03cb7c44d5f54df8d5c8e7be88798fe4
-  last_known_good_commit: 50383a3f03cb7c44d5f54df8d5c8e7be88798fe4
-  current_pass: PASS_29A_RAKVERE_QUICK_DESTINATION_RESOLUTION_READINESS
-  next_recommended_pass: PASS_29B_RAKVERE_QUICK_DESTINATION_METADATA_RESOLVER_SCOPE_AUDIT
+  last_accepted_commit: 0fca2fcbc66329de87d858bd6dc035ccdd4f7fdb
+  last_known_good_commit: 0fca2fcbc66329de87d858bd6dc035ccdd4f7fdb
+  current_pass: PASS_29C_REAL_RUNTIME_FEED_POLICY_BEFORE_QUICK_DESTINATIONS
+  next_recommended_pass: PASS_30_REAL_RUNTIME_FEED_ENABLEMENT_SCOPE_AUDIT
 
 scope:
-  current_goal: "Readiness tests and docs only for Rakvere quick destination label resolution through the existing destination flow."
+  current_goal: "Docs-only protected-surface policy audit to define real runtime feed prerequisites before quick destination UI implementation."
   allowed_surfaces:
-    - app/src/test/kotlin/ee/androbus/app/presentation/search/RakvereQuickDestinationReadinessTest.kt
     - docs/PROJECT_STATE.yml
     - docs/CURRENT_STATE.md
     - docs/ROADMAP.md
     - docs/AUDIT_INDEX.md
     - docs/TESTING_STRATEGY.md
-    - docs/audit/PASS_29A_RAKVERE_QUICK_DESTINATION_RESOLUTION_READINESS.md
+    - docs/audit/PASS_29C_REAL_RUNTIME_FEED_POLICY_BEFORE_QUICK_DESTINATIONS.md
   forbidden_surfaces:
-    - app/src/main/
-    - app/src/main/kotlin/ee/androbus/app/presentation/search/SearchViewModel.kt
-    - app/src/main/kotlin/ee/androbus/app/presentation/search/SearchUiState.kt
-    - app/src/main/kotlin/ee/androbus/app/presentation/search/SearchScreen.kt
-    - core-domain/src/main/
-    - core-gtfs/src/main/
+    - app/src/
+    - core-domain/src/
+    - core-gtfs/src/
     - core-routing/src/
     - city-adapters/src/
     - data-local/src/
@@ -34,6 +30,8 @@ scope:
     - feature-route-detail/src/
     - feature-favourites/src/
     - feature-alerts/src/
+    - app/src/main/assets/
+    - app/src/test/resources/bootstrap/
     - build.gradle.kts
     - app/build.gradle.kts
     - gradle/libs.versions.toml
@@ -58,8 +56,9 @@ governance:
     - "PASS_28C first Compose search screen baseline accepted"
     - "PASS_AUTO_06 drift and UI baseline boundary verification accepted"
     - "PASS_UI_01 search screen smoke and wording polish accepted"
+    - "PASS_29A quick-destination readiness evidence accepted"
   drift_check_rule: "Every 5 accepted pass/checkpoints, run a docs-only drift-check before the next large implementation pass."
-  drift_check_counter: "2 / 5 (PASS_UI_01 accepted plus PASS_29A readiness candidate after AUTO-06 reset)"
+  drift_check_counter: "3 / 5 (PASS_UI_01 and PASS_29A accepted; PASS_29C policy audit candidate)"
   next_mandatory_drift_check: "Run a docs-only drift-check after five new accepted checkpoints."
   drift_check_must_verify:
     - "CURRENT_STATE / ROADMAP / PROJECT_STATE alignment"
@@ -121,6 +120,7 @@ risks:
     - "PASS 28C introduces first Compose search UI baseline, but it remains MVP/diagnostic-only and single-screen."
     - "Origin selection remains dev-only hardcoded chips; nearest-stop/GPS origin flow is not implemented."
     - "Bundled bootstrap asset is synthetic; real Rakvere production asset pipeline is pending."
+    - "Quick-destination labels remain blocked until active runtime snapshot can resolve them to verified StopPointIds."
     - "Room schema/import baseline has no freshness/hash/version metadata yet."
     - "Docs are growing; docs hygiene should be a later explicit pass."
   deferred:
@@ -132,9 +132,6 @@ risks:
 validation:
   required_commands:
     - "py -3 tools/validate_project_state.py"
-    - ".\\gradlew.bat :app:test"
-    - ".\\gradlew.bat detekt"
-    - ".\\gradlew.bat build"
     - "git diff --check"
     - "git status --short --untracked-files=all"
     - "git diff --name-only"

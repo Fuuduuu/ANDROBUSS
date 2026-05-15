@@ -339,7 +339,7 @@
   - `DestinationNotReady` message avoids technical "route-otsinguks" wording,
   - route-found summary text avoids raw machine ID exposure.
 
-## Rakvere Quick Destination Readiness Coverage (PASS_29A Candidate)
+## Rakvere Quick Destination Readiness Coverage (PASS_29A Accepted)
 
 - `RakvereQuickDestinationReadinessTest` validates readiness boundaries without UI changes:
   - active runtime synthetic bootstrap asset stop names are limited to `Keskpeatus`, `Spordikeskus`, `Jaam`,
@@ -347,6 +347,15 @@
   - `SearchViewModel` resolves labels only when present in the active snapshot,
   - labels absent from active snapshot do not resolve,
   - real-derived Rakvere dev profile remains test-only and separate from runtime default asset.
+
+## Quick Destination Runtime Policy Gates (PASS_29C Candidate)
+
+- Before any quick-destination UI implementation is accepted:
+  - labels/query text must resolve through normal destination flow in the active runtime snapshot,
+  - resolved identity must come from verified `StopPoint.id` (`VerifiedStopPointCandidate.stopPointId`),
+  - ambiguous results must stay user-selectable (no auto-pick),
+  - no UI constants may inject `StopPointId` directly,
+  - test-only real profile fixtures must not be treated as runtime truth.
 
 ## Near-Term Test Gaps
 
