@@ -329,7 +329,7 @@
   - parser/leak/Hilt/navigation/GPS/network/realtime boundary greps
   - `py -3 tools/validate_project_state.py`
 
-## Search Screen Smoke And Polish Coverage (PASS_UI_01 Candidate)
+## Search Screen Smoke And Polish Coverage (PASS_UI_01 Accepted)
 
 - `SearchScreenStateTextTest` covers first-screen polish guards:
   - search button disabled when destination is unresolved,
@@ -338,6 +338,15 @@
   - `FeedState.Ready` banner hidden behavior,
   - `DestinationNotReady` message avoids technical "route-otsinguks" wording,
   - route-found summary text avoids raw machine ID exposure.
+
+## Rakvere Quick Destination Readiness Coverage (PASS_29A Candidate)
+
+- `RakvereQuickDestinationReadinessTest` validates readiness boundaries without UI changes:
+  - active runtime synthetic bootstrap asset stop names are limited to `Keskpeatus`, `Spordikeskus`, `Jaam`,
+  - proposed real Rakvere quick labels are absent from runtime synthetic asset,
+  - `SearchViewModel` resolves labels only when present in the active snapshot,
+  - labels absent from active snapshot do not resolve,
+  - real-derived Rakvere dev profile remains test-only and separate from runtime default asset.
 
 ## Near-Term Test Gaps
 

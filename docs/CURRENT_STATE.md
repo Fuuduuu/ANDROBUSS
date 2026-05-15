@@ -4,13 +4,14 @@
 
 - Expected repo root: `C:\Users\Kasutaja\Desktop\ANDROBUSS`
 - Expected branch: `main`
-- Latest accepted HEAD: `e67e750` (`PASS_AUTO_06_DRIFT_AND_UI_BASELINE_CHECK`)
+- Latest accepted HEAD: `50383a3` (`PASS_UI_01_SEARCH_SCREEN_SMOKE_AND_POLISH`)
 - Working tree must be clean before a new pass
 
 ## Latest Accepted Pass
 
 - `PASS_28C — COMPOSE_SEARCH_SCREEN_BASELINE` (accepted first visible UI baseline pass)
 - `PASS_AUTO_06 — DRIFT_AND_UI_BASELINE_CHECK` (accepted docs-only drift + UI boundary verification)
+- `PASS_UI_01 — SEARCH_SCREEN_SMOKE_AND_POLISH` (accepted first-screen polish guard pass)
 - Latest governance checkpoint pass: `PASS_AUTO_03 — DRIFT_AND_BOUNDARY_CHECK` (docs-only drift/boundary verification)
 - Latest docs-only governance/future-notes pass remains `PASS_G05 — GTFS_REALTIME_AND_PEATUS_GRAPHQL_FUTURE_NOTES`
 
@@ -116,7 +117,7 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Current Pass
 
-- `PASS_UI_01 — SEARCH_SCREEN_SMOKE_AND_POLISH`
+- `PASS_29A — RAKVERE_QUICK_DESTINATION_RESOLUTION_READINESS`
 
 ## Lazy Context Note (PASS G03)
 
@@ -148,5 +149,12 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Next Technical Pass
 
-- `PASS_29_RAKVERE_QUICK_DESTINATIONS_SCOPE_AUDIT`
+- `PASS_29B_RAKVERE_QUICK_DESTINATION_METADATA_RESOLVER_SCOPE_AUDIT`
 - Production real asset remains blocked by legal/freshness/update-policy constraints.
+
+## Quick Destination Readiness Note (PASS 29A)
+
+- Current runtime bootstrap asset is synthetic (`Keskpeatus`, `Spordikeskus`, `Jaam`) and remains the production default.
+- Proposed real Rakvere quick labels are not runtime-ready through the current active snapshot.
+- Real-derived Rakvere profile stays test-only and must not be treated as runtime source.
+- Safe future path remains: quick label/query text -> `SearchViewModel.onDestinationChanged(queryText)` -> existing resolver flow.

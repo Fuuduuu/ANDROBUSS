@@ -2,25 +2,26 @@ project:
   name: ANDROBUSS
   branch: main
   remote: https://github.com/Fuuduuu/ANDROBUSS.git
-  last_accepted_commit: e67e750d7cb2d150239df9116beed4bf88c71044
-  last_known_good_commit: e67e750d7cb2d150239df9116beed4bf88c71044
-  current_pass: PASS_UI_01_SEARCH_SCREEN_SMOKE_AND_POLISH
-  next_recommended_pass: PASS_29_RAKVERE_QUICK_DESTINATIONS_SCOPE_AUDIT
+  last_accepted_commit: 50383a3f03cb7c44d5f54df8d5c8e7be88798fe4
+  last_known_good_commit: 50383a3f03cb7c44d5f54df8d5c8e7be88798fe4
+  current_pass: PASS_29A_RAKVERE_QUICK_DESTINATION_RESOLUTION_READINESS
+  next_recommended_pass: PASS_29B_RAKVERE_QUICK_DESTINATION_METADATA_RESOLVER_SCOPE_AUDIT
 
 scope:
-  current_goal: "Small Compose search screen polish without opening new runtime scope."
+  current_goal: "Readiness tests and docs only for Rakvere quick destination label resolution through the existing destination flow."
   allowed_surfaces:
-    - app/src/main/kotlin/ee/androbus/app/presentation/search/SearchScreen.kt
-    - app/src/test/kotlin/ee/androbus/app/presentation/search/SearchScreenStateTextTest.kt
+    - app/src/test/kotlin/ee/androbus/app/presentation/search/RakvereQuickDestinationReadinessTest.kt
     - docs/PROJECT_STATE.yml
     - docs/CURRENT_STATE.md
     - docs/ROADMAP.md
     - docs/AUDIT_INDEX.md
     - docs/TESTING_STRATEGY.md
-    - docs/audit/PASS_UI_01_SEARCH_SCREEN_SMOKE_AND_POLISH.md
+    - docs/audit/PASS_29A_RAKVERE_QUICK_DESTINATION_RESOLUTION_READINESS.md
   forbidden_surfaces:
+    - app/src/main/
     - app/src/main/kotlin/ee/androbus/app/presentation/search/SearchViewModel.kt
     - app/src/main/kotlin/ee/androbus/app/presentation/search/SearchUiState.kt
+    - app/src/main/kotlin/ee/androbus/app/presentation/search/SearchScreen.kt
     - core-domain/src/main/
     - core-gtfs/src/main/
     - core-routing/src/
@@ -56,8 +57,9 @@ governance:
     - "PASS_AUTO_03 drift and boundary verification accepted"
     - "PASS_28C first Compose search screen baseline accepted"
     - "PASS_AUTO_06 drift and UI baseline boundary verification accepted"
+    - "PASS_UI_01 search screen smoke and wording polish accepted"
   drift_check_rule: "Every 5 accepted pass/checkpoints, run a docs-only drift-check before the next large implementation pass."
-  drift_check_counter: "1 / 5 (PASS_UI_01 candidate checkpoint after AUTO-06 reset)"
+  drift_check_counter: "2 / 5 (PASS_UI_01 accepted plus PASS_29A readiness candidate after AUTO-06 reset)"
   next_mandatory_drift_check: "Run a docs-only drift-check after five new accepted checkpoints."
   drift_check_must_verify:
     - "CURRENT_STATE / ROADMAP / PROJECT_STATE alignment"
@@ -133,9 +135,6 @@ validation:
     - ".\\gradlew.bat :app:test"
     - ".\\gradlew.bat detekt"
     - ".\\gradlew.bat build"
-    - "rg -n \"route-otsinguks\" app/src/main"
-    - "rg -n \"routePatternId\\.value|originStopPointId\\.value|destinationStopPointId\\.value\" app/src/main/kotlin/ee/androbus/app/presentation/search/SearchScreen.kt"
-    - "rg -n \"LocationManager|FusedLocation|ACCESS_FINE_LOCATION|ACCESS_COARSE_LOCATION|WorkManager|Retrofit|OkHttp|GTFSRealtime|TripUpdate|VehiclePosition\" app/src/main"
     - "git diff --check"
     - "git status --short --untracked-files=all"
     - "git diff --name-only"
