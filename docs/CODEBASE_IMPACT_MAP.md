@@ -1,6 +1,6 @@
 # CODEBASE_IMPACT_MAP
 
-State synchronized for `PASS_AUTO_03` drift and boundary check after accepted `PASS 27`.
+State synchronized for `PASS_AUTO_05` detekt boundary-coverage extension candidate.
 
 ## Module Responsibilities
 
@@ -103,6 +103,16 @@ State synchronized for `PASS_AUTO_03` drift and boundary check after accepted `P
 - Each module now has a tracked `gradle.lockfile` for resolved dependency versions.
 - `settings-gradle.lockfile` tracks settings/buildscript resolution.
 - This pass hardens dependency reproducibility and transitive drift visibility only; runtime behavior is unchanged.
+
+## Build Tooling Impact (PASS_AUTO_05 Candidate)
+
+- Detekt boundary-only coverage expands from core modules to:
+  - `app`
+  - `data-local`
+  - `feature-search`
+  - `city-adapters`
+- Forbidden-import rules are module-specific and focused on architecture boundaries only.
+- Runtime/source behavior is unchanged by AUTO-05 configuration.
 
 ## Feature-Search Snapshot
 

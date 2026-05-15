@@ -4,13 +4,13 @@
 
 - Expected repo root: `C:\Users\Kasutaja\Desktop\ANDROBUSS`
 - Expected branch: `main`
-- Latest accepted HEAD: `0965cc3` (`PASS_28B_ROUTE_QUERY_WITH_EXPLICIT_ORIGIN`)
+- Latest accepted HEAD: `108f747` (`PASS_AUTO_04_BOOTSTRAP_ROOM_FIRST_CHECK`)
 - Working tree must be clean before a new pass
 
 ## Latest Accepted Pass
 
-- `PASS_AUTO_03 — DRIFT_AND_BOUNDARY_CHECK` (docs-only governance/boundary verification)
-- Latest technical implementation pass: `PASS_27 — HILT_DI_BASELINE`
+- `PASS_AUTO_04 — BOOTSTRAP_ROOM_FIRST_CHECK` (accepted implementation hardening pass)
+- Latest governance checkpoint pass: `PASS_AUTO_03 — DRIFT_AND_BOUNDARY_CHECK` (docs-only governance/boundary verification)
 - Latest docs-only governance/future-notes pass remains `PASS_G05 — GTFS_REALTIME_AND_PEATUS_GRAPHQL_FUTURE_NOTES`
 
 PASS 21 added a parser-agnostic feed boundary and in-memory provider bootstrap.
@@ -67,9 +67,15 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
   - explicit origin is required for route query
   - route query uses `DirectRouteQueryPreparationUseCase`
   - no UI/GPS/nearest-stop/network/realtime scope opened
-- PASS_AUTO_04 candidate hardens bootstrap lifecycle:
+- PASS_AUTO_04 accepted state hardens bootstrap lifecycle:
   - cold start now checks provider cache, then `prepare(cityId, feedId)` from Room, and only then falls back to bundled import
   - bundled synthetic asset remains fallback path, not first choice when Room already has bootstrap snapshot
+- PASS_AUTO_05 current candidate extends Detekt boundary coverage to:
+  - `app`
+  - `data-local`
+  - `feature-search`
+  - `city-adapters`
+  while keeping Detekt scope boundary-only (no default style/complexity bleed)
 - Governance/tooling guardrails accepted after PASS 25:
   - PASS G03 audit-index/read-order sync
   - PASS AUTO-01 detekt module-boundary checks
@@ -100,7 +106,7 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Current Pass
 
-- `PASS_AUTO_04 — BOOTSTRAP_ROOM_FIRST_CHECK`
+- `PASS_AUTO_05 — EXTEND_DETEKT_BOUNDARY_COVERAGE`
 
 ## Lazy Context Note (PASS G03)
 
@@ -133,5 +139,5 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 ## Next Technical Pass
 
 - `PASS_28C_COMPOSE_SEARCH_SCREEN_SCOPE_AUDIT` (recommended)
-- Alternative track: `PASS_AUTO_05_EXTEND_DETEKT_BOUNDARY_COVERAGE`
+- Alternative track: `PASS_29` (if roadmap naming chooses direct post-audit UI/state execution)
 - Production real asset remains blocked by legal/freshness/update-policy constraints.

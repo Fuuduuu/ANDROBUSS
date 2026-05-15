@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.hilt.android)
+    id("io.gitlab.arturbosch.detekt")
     id("kotlin-kapt")
 }
 
@@ -38,6 +39,20 @@ android {
             isIncludeAndroidResources = true
         }
     }
+}
+
+detekt {
+    config.setFrom(
+        "$rootDir/config/detekt/detekt-base.yml",
+        "$rootDir/config/detekt/detekt-app.yml",
+    )
+    buildUponDefaultConfig = false
+}
+
+tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+    setSource(files("src/main/java", "src/main/kotlin"))
+    include("**/*.kt", "**/*.kts")
+    exclude("**/build/**", "**/resources/**")
 }
 
 dependencies {

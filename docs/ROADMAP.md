@@ -59,24 +59,25 @@ Current governance checkpoint:
 
 Next recommended technical pass:
 
-38. PASS_28A - APP_SEARCH_VIEWMODEL_FEED_AND_DESTINATION_STATE (completed candidate)
+38. PASS_28A - APP_SEARCH_VIEWMODEL_FEED_AND_DESTINATION_STATE (completed)
    - add app SearchViewModel feed/destination state baseline only
    - keep Compose/UI/navigation and route-query wiring out
 
-39. PASS_28B - ROUTE_QUERY_WITH_EXPLICIT_ORIGIN (current candidate)
+39. PASS_28B - ROUTE_QUERY_WITH_EXPLICIT_ORIGIN (completed)
    - add explicit route query trigger and explicit origin requirement
    - keep FeedNotAvailable / DestinationNotReady / OriginNotProvided distinct from RouteNotFound
    - use DirectRouteQueryPreparationUseCase path from app ViewModel
 
-40. PASS_AUTO_04_BOOTSTRAP_ROOM_FIRST_CHECK (current candidate)
+40. PASS_AUTO_04_BOOTSTRAP_ROOM_FIRST_CHECK (completed)
    - harden bootstrap lifecycle: cache -> Room prepare -> bundled import fallback
    - avoid unnecessary bundled re-import on cold process restart when Room snapshot already exists
 
-41. PASS_28C_COMPOSE_SEARCH_SCREEN_SCOPE_AUDIT (recommended next)
-   - define UI scope only after AUTO-04 checkpoint is accepted
+41. PASS_AUTO_05_EXTEND_DETEKT_BOUNDARY_COVERAGE (current candidate)
+   - extend Detekt boundary-only coverage to app/data-local/feature-search/city-adapters
+   - keep runtime/source behavior unchanged
 
-42. PASS_AUTO_05_EXTEND_DETEKT_BOUNDARY_COVERAGE (alternative next)
-   - tighten static boundary rules before broader UI/runtime scope expansion
+42. PASS_28C_COMPOSE_SEARCH_SCREEN_SCOPE_AUDIT (recommended next)
+   - define UI scope only after AUTO-05 checkpoint is accepted
 
 Future scope candidates (not active next pass):
 
@@ -108,3 +109,4 @@ Governance track:
 Build/tooling track:
 - AUTO-01 - DETEKT_MODULE_BOUNDARIES (completed)
 - AUTO-02 - DEPENDENCY_LOCKING (completed)
+- AUTO-05 - EXTEND_DETEKT_BOUNDARY_COVERAGE (current candidate)

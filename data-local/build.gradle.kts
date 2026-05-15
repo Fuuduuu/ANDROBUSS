@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
+    id("io.gitlab.arturbosch.detekt")
 }
 
 android {
@@ -24,6 +25,20 @@ android {
     testOptions {
         unitTests.isIncludeAndroidResources = true
     }
+}
+
+detekt {
+    config.setFrom(
+        "$rootDir/config/detekt/detekt-base.yml",
+        "$rootDir/config/detekt/detekt-data-local.yml",
+    )
+    buildUponDefaultConfig = false
+}
+
+tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+    setSource(files("src/main/java", "src/main/kotlin"))
+    include("**/*.kt", "**/*.kts")
+    exclude("**/build/**", "**/resources/**")
 }
 
 dependencies {

@@ -250,6 +250,23 @@
 - Idempotency remains verified:
   - repeated `bootstrapIfNeeded()` calls do not duplicate persisted rows.
 
+## Detekt Boundary Coverage Extension (PASS_AUTO_05 Candidate)
+
+- Boundary-only Detekt coverage is extended to:
+  - `app`
+  - `data-local`
+  - `feature-search`
+  - `city-adapters`
+- Rule scope remains forbidden-import boundary checks only:
+  - no style/complexity enforcement in this pass.
+- Validation command set:
+  - `.\gradlew.bat :app:detekt`
+  - `.\gradlew.bat :data-local:detekt`
+  - `.\gradlew.bat :feature-search:detekt`
+  - `.\gradlew.bat :city-adapters:detekt`
+  - `.\gradlew.bat detekt`
+- Manual grep checks remain required for explicit boundary assertions.
+
 ## App DI Baseline Coverage Focus (PASS 27)
 
 - `:app:test` validates Hilt baseline integration at compile/runtime unit-test level:

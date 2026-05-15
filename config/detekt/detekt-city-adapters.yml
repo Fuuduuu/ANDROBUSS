@@ -1,0 +1,15 @@
+style:
+  ForbiddenImport:
+    active: true
+    imports:
+      - 'android.*'
+      - 'androidx.*'
+      - 'dagger.*'
+      - 'javax.inject.*'
+      - 'ee.androbus.app.*'
+      - 'ee.androbus.data.local.*'
+      - 'ee.androbus.feature.search.*'
+      - 'retrofit2.*'
+      - 'okhttp3.*'
+      - 'com.google.transit.realtime.*'
+      - 'com.google.transit.realtime.GtfsRealtime.*'

@@ -1,0 +1,14 @@
+style:
+  ForbiddenImport:
+    active: true
+    imports:
+      - 'ee.androbus.app.*'
+      - 'ee.androbus.feature.search.*'
+      - 'ee.androbus.core.gtfs.GtfsFeedParser'
+      - 'ee.androbus.core.gtfs.GtfsDomainMapper'
+      - 'ee.androbus.core.gtfs.MappedGtfsFeed'
+      - 'androidx.work.*'
+      - 'retrofit2.*'
+      - 'okhttp3.*'
+      - 'com.google.transit.realtime.*'
+      - 'com.google.transit.realtime.GtfsRealtime.*'

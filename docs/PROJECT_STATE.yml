@@ -2,27 +2,32 @@ project:
   name: ANDROBUSS
   branch: main
   remote: https://github.com/Fuuduuu/ANDROBUSS.git
-  last_accepted_commit: 0965cc3be77f5355bce16ea4cf1f35f50e2a1932
-  last_known_good_commit: 0965cc3be77f5355bce16ea4cf1f35f50e2a1932
-  current_pass: PASS_AUTO_04_BOOTSTRAP_ROOM_FIRST_CHECK
+  last_accepted_commit: 108f747045256876d2334d99f061726530436bf9
+  last_known_good_commit: 108f747045256876d2334d99f061726530436bf9
+  current_pass: PASS_AUTO_05_EXTEND_DETEKT_BOUNDARY_COVERAGE
   next_recommended_pass: PASS_28C_COMPOSE_SEARCH_SCREEN_SCOPE_AUDIT
 
 scope:
-  current_goal: "Harden app bootstrap lifecycle to prefer existing Room snapshot before bundled asset import fallback."
+  current_goal: "Extend Detekt boundary-only coverage to app, data-local, feature-search, and city-adapters without changing source/runtime behavior."
   allowed_surfaces:
-    - app/src/main/kotlin/ee/androbus/app/bootstrap/FeedBootstrapLoader.kt
-    - app/src/test/kotlin/ee/androbus/app/bootstrap/FeedBootstrapLoaderTest.kt
+    - config/detekt/detekt-app.yml
+    - config/detekt/detekt-data-local.yml
+    - config/detekt/detekt-feature-search.yml
+    - config/detekt/detekt-city-adapters.yml
+    - app/build.gradle.kts
+    - data-local/build.gradle.kts
+    - feature-search/build.gradle.kts
+    - city-adapters/build.gradle.kts
     - docs/PROJECT_STATE.yml
     - docs/CURRENT_STATE.md
-    - docs/ANDROID_ARCHITECTURE.md
     - docs/ROADMAP.md
     - docs/TESTING_STRATEGY.md
+    - docs/CODEBASE_IMPACT_MAP.md
     - docs/AUDIT_INDEX.md
-    - docs/audit/PASS_AUTO_04_BOOTSTRAP_ROOM_FIRST_CHECK.md
+    - docs/audit/PASS_AUTO_05_EXTEND_DETEKT_BOUNDARY_COVERAGE.md
   forbidden_surfaces:
-    - app/src/main/assets/
-    - app/src/main/kotlin/ee/androbus/app/presentation/search/
-    - app/src/main/kotlin/ee/androbus/app/di/
+    - app/src/main/
+    - app/src/test/
     - core-domain/src/main/
     - core-gtfs/src/main/
     - core-routing/src/
@@ -30,11 +35,14 @@ scope:
     - data-local/src/
     - data-remote/src/
     - feature-search/src/
+    - feature-map/src/
+    - feature-stop-board/src/
+    - feature-route-detail/src/
+    - feature-favourites/src/
+    - feature-alerts/src/
     - build.gradle.kts
     - gradle/libs.versions.toml
-    - app/gradle.lockfile
     - settings.gradle.kts
-    - gradle/
     - .github/
 
 governance:
@@ -50,7 +58,7 @@ governance:
     - "PASS_27 Hilt DI baseline accepted"
     - "PASS_AUTO_03 drift and boundary verification accepted"
   drift_check_rule: "Every 5 accepted pass/checkpoints, run a docs-only drift-check before the next large implementation pass."
-  drift_check_counter: "3 / 5 (PASS 28A, PASS 28B, and PASS_AUTO_04 accepted since PASS_AUTO_03 reset)"
+  drift_check_counter: "4 / 5 (PASS 28A, PASS 28B, PASS_AUTO_04, and PASS_AUTO_05 accepted since PASS_AUTO_03 reset)"
   next_mandatory_drift_check: "Run a docs-only drift-check again after the next five accepted checkpoints."
   drift_check_must_verify:
     - "CURRENT_STATE / ROADMAP / PROJECT_STATE alignment"
@@ -106,8 +114,9 @@ invariants:
 risks:
   active:
     - "Room provider cache is city-keyed; last prepare(city, feed) selects active feed per city."
-    - "Bootstrap cold start currently depends on Room-first prepare policy for configured bootstrap feed scope."
+    - "Bootstrap cold start depends on Room-first prepare policy for configured bootstrap feed scope."
     - "AUTO-04 hardening checks only configured bootstrap feedId; active-feed/freshness policy remains future work."
+    - "AUTO-05 detekt rules are boundary-only; they intentionally do not enforce style/complexity hygiene."
     - "Hilt baseline wiring exists in app; UI/navigation integration is not implemented yet."
     - "Bundled bootstrap asset is synthetic; real Rakvere production asset pipeline is pending."
     - "Room schema/import baseline has no freshness/hash/version metadata yet."
@@ -121,18 +130,18 @@ risks:
 validation:
   required_commands:
     - "py -3 tools/validate_project_state.py"
-    - ".\\gradlew.bat :app:test"
-    - ".\\gradlew.bat :feature-search:test"
-    - ".\\gradlew.bat :core-domain:test"
-    - ".\\gradlew.bat :data-local:test"
+    - ".\\gradlew.bat :app:detekt"
+    - ".\\gradlew.bat :data-local:detekt"
+    - ".\\gradlew.bat :feature-search:detekt"
+    - ".\\gradlew.bat :city-adapters:detekt"
     - ".\\gradlew.bat detekt"
     - ".\\gradlew.bat test"
     - ".\\gradlew.bat build"
     - "rg -n \"GtfsFeedParser|GtfsDomainMapper|MappedGtfsFeed\" app/src/main data-local/src/main"
-    - "rg -n \"@Serializable\" core-domain/src"
-    - "rg -n \"allowMainThreadQueries\" data-local/src"
-    - "rg -n \"@HiltAndroidApp|@Module|@InstallIn|@Inject\" core-domain core-gtfs core-routing feature-search"
-    - "rg -n \"WorkManager|Retrofit|OkHttp|GTFSRealtime|TripUpdate|VehiclePosition\" app/src/main data-local/src/main data-remote/src/main feature-search/src/main"
+    - "rg -n \"android\\.|androidx\\.|dagger\\.|javax\\.inject\" feature-search/src/main"
+    - "rg -n \"android\\.|androidx\\.|dagger\\.|javax\\.inject\" city-adapters/src/main"
+    - "rg -n \"ee\\.androbus\\.app\\.|ee\\.androbus\\.feature\\.search\\.\" data-local/src/main"
+    - "rg -n \"WorkManager|Retrofit|OkHttp|GTFSRealtime|TripUpdate|VehiclePosition\" app/src/main data-local/src/main feature-search/src/main city-adapters/src/main"
     - "git diff --check"
     - "git status --short --untracked-files=all"
     - "git diff --name-only"

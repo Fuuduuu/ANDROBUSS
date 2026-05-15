@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    id("io.gitlab.arturbosch.detekt")
 }
 
 android {
@@ -19,6 +20,20 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+}
+
+detekt {
+    config.setFrom(
+        "$rootDir/config/detekt/detekt-base.yml",
+        "$rootDir/config/detekt/detekt-feature-search.yml",
+    )
+    buildUponDefaultConfig = false
+}
+
+tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+    setSource(files("src/main/java", "src/main/kotlin"))
+    include("**/*.kt", "**/*.kts")
+    exclude("**/build/**", "**/resources/**")
 }
 
 dependencies {
