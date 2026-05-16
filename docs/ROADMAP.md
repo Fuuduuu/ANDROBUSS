@@ -150,52 +150,59 @@ Current technical pass:
 
 Current technical pass:
 
-54. PASS_FEED_02_ROOM_SCHEMA_EXPORT_AND_FEED_METADATA_ENTITY (current candidate)
-   - add Room metadata persistence model and migration tests
-   - keep downloader/WorkManager out of scope
+54. PASS_FEED_02_ROOM_SCHEMA_EXPORT_AND_FEED_METADATA_ENTITY (completed)
+    - add Room metadata persistence model and migration tests
+    - keep downloader/WorkManager out of scope
+
+Current governance checkpoint:
+
+55. PASS_AUTO_08_FEED_DRIFT_AND_BOUNDARY_CHECK (current candidate)
+    - docs-only FEED drift/boundary verification after FEED-02 acceptance
+    - verify FEED_01/FEED_02 docs alignment and reset drift counter
+    - keep source/build/schema untouched
 
 Next recommended technical pass:
 
-55. PASS_FEED_03_MANUAL_FEED_DOWNLOADER_AND_IMPORT_PIPELINE
-   - implement manual foreground downloader/import flow
-   - preserve last-known-good active feed on failures
+56. PASS_FEED_03_MANUAL_FEED_DOWNLOADER_AND_IMPORT_PIPELINE
+    - implement manual foreground downloader/import flow
+    - preserve last-known-good active feed on failures
 
 Following feed-update pass:
 
-56. PASS_FEED_04_WORKMANAGER_PERIODIC_UPDATE
-   - add periodic scheduling only after manual downloader/import path is proven
+57. PASS_FEED_04_WORKMANAGER_PERIODIC_UPDATE
+    - add periodic scheduling only after manual downloader/import path is proven
 
 Alternative next pass:
 
-57. PASS_34_ORIGIN_SELECTION_POLISH_SCOPE_AUDIT
+58. PASS_34_ORIGIN_SELECTION_POLISH_SCOPE_AUDIT
    - scope audit for additional origin UX polish after dialog baseline
    - keep GPS/nearest-stop and navigation out unless explicitly opened
 
 Alternative UI scope-audit pass:
 
-58. PASS_UI_03_SEARCH_SCREEN_ACCESSIBILITY_SCOPE_AUDIT
+59. PASS_UI_03_SEARCH_SCREEN_ACCESSIBILITY_SCOPE_AUDIT
    - scope-audit only for accessibility and copy polish follow-up
    - no runtime/feed/network expansion
 
 Future scope candidates (not active next pass):
 
-59. PASS_29_ORIGIN_RESOLUTION_OR_SEARCH_UI_REFINEMENT
+60. PASS_29_ORIGIN_RESOLUTION_OR_SEARCH_UI_REFINEMENT
    - replace dev-only origin chips with proper origin resolution flow
    - refine first-screen UX states without opening realtime/network scope
 
-60. PASS_RT_01 - GTFS_REALTIME_SCOPE_LOCK_AND_IDENTITY_MODEL
+61. PASS_RT_01 - GTFS_REALTIME_SCOPE_LOCK_AND_IDENTITY_MODEL
    - lock realtime identity rules (`trip_id` + `stop_sequence`) before implementation
    - keep realtime/network/workmanager out until dedicated runtime pass approval
 
-61. PASS_CITY_PROFILE_01 - PEATUS_GRAPHQL_ROUTE_METADATA_DISCOVERY
+62. PASS_CITY_PROFILE_01 - PEATUS_GRAPHQL_ROUTE_METADATA_DISCOVERY
    - evaluate Peatus.ee / Digitransit GraphQL as city-route metadata helper
    - keep static GTFS as canonical routing identity source
 
 Likely following passes:
 
-62. PASS 30+ - DOWNLOADER_WORKMANAGER_REFRESH_LIFECYCLE
-63. PASS 31+ - FEED_FRESHNESS_HASH_VERSION_METADATA
-64. PASS UI-01 - DESTINATION_FIRST_HOME_AND_RESULT_CARDS_IMPLEMENTATION (after production feed/provider/query path is stable)
+63. PASS 30+ - DOWNLOADER_WORKMANAGER_REFRESH_LIFECYCLE
+64. PASS 31+ - FEED_FRESHNESS_HASH_VERSION_METADATA
+65. PASS UI-01 - DESTINATION_FIRST_HOME_AND_RESULT_CARDS_IMPLEMENTATION (after production feed/provider/query path is stable)
 
 Planning rule:
 - Any UI pass must align with `PASS UX-01` destination-first, list-first MVP blueprint.

@@ -4,7 +4,7 @@
 
 - Expected repo root: `C:\Users\Kasutaja\Desktop\ANDROBUSS`
 - Expected branch: `main`
-- Latest accepted HEAD: `7913eb5` (`docs(feed): define feed freshness and update architecture`)
+- Latest accepted HEAD: `589ade4` (`feat(data-local): add feed metadata entity and Room v2 migration`)
 - Working tree must be clean before a new pass
 
 ## Latest Accepted Pass
@@ -21,7 +21,8 @@
 - `PASS_33 — ORIGIN_SEARCH_DIALOG` (accepted origin dialog implementation)
 - `PASS_UI_02 — SEARCH_SCREEN_FLOW_POLISH` (accepted UI/copy/state polish pass)
 - `PASS_FEED_01 — FEED_FRESHNESS_AND_UPDATE_ARCHITECTURE_DOCS` (accepted docs-only architecture decision pass)
-- Current technical pass: `PASS_FEED_02 — ROOM_SCHEMA_EXPORT_AND_FEED_METADATA_ENTITY` (Room metadata foundation pass)
+- `PASS_FEED_02 — ROOM_SCHEMA_EXPORT_AND_FEED_METADATA_ENTITY` (accepted Room metadata foundation pass)
+- Current governance pass: `PASS_AUTO_08 — FEED_DRIFT_AND_BOUNDARY_CHECK` (docs-only drift/boundary verification before FEED_03)
 - Latest docs-only governance/future-notes pass remains `PASS_G05 — GTFS_REALTIME_AND_PEATUS_GRAPHQL_FUTURE_NOTES`
 
 PASS 21 added a parser-agnostic feed boundary and in-memory provider bootstrap.
@@ -122,14 +123,15 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
   - metadata outside `DomainFeedSnapshot`
   - validate/import-first and atomic activation swap policy
   - downloader/WorkManager deferred until later feed passes
-  - public freshness implementation remains pending FEED-02/03/04
-- PASS_FEED_02 current candidate adds Room metadata foundation in `data-local` only:
+  - public freshness implementation remains pending FEED-03/04
+- PASS_FEED_02 accepted state adds Room metadata foundation in `data-local` only:
   - `FeedMetadataEntity` + `FeedMetadataDao`
   - Room `AppDatabase` v2 + `MIGRATION_1_2`
   - `exportSchema = true` + `room.schemaLocation`
   - generated `data-local/schemas` JSON for versions 1 and 2
   - DAO + migration tests
   - no downloader/WorkManager/data-remote/app-bootstrap behavior changes
+- PASS_AUTO_08 current docs-only verification confirms FEED_01/FEED_02 alignment and keeps FEED_03 as next implementation pass.
 - Governance/tooling guardrails accepted after PASS 25:
   - PASS G03 audit-index/read-order sync
   - PASS AUTO-01 detekt module-boundary checks
@@ -152,7 +154,7 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 - Runtime bootstrap is Hilt-backed but remains anchored in `Application.onCreate` until ViewModel/runtime lifecycle ownership pass.
 - Room baseline exists, but freshness metadata and feed lifecycle evolution are not implemented.
-- Public freshness/update lifecycle remains unimplemented until FEED-02/03/04 passes.
+- Public freshness/update lifecycle remains unimplemented until FEED-03/04 implementation passes.
 - Production `RoutePattern` source is not implemented.
 - Compose UI wiring exists as a single-screen MVP baseline and remains incomplete for production UX flows.
 - Nearest-stop/geospatial behavior is not implemented.
@@ -161,7 +163,7 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Current Pass
 
-- `PASS_FEED_02 — ROOM_SCHEMA_EXPORT_AND_FEED_METADATA_ENTITY`
+- `PASS_AUTO_08 — FEED_DRIFT_AND_BOUNDARY_CHECK`
 
 ## Lazy Context Note (PASS G03)
 
@@ -194,6 +196,7 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 ## Next Technical Pass
 
 - `PASS_FEED_03_MANUAL_FEED_DOWNLOADER_AND_IMPORT_PIPELINE`
+- Recommended pre-step: run a Claude scope-check prompt before starting FEED_03 implementation.
 - Alternative: `PASS_FEED_04_WORKMANAGER_PERIODIC_UPDATE`
 - Alternative: `PASS_34_ORIGIN_SELECTION_POLISH_SCOPE_AUDIT`
 - Public/freely distributed production still requires downloader/update/freshness policy.
