@@ -56,6 +56,76 @@ class SearchViewModelTest {
         viewModel.refreshFeedState()
 
         assertEquals(FeedState.NotReady, viewModel.uiState.value.feedState)
+        assertTrue(viewModel.uiState.value.originCandidates.isEmpty())
+    }
+
+    @Test
+    fun `originCandidates are non-empty with runtime-like snapshot`() {
+        val runtimeSnapshot = runtimeLikeSnapshot()
+        val viewModel = createViewModel(runtimeSnapshot)
+
+        val groups = viewModel.uiState.value.originCandidates
+        assertTrue(groups.isNotEmpty())
+        assertTrue(groups.any { it.displayName == "Rakvere bussijaam" })
+        assertTrue(groups.any { it.displayName == "Polikliinik" })
+    }
+
+    @Test
+    fun `originCandidates stop ids are valid snapshot and route-pattern members`() {
+        val runtimeSnapshot = runtimeLikeSnapshot()
+        val viewModel = createViewModel(runtimeSnapshot)
+        val originStopPointIds = viewModel.uiState.value.originCandidates.flatMap { it.options }.map { it.stopPointId }
+
+        val snapshotStopIds = runtimeSnapshot.stopPoints.map { it.id }.toSet()
+        val routePatternStopIds = runtimeSnapshot.routePatterns.flatMap { it.stops }.map { it.stopPointId }.toSet()
+
+        assertTrue(originStopPointIds.isNotEmpty())
+        assertTrue(originStopPointIds.all { it in snapshotStopIds })
+        assertTrue(originStopPointIds.all { it in routePatternStopIds })
+    }
+
+    @Test
+    fun `originCandidates do not include old synthetic ids`() {
+        val viewModel = createViewModel(runtimeLikeSnapshot())
+        val originIds = viewModel.uiState.value.originCandidates.flatMap { it.options }.map { it.stopPointId.value }
+
+        assertFalse(originIds.contains("RKV_A_OUT"))
+        assertFalse(originIds.contains("RKV_A_IN"))
+        assertFalse(originIds.contains("RKV_B"))
+        assertFalse(originIds.contains("RKV_C"))
+    }
+
+    @Test
+    fun `selecting runtime origin candidate stores originStopPointId`() {
+        val viewModel = createViewModel(runtimeLikeSnapshot())
+        val option =
+            viewModel.uiState.value.originCandidates
+                .first { it.displayName == "Polikliinik" }
+                .options
+                .first()
+
+        viewModel.onOriginStopPointChanged(option.stopPointId)
+
+        assertEquals(option.stopPointId, viewModel.uiState.value.originStopPointId)
+    }
+
+    @Test
+    fun `searchRoute with runtime origin candidate does not return ORIGIN_NOT_FOUND`() {
+        val viewModel = createViewModel(runtimeLikeSnapshot())
+        val originCandidate =
+            viewModel.uiState.value.originCandidates
+                .first { it.displayName == "Rakvere bussijaam" }
+                .options
+                .first()
+
+        viewModel.onOriginStopPointChanged(originCandidate.stopPointId)
+        viewModel.onDestinationChanged("Keskväljak")
+        viewModel.searchRoute()
+
+        val routeQueryState = viewModel.uiState.value.routeQueryState
+        if (routeQueryState is RouteQueryState.RouteNotFound) {
+            assertNotEquals(RouteNotFoundDisplayReason.ORIGIN_NOT_FOUND, routeQueryState.reason)
+        }
     }
 
     @Test
@@ -268,6 +338,104 @@ class SearchViewModelTest {
                         PatternStop(sequence = 3, stopPointId = StopPointId("RKV_C")),
                     ),
                 feedId = FeedId("rakvere-bootstrap-v1"),
+            ),
+        )
+
+    private fun runtimeLikeSnapshot(
+        routePatterns: List<RoutePattern> = runtimeLikeRoutePatterns(),
+    ): DomainFeedSnapshot =
+        DomainFeedSnapshot(
+            cityId = cityId,
+            stopPoints =
+                listOf(
+                    StopPoint(
+                        id = StopPointId("152898"),
+                        stopGroupId = StopGroupId("rakvere-rakvere-bussijaam"),
+                        displayName = "Rakvere bussijaam",
+                        location = GeoPoint(59.3465663, 26.3647413),
+                        cityId = cityId,
+                        feedId = FeedId("rakvere-v20260428"),
+                    ),
+                    StopPoint(
+                        id = StopPointId("152899"),
+                        stopGroupId = StopGroupId("rakvere-rakvere-bussijaam"),
+                        displayName = "Rakvere bussijaam",
+                        location = GeoPoint(59.346621, 26.364677),
+                        cityId = cityId,
+                        feedId = FeedId("rakvere-v20260428"),
+                    ),
+                    StopPoint(
+                        id = StopPointId("25482"),
+                        stopGroupId = StopGroupId("rakvere-polikliinik"),
+                        displayName = "Polikliinik",
+                        location = GeoPoint(59.3445495, 26.3653342),
+                        cityId = cityId,
+                        feedId = FeedId("rakvere-v20260428"),
+                    ),
+                    StopPoint(
+                        id = StopPointId("25483"),
+                        stopGroupId = StopGroupId("rakvere-polikliinik"),
+                        displayName = "Polikliinik",
+                        location = GeoPoint(59.3445611, 26.3644414),
+                        cityId = cityId,
+                        feedId = FeedId("rakvere-v20260428"),
+                    ),
+                    StopPoint(
+                        id = StopPointId("109242"),
+                        stopGroupId = StopGroupId("rakvere-napi"),
+                        displayName = "Näpi",
+                        location = GeoPoint(59.3598284, 26.3871624),
+                        cityId = cityId,
+                        feedId = FeedId("rakvere-v20260428"),
+                    ),
+                    StopPoint(
+                        id = StopPointId("25484"),
+                        stopGroupId = StopGroupId("rakvere-keskvaljak"),
+                        displayName = "Keskväljak",
+                        location = GeoPoint(59.3481224, 26.3611505),
+                        cityId = cityId,
+                        feedId = FeedId("rakvere-v20260428"),
+                    ),
+                    StopPoint(
+                        id = StopPointId("32583"),
+                        stopGroupId = StopGroupId("rakvere-pohja"),
+                        displayName = "Põhja",
+                        location = GeoPoint(59.3599385, 26.344425),
+                        cityId = cityId,
+                        feedId = FeedId("rakvere-v20260428"),
+                    ),
+                ),
+            routePatterns = routePatterns,
+        )
+
+    private fun runtimeLikeRoutePatterns(): List<RoutePattern> =
+        listOf(
+            RoutePattern(
+                id = RoutePatternId("runtime-pattern:1"),
+                routeLineId = RouteLineId("runtime-route:1"),
+                displayName = "Rakvere bussijaam - Näpi",
+                cityId = cityId,
+                stops =
+                    listOf(
+                        PatternStop(sequence = 1, stopPointId = StopPointId("152898")),
+                        PatternStop(sequence = 2, stopPointId = StopPointId("25482")),
+                        PatternStop(sequence = 3, stopPointId = StopPointId("25484")),
+                        PatternStop(sequence = 4, stopPointId = StopPointId("109242")),
+                    ),
+                feedId = FeedId("rakvere-v20260428"),
+            ),
+            RoutePattern(
+                id = RoutePatternId("runtime-pattern:2"),
+                routeLineId = RouteLineId("runtime-route:2"),
+                displayName = "Põhja - Polikliinik",
+                cityId = cityId,
+                stops =
+                    listOf(
+                        PatternStop(sequence = 1, stopPointId = StopPointId("32583")),
+                        PatternStop(sequence = 2, stopPointId = StopPointId("25483")),
+                        PatternStop(sequence = 3, stopPointId = StopPointId("152899")),
+                    ),
+                feedId = FeedId("rakvere-v20260428"),
             ),
         )
 

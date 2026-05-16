@@ -6,6 +6,7 @@ import kotlin.test.Test
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class SearchScreenStateTextTest {
@@ -153,6 +154,49 @@ class SearchScreenStateTextTest {
         assertEquals(0, searchCallCount)
     }
 
+    @Test
+    fun `origin section no longer exposes old synthetic labels`() {
+        val labels = preferredOriginDisplayOrder()
+        assertFalse(labels.contains("RKV A välja"))
+        assertFalse(labels.contains("RKV A sisse"))
+        assertFalse(labels.contains("RKV B"))
+        assertFalse(labels.contains("RKV C"))
+    }
+
+    @Test
+    fun `origin section shows runtime-backed preferred labels`() {
+        val ordered = orderedOriginCandidateGroups(sampleOriginCandidateGroups())
+        val labels = ordered.map { it.displayName }
+
+        assertContains(labels, "Rakvere bussijaam")
+        assertContains(labels, "Polikliinik")
+        assertContains(labels, "Näpi")
+    }
+
+    @Test
+    fun `multi-option origin group requires explicit option selection`() {
+        val group = sampleOriginCandidateGroups().first { it.displayName == "Rakvere bussijaam" }
+        val outcome = resolveOriginGroupTap(group = group, currentlyExpandedGroupId = null)
+
+        assertNull(outcome.selectedStopPointId)
+        assertEquals(group.groupId, outcome.expandedGroupId)
+    }
+
+    @Test
+    fun `single-option origin group selects concrete stopPointId`() {
+        val group = sampleOriginCandidateGroups().first { it.displayName == "Polikliinik" }
+        val outcome = resolveOriginGroupTap(group = group, currentlyExpandedGroupId = null)
+
+        assertEquals(StopPointId("25482"), outcome.selectedStopPointId)
+        assertNull(outcome.expandedGroupId)
+    }
+
+    @Test
+    fun `origin option label contains route pattern count`() {
+        val option = OriginCandidateOption(stopPointId = StopPointId("152898"), label = "Rakvere bussijaam variant 1", routePatternCount = 2)
+        assertEquals("Rakvere bussijaam variant 1 (2)", originOptionLabel(option))
+    }
+
     private fun testRouteFoundSummary(): RouteFoundSummary =
         RouteFoundSummary(
             routePatternId = RoutePatternId("pattern:T1"),
@@ -163,5 +207,50 @@ class SearchScreenStateTextTest {
             segmentStopCount = 3,
             segmentStopPointIds = listOf(StopPointId("RKV_A_OUT"), StopPointId("RKV_B"), StopPointId("RKV_C")),
             candidateCount = 1,
+        )
+
+    private fun sampleOriginCandidateGroups(): List<OriginCandidateGroup> =
+        listOf(
+            OriginCandidateGroup(
+                groupId = "rakvere-rakvere-bussijaam",
+                displayName = "Rakvere bussijaam",
+                options =
+                    listOf(
+                        OriginCandidateOption(
+                            stopPointId = StopPointId("152898"),
+                            label = "Rakvere bussijaam variant 1",
+                            routePatternCount = 2,
+                        ),
+                        OriginCandidateOption(
+                            stopPointId = StopPointId("152899"),
+                            label = "Rakvere bussijaam variant 2",
+                            routePatternCount = 1,
+                        ),
+                    ),
+            ),
+            OriginCandidateGroup(
+                groupId = "rakvere-polikliinik",
+                displayName = "Polikliinik",
+                options =
+                    listOf(
+                        OriginCandidateOption(
+                            stopPointId = StopPointId("25482"),
+                            label = "Polikliinik",
+                            routePatternCount = 2,
+                        ),
+                    ),
+            ),
+            OriginCandidateGroup(
+                groupId = "rakvere-napi",
+                displayName = "Näpi",
+                options =
+                    listOf(
+                        OriginCandidateOption(
+                            stopPointId = StopPointId("109242"),
+                            label = "Näpi",
+                            routePatternCount = 1,
+                        ),
+                    ),
+            ),
         )
 }

@@ -4,7 +4,7 @@
 
 - Expected repo root: `C:\Users\Kasutaja\Desktop\ANDROBUSS`
 - Expected branch: `main`
-- Latest accepted HEAD: `bcf6298` (`PASS_31_RAKVERE_QUICK_DESTINATIONS_UI_ONLY`)
+- Latest accepted HEAD: `d067c9d` (`PASS_AUTO_07_DRIFT_AND_UI_BOUNDARY_CHECK`)
 - Working tree must be clean before a new pass
 
 ## Latest Accepted Pass
@@ -16,7 +16,8 @@
 - `PASS_29C — REAL_RUNTIME_FEED_POLICY_BEFORE_QUICK_DESTINATIONS` (accepted protected-surface policy gating pass)
 - `PASS_30 — REAL_RAKVERE_STATIC_RUNTIME_PROFILE_BASELINE` (accepted internal/MVP runtime primary profile pass)
 - `PASS_31 — RAKVERE_QUICK_DESTINATIONS_UI_ONLY` (accepted quick-chip UI-only pass)
-- Current governance checkpoint pass: `PASS_AUTO_07 — DRIFT_AND_UI_BOUNDARY_CHECK` (docs-only drift/boundary verification)
+- `PASS_AUTO_07 — DRIFT_AND_UI_BOUNDARY_CHECK` (accepted docs-only drift/boundary verification)
+- Current technical pass: `PASS_32 — ORIGIN_PICKER_FROM_RUNTIME_STOPS_GROUP_AWARE` (runtime-backed origin selection implementation)
 - Latest docs-only governance/future-notes pass remains `PASS_G05 — GTFS_REALTIME_AND_PEATUS_GRAPHQL_FUTURE_NOTES`
 
 PASS 21 added a parser-agnostic feed boundary and in-memory provider bootstrap.
@@ -88,7 +89,7 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
   - Search screen uses existing `SearchViewModel` via `hiltViewModel()`
   - destination input uses local text state with explicit "Vali sihtkoht" action
   - route search remains explicit via separate "Otsi" action
-  - origin selector is MVP/dev-only hardcoded chip list (no GPS/permissions)
+  - origin selector baseline existed as MVP/dev-only hardcoded chips (no GPS/permissions)
 - First visible UI now exists in app, but it remains minimal MVP/diagnostic baseline.
 - No navigation graph, GPS/map permissions, downloader/network, WorkManager, or realtime behavior has been opened.
 - Runtime bootstrap policy uses real-static primary + synthetic fallback while keeping production freshness unresolved.
@@ -97,6 +98,11 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
   - no `StopPointId` shortcuts are used in quick-chip path,
   - quick-chip clicks do not call `searchRoute()` directly,
   - ambiguity handling remains unchanged (no auto-selection).
+- PASS 32 candidate replaces synthetic origin chips with runtime snapshot-backed origin candidates:
+  - origin candidates are built from active `DomainFeedSnapshot.stopPoints` + `routePatterns`,
+  - candidates are grouped by `stopGroupId`,
+  - multi-stop groups require explicit concrete option selection (no implicit first-stop auto-pick),
+  - old synthetic IDs (`RKV_A_OUT`, `RKV_A_IN`, `RKV_B`, `RKV_C`) are removed from app UI origin section.
 - Governance/tooling guardrails accepted after PASS 25:
   - PASS G03 audit-index/read-order sync
   - PASS AUTO-01 detekt module-boundary checks
@@ -120,14 +126,14 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 - Runtime bootstrap is Hilt-backed but remains anchored in `Application.onCreate` until ViewModel/runtime lifecycle ownership pass.
 - Room baseline exists, but freshness metadata and feed lifecycle evolution are not implemented.
 - Production `RoutePattern` source is not implemented.
-- Compose/UI wiring is not implemented.
+- Compose UI wiring exists as a single-screen MVP baseline and remains incomplete for production UX flows.
 - Nearest-stop/geospatial behavior is not implemented.
 - `rakvere-smoke` names are synthetic and separate from real Rakvere POI metadata names.
 - First-launch `FeedNotReady` state is expected before bootstrap prepare and is not an error state.
 
 ## Current Pass
 
-- `PASS_AUTO_07 — DRIFT_AND_UI_BOUNDARY_CHECK`
+- `PASS_32 — ORIGIN_PICKER_FROM_RUNTIME_STOPS_GROUP_AWARE`
 
 ## Lazy Context Note (PASS G03)
 
@@ -159,7 +165,7 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Next Technical Pass
 
-- `PASS_32_ORIGIN_SELECTION_IMPROVEMENT_SCOPE_AUDIT`
+- `PASS_33_ORIGIN_SEARCH_DIALOG_SCOPE_AUDIT`
 - Alternative: `PASS_FEED_01_DOWNLOADER_FRESHNESS_SCOPE_AUDIT`
 - Alternative: `PASS_UI_02_SEARCH_SCREEN_POLISH_SCOPE_AUDIT`
 - Public/freely distributed production still requires downloader/update/freshness policy.

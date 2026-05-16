@@ -3,6 +3,7 @@ package ee.androbus.app.presentation.search
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ee.androbus.core.domain.CityId
+import ee.androbus.core.domain.DomainFeedSnapshot
 import ee.androbus.core.domain.DomainFeedSnapshotProvider
 import ee.androbus.core.domain.StopPointId
 import ee.androbus.core.routing.DirectRouteNotFoundReason
@@ -45,8 +46,21 @@ class SearchViewModel
         }
 
         fun refreshFeedState() {
-            val feedState = if (snapshotProvider.getSnapshot(cityId) == null) FeedState.NotReady else FeedState.Ready
-            _uiState.update { it.copy(feedState = feedState) }
+            val snapshot = snapshotProvider.getSnapshot(cityId)
+            val originCandidates = snapshot?.let(::buildOriginCandidates).orEmpty()
+            val feedState = if (snapshot == null) FeedState.NotReady else FeedState.Ready
+
+            _uiState.update { current ->
+                val selectedOrigin =
+                    current.originStopPointId
+                        ?.takeIf { selected -> originCandidates.any { group -> group.options.any { it.stopPointId == selected } } }
+
+                current.copy(
+                    feedState = feedState,
+                    originCandidates = originCandidates,
+                    originStopPointId = selectedOrigin,
+                )
+            }
         }
 
         fun onOriginStopPointChanged(originStopPointId: StopPointId?) {
@@ -107,13 +121,19 @@ class SearchViewModel
                 _uiState.update {
                     it.copy(
                         feedState = FeedState.NotReady,
+                        originCandidates = emptyList(),
                         routeQueryState = RouteQueryState.FeedNotAvailable,
                     )
                 }
                 return
             }
 
-            _uiState.update { it.copy(feedState = FeedState.Ready) }
+            _uiState.update {
+                it.copy(
+                    feedState = FeedState.Ready,
+                    originCandidates = buildOriginCandidates(snapshot),
+                )
+            }
 
             val destinationEnrichment = routeReadyDestinationEnrichmentOrNull()
             if (destinationEnrichment == null) {
@@ -145,7 +165,7 @@ class SearchViewModel
         private fun resolveDestination(query: String) {
             val snapshot = snapshotProvider.getSnapshot(cityId)
             if (snapshot == null) {
-                _uiState.update { it.copy(feedState = FeedState.NotReady) }
+                _uiState.update { it.copy(feedState = FeedState.NotReady, originCandidates = emptyList()) }
                 return
             }
 
@@ -185,6 +205,48 @@ class SearchViewModel
 
             val destinationInput = mapEnrichmentToState(enrichment)
             _uiState.update { it.copy(destinationInput = destinationInput) }
+        }
+
+        private fun buildOriginCandidates(snapshot: DomainFeedSnapshot): List<OriginCandidateGroup> {
+            val routePatternIdsByStopId =
+                snapshot.routePatterns
+                    .flatMap { pattern -> pattern.stops.map { stop -> stop.stopPointId to pattern.id } }
+                    .groupBy(keySelector = { it.first }, valueTransform = { it.second })
+                    .mapValues { (_, patternIds) -> patternIds.toSet() }
+
+            return snapshot.stopPoints
+                .filter { stopPoint -> routePatternIdsByStopId.containsKey(stopPoint.id) }
+                .groupBy { stopPoint -> stopPoint.stopGroupId }
+                .map { (stopGroupId, stops) ->
+                    val groupDisplayName = stops.first().displayName
+                    val sortedStops = stops.sortedBy { stopPoint -> stopPoint.id.value }
+
+                    OriginCandidateGroup(
+                        groupId = stopGroupId.value,
+                        displayName = groupDisplayName,
+                        options =
+                            sortedStops.mapIndexed { index, stopPoint ->
+                                OriginCandidateOption(
+                                    stopPointId = stopPoint.id,
+                                    label = buildOriginOptionLabel(groupDisplayName, index, sortedStops.size),
+                                    routePatternCount = routePatternIdsByStopId[stopPoint.id]?.size ?: 0,
+                                )
+                            },
+                    )
+                }
+                .sortedBy { it.displayName.lowercase() }
+        }
+
+        private fun buildOriginOptionLabel(
+            displayName: String,
+            index: Int,
+            groupSize: Int,
+        ): String {
+            return if (groupSize > 1) {
+                "$displayName variant ${index + 1}"
+            } else {
+                displayName
+            }
         }
 
         private fun mapEnrichmentToState(enrichment: DestinationEnrichmentResult): DestinationInputState {

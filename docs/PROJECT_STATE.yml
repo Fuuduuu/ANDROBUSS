@@ -2,25 +2,34 @@ project:
   name: ANDROBUSS
   branch: main
   remote: https://github.com/Fuuduuu/ANDROBUSS.git
-  last_accepted_commit: bcf62983d06edd6bf77a22cb1b24ba91392f6e88
-  last_known_good_commit: bcf62983d06edd6bf77a22cb1b24ba91392f6e88
-  current_pass: PASS_AUTO_07_DRIFT_AND_UI_BOUNDARY_CHECK
-  next_recommended_pass: PASS_32_ORIGIN_SELECTION_IMPROVEMENT_SCOPE_AUDIT
+  last_accepted_commit: d067c9d545d21520ce06fb6eaa6b7a3df123c62c
+  last_known_good_commit: d067c9d545d21520ce06fb6eaa6b7a3df123c62c
+  current_pass: PASS_32_ORIGIN_PICKER_FROM_RUNTIME_STOPS_GROUP_AWARE
+  next_recommended_pass: PASS_33_ORIGIN_SEARCH_DIALOG_SCOPE_AUDIT
 
 scope:
-  current_goal: "Docs-only drift/state sync and UI boundary verification after PASS 31 quick-destination chips."
+  current_goal: "Replace synthetic origin chips with runtime snapshot backed, stop-group-aware origin selection."
   allowed_surfaces:
     - docs/PROJECT_STATE.yml
     - docs/CURRENT_STATE.md
     - docs/ROADMAP.md
     - docs/AUDIT_INDEX.md
     - docs/TESTING_STRATEGY.md
-    - docs/CODEBASE_IMPACT_MAP.md
-    - docs/ANDROID_ARCHITECTURE.md
-    - docs/UX_PRINCIPLES.md
-    - docs/audit/PASS_AUTO_07_DRIFT_AND_UI_BOUNDARY_CHECK.md
+    - app/src/main/kotlin/ee/androbus/app/presentation/search/SearchUiState.kt
+    - app/src/main/kotlin/ee/androbus/app/presentation/search/SearchViewModel.kt
+    - app/src/main/kotlin/ee/androbus/app/presentation/search/SearchScreen.kt
+    - app/src/test/kotlin/ee/androbus/app/presentation/search/SearchViewModelTest.kt
+    - app/src/test/kotlin/ee/androbus/app/presentation/search/SearchScreenStateTextTest.kt
+    - docs/audit/PASS_32_ORIGIN_PICKER_FROM_RUNTIME_STOPS_GROUP_AWARE.md
   forbidden_surfaces:
-    - app/src/
+    - app/src/main/assets/
+    - app/src/main/AndroidManifest.xml
+    - app/src/main/kotlin/ee/androbus/app/MainActivity.kt
+    - app/src/main/kotlin/ee/androbus/app/di/
+    - app/src/main/kotlin/ee/androbus/app/bootstrap/
+    - app/src/main/kotlin/ee/androbus/app/presentation/search/SearchViewModel.kt (other than origin-candidate logic in this pass)
+    - app/src/main/kotlin/ee/androbus/app/presentation/search/SearchUiState.kt (other than origin-candidate model in this pass)
+    - app/src/test/kotlin/ee/androbus/app/presentation/search/RakvereQuickDestinationReadinessTest.kt
     - core-domain/src/
     - core-gtfs/src/
     - core-routing/src/
@@ -33,8 +42,6 @@ scope:
     - feature-route-detail/src/
     - feature-favourites/src/
     - feature-alerts/src/
-    - app/src/main/assets/
-    - app/src/test/
     - build.gradle.kts
     - app/build.gradle.kts
     - gradle/libs.versions.toml
@@ -63,8 +70,9 @@ governance:
     - "PASS_29C real-runtime-feed policy gating accepted"
     - "PASS_30 real static runtime baseline accepted"
     - "PASS_31 quick-destination chips UI-only accepted"
+    - "PASS_AUTO_07 drift and UI boundary check accepted"
   drift_check_rule: "Every 5 accepted pass/checkpoints, run a docs-only drift-check before the next large implementation pass."
-  drift_check_counter: "0 / 5 (reset by PASS_AUTO_07 after PASS_31 acceptance)"
+  drift_check_counter: "1 / 5 (PASS_32 candidate started after PASS_AUTO_07 reset)"
   next_mandatory_drift_check: "Run next docs-only drift-check after 5 newly accepted checkpoints."
   drift_check_must_verify:
     - "CURRENT_STATE / ROADMAP / PROJECT_STATE alignment"
@@ -124,7 +132,7 @@ risks:
     - "AUTO-04 hardening checks only configured bootstrap feedId; active-feed/freshness policy remains future work."
     - "AUTO-05 detekt rules are boundary-only and intentionally do not enforce style/complexity hygiene."
     - "PASS 28C introduces first Compose search UI baseline, but it remains MVP/diagnostic-only and single-screen."
-    - "Origin selection remains dev-only hardcoded chips; nearest-stop/GPS origin flow is not implemented."
+    - "Origin selection is being moved to runtime snapshot-backed stop-group candidates; nearest-stop/GPS origin flow is still not implemented."
     - "Runtime bootstrap now prefers a real static Rakvere profile, but this remains internal/MVP baseline only."
     - "Public production freshness/update policy is still unresolved without downloader/update lifecycle."
     - "Quick-destination UI must keep using query-text resolver path; direct StopPointId shortcuts are forbidden."

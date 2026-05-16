@@ -93,6 +93,7 @@ fun SearchContent(
         )
 
         OriginSection(
+            originCandidates = uiState.originCandidates,
             selectedOrigin = uiState.originStopPointId,
             onOriginSelected = onOriginSelected,
         )
@@ -222,32 +223,62 @@ fun DestinationSection(
 
 @Composable
 fun OriginSection(
+    originCandidates: List<OriginCandidateGroup>,
     selectedOrigin: StopPointId?,
     onOriginSelected: (StopPointId?) -> Unit,
 ) {
-    val options =
-        listOf(
-            OriginOption("RKV A välja", StopPointId("RKV_A_OUT")),
-            OriginOption("RKV A sisse", StopPointId("RKV_A_IN")),
-            OriginOption("RKV B", StopPointId("RKV_B")),
-            OriginOption("RKV C", StopPointId("RKV_C")),
-        )
+    var expandedGroupId by rememberSaveable { androidx.compose.runtime.mutableStateOf<String?>(null) }
+    val orderedGroups = orderedOriginCandidateGroups(originCandidates)
 
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(
             modifier = Modifier.padding(12.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            Text("Päritolu (MVP/dev)", style = MaterialTheme.typography.titleMedium)
-            // TODO PASS 29+: replace with proper origin resolver / nearest-stop selection.
+            Text("Päritolu", style = MaterialTheme.typography.titleMedium)
+            // TODO PASS 33: full origin search dialog for all stop groups.
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                options.forEach { option ->
-                    FilterChip(
-                        selected = selectedOrigin == option.stopPointId,
-                        modifier = Modifier.fillMaxWidth(),
-                        onClick = { onOriginSelected(option.stopPointId) },
-                        label = { Text(option.label) },
+                if (orderedGroups.isEmpty()) {
+                    Text(
+                        text = "Päritolu valikuid ei leitud aktiivsest andmestikust.",
+                        style = MaterialTheme.typography.bodyMedium,
                     )
+                }
+
+                orderedGroups.forEach { group ->
+                    val isSelected = group.options.any { option -> option.stopPointId == selectedOrigin }
+                    FilterChip(
+                        selected = isSelected,
+                        modifier = Modifier.fillMaxWidth(),
+                        onClick = {
+                            val outcome = resolveOriginGroupTap(group = group, currentlyExpandedGroupId = expandedGroupId)
+                            expandedGroupId = outcome.expandedGroupId
+                            outcome.selectedStopPointId?.let { onOriginSelected(it) }
+                        },
+                        label = {
+                            if (group.options.size == 1) {
+                                Text(group.displayName)
+                            } else {
+                                Text("${group.displayName} (${group.options.size})")
+                            }
+                        },
+                    )
+
+                    if (group.options.size > 1 && expandedGroupId == group.groupId) {
+                        Column(
+                            modifier = Modifier.padding(start = 12.dp),
+                            verticalArrangement = Arrangement.spacedBy(6.dp),
+                        ) {
+                            group.options.forEach { option ->
+                                FilterChip(
+                                    selected = selectedOrigin == option.stopPointId,
+                                    modifier = Modifier.fillMaxWidth(),
+                                    onClick = { onOriginSelected(option.stopPointId) },
+                                    label = { Text(originOptionLabel(option)) },
+                                )
+                            }
+                        }
+                    }
                 }
             }
             if (selectedOrigin != null) {
@@ -284,14 +315,14 @@ fun RouteResultSection(
     }
 }
 
-internal data class OriginOption(
-    val label: String,
-    val stopPointId: StopPointId,
-)
-
 internal data class QuickDestinationOption(
     val label: String,
     val queryText: String,
+)
+
+internal data class OriginGroupTapOutcome(
+    val selectedStopPointId: StopPointId?,
+    val expandedGroupId: String?,
 )
 
 internal const val QUICK_DESTINATION_SECTION_TITLE = "Kiirvalikud"
@@ -365,3 +396,48 @@ internal fun handleQuickDestinationSelection(
     setDestinationText(label)
     onDestinationSelect(queryText)
 }
+
+internal fun orderedOriginCandidateGroups(originCandidates: List<OriginCandidateGroup>): List<OriginCandidateGroup> {
+    val preferredRankByDisplayName = preferredOriginDisplayOrder().withIndex().associate { (index, name) -> name to index }
+    return originCandidates.sortedWith(
+        compareBy<OriginCandidateGroup>(
+            { group -> preferredRankByDisplayName[group.displayName] ?: Int.MAX_VALUE },
+            { group -> group.displayName.lowercase() },
+        ),
+    )
+}
+
+internal fun resolveOriginGroupTap(
+    group: OriginCandidateGroup,
+    currentlyExpandedGroupId: String?,
+): OriginGroupTapOutcome {
+    if (group.options.size == 1) {
+        return OriginGroupTapOutcome(
+            selectedStopPointId = group.options.single().stopPointId,
+            expandedGroupId = null,
+        )
+    }
+
+    val nextExpandedGroupId = if (currentlyExpandedGroupId == group.groupId) null else group.groupId
+    return OriginGroupTapOutcome(
+        selectedStopPointId = null,
+        expandedGroupId = nextExpandedGroupId,
+    )
+}
+
+internal fun originOptionLabel(option: OriginCandidateOption): String {
+    return if (option.routePatternCount > 0) {
+        "${option.label} (${option.routePatternCount})"
+    } else {
+        option.label
+    }
+}
+
+internal fun preferredOriginDisplayOrder(): List<String> =
+    listOf(
+        "Rakvere bussijaam",
+        "Polikliinik",
+        "Näpi",
+        "Põhja",
+        "Arkna tee",
+    )

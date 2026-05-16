@@ -39,6 +39,18 @@ data class ResolvedDestinationOption(
     val stopPointId: StopPointId,
 )
 
+data class OriginCandidateGroup(
+    val groupId: String,
+    val displayName: String,
+    val options: List<OriginCandidateOption>,
+)
+
+data class OriginCandidateOption(
+    val stopPointId: StopPointId,
+    val label: String,
+    val routePatternCount: Int,
+)
+
 enum class RouteNotFoundDisplayReason {
     ORIGIN_NOT_FOUND,
     DESTINATION_NOT_FOUND,
@@ -87,6 +99,7 @@ sealed interface RouteQueryState {
 data class SearchUiState(
     val feedState: FeedState = FeedState.NotReady,
     val destinationInput: DestinationInputState = DestinationInputState.Empty,
+    val originCandidates: List<OriginCandidateGroup> = emptyList(),
     val originStopPointId: StopPointId? = null,
     val routeQueryState: RouteQueryState = RouteQueryState.Idle,
 )

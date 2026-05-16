@@ -378,7 +378,7 @@
   - quick-destination selection calls destination resolver callback only,
   - quick-destination click does not trigger route-search callback directly.
 
-## Drift/UI Boundary Verification (PASS_AUTO_07 Candidate)
+## Drift/UI Boundary Verification (PASS_AUTO_07 Accepted)
 
 - Post-PASS-31 governance checkpoint verifies:
   - no parser type leakage in app/data-local production code,
@@ -387,6 +387,21 @@
   - no Hilt annotation leaks to `core-*`/`feature-search`,
   - quick-destination path remains label/query-text only,
   - no GPS/network/realtime/navigation/WorkManager expansion.
+
+## Runtime Origin Candidate Coverage (PASS_32 Candidate)
+
+- `SearchViewModelTest` now adds runtime-origin readiness checks:
+  - `originCandidates` are empty when feed is not ready,
+  - `originCandidates` are built from runtime-like snapshot data and include `Rakvere bussijaam` + `Polikliinik`,
+  - every origin option `StopPointId` exists in snapshot stop points and appears in at least one route pattern,
+  - old synthetic origin IDs (`RKV_A_OUT`, `RKV_A_IN`, `RKV_B`, `RKV_C`) are absent from runtime-origin candidate output,
+  - selecting an origin option stores concrete `originStopPointId`,
+  - route query with runtime-origin option does not return `ORIGIN_NOT_FOUND`.
+- `SearchScreenStateTextTest` now adds origin-section behavior checks:
+  - runtime-backed preferred origin labels are present,
+  - synthetic legacy origin labels are absent from preferred origin ordering,
+  - multi-option origin groups require explicit option selection (no implicit first-stop auto-pick),
+  - single-option group tap returns a concrete `StopPointId` selection event.
 
 ## Near-Term Test Gaps
 
