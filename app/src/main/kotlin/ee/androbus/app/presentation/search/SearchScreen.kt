@@ -2,10 +2,13 @@ package ee.androbus.app.presentation.search
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -19,8 +22,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import ee.androbus.core.domain.StopPointId
 
@@ -50,6 +55,7 @@ fun SearchContent(
     onSearch: () -> Unit,
 ) {
     var destinationText by rememberSaveable { androidx.compose.runtime.mutableStateOf("") }
+    var showOriginDialog by rememberSaveable { androidx.compose.runtime.mutableStateOf(false) }
 
     Column(
         modifier =
@@ -96,6 +102,7 @@ fun SearchContent(
             originCandidates = uiState.originCandidates,
             selectedOrigin = uiState.originStopPointId,
             onOriginSelected = onOriginSelected,
+            onOpenOriginSearchDialog = { showOriginDialog = true },
         )
 
         Button(
@@ -114,6 +121,18 @@ fun SearchContent(
         Text(
             text = "Bussiandmed: Ühistranspordiregister / Regionaal- ja Põllumajandusministeerium",
             style = MaterialTheme.typography.bodySmall,
+        )
+    }
+
+    if (showOriginDialog) {
+        OriginSearchDialog(
+            candidates = uiState.originCandidates,
+            selectedOrigin = uiState.originStopPointId,
+            onOriginSelected = { selected ->
+                onOriginSelected(selected)
+                showOriginDialog = false
+            },
+            onDismiss = { showOriginDialog = false },
         )
     }
 }
@@ -226,6 +245,7 @@ fun OriginSection(
     originCandidates: List<OriginCandidateGroup>,
     selectedOrigin: StopPointId?,
     onOriginSelected: (StopPointId?) -> Unit,
+    onOpenOriginSearchDialog: () -> Unit,
 ) {
     var expandedGroupId by rememberSaveable { androidx.compose.runtime.mutableStateOf<String?>(null) }
     val orderedGroups = orderedOriginCandidateGroups(originCandidates)
@@ -236,7 +256,13 @@ fun OriginSection(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             Text("Päritolu", style = MaterialTheme.typography.titleMedium)
-            // TODO PASS 33: full origin search dialog for all stop groups.
+            Button(
+                onClick = onOpenOriginSearchDialog,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text(ORIGIN_SEARCH_ACTION_TEXT)
+            }
+
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 if (orderedGroups.isEmpty()) {
                     Text(
@@ -291,6 +317,104 @@ fun OriginSection(
 }
 
 @Composable
+fun OriginSearchDialog(
+    candidates: List<OriginCandidateGroup>,
+    selectedOrigin: StopPointId?,
+    onOriginSelected: (StopPointId) -> Unit,
+    onDismiss: () -> Unit,
+) {
+    var searchText by rememberSaveable { androidx.compose.runtime.mutableStateOf("") }
+    var expandedGroupId by rememberSaveable { androidx.compose.runtime.mutableStateOf<String?>(null) }
+    val filteredGroups = filterOriginCandidateGroups(candidates = candidates, searchText = searchText)
+
+    Dialog(onDismissRequest = onDismiss) {
+        Card(modifier = Modifier.fillMaxWidth()) {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+            ) {
+                Text(
+                    text = ORIGIN_DIALOG_TITLE,
+                    style = MaterialTheme.typography.titleLarge,
+                )
+                OutlinedTextField(
+                    value = searchText,
+                    onValueChange = {
+                        searchText = it
+                        expandedGroupId = null
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    label = { Text(ORIGIN_SEARCH_ACTION_TEXT) },
+                    singleLine = true,
+                )
+
+                if (filteredGroups.isEmpty()) {
+                    Text(
+                        text = ORIGIN_DIALOG_NO_RESULTS_TEXT,
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+                } else {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        items(filteredGroups) { group ->
+                            val isSelected = group.options.any { option -> option.stopPointId == selectedOrigin }
+                            FilterChip(
+                                selected = isSelected,
+                                onClick = {
+                                    val outcome = resolveOriginGroupTap(group = group, currentlyExpandedGroupId = expandedGroupId)
+                                    expandedGroupId =
+                                        handleOriginDialogGroupSelection(
+                                            outcome = outcome,
+                                            onOriginSelected = onOriginSelected,
+                                            onDismiss = onDismiss,
+                                        )
+                                },
+                                modifier = Modifier.fillMaxWidth(),
+                                label = {
+                                    if (group.options.size == 1) {
+                                        Text(group.displayName)
+                                    } else {
+                                        Text("${group.displayName} (${group.options.size})")
+                                    }
+                                },
+                            )
+
+                            if (group.options.size > 1 && expandedGroupId == group.groupId) {
+                                Column(
+                                    modifier = Modifier.padding(start = 12.dp, top = 4.dp),
+                                    verticalArrangement = Arrangement.spacedBy(6.dp),
+                                ) {
+                                    group.options.forEachIndexed { index, option ->
+                                        FilterChip(
+                                            selected = option.stopPointId == selectedOrigin,
+                                            onClick = { handleOriginDialogOptionSelection(option, onOriginSelected, onDismiss) },
+                                            modifier = Modifier.fillMaxWidth(),
+                                            label = { Text(originDialogOptionLabel(option, index)) },
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Button(onClick = onDismiss) {
+                        Text(ORIGIN_DIALOG_CANCEL_TEXT)
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
 fun RouteResultSection(
     routeQueryState: RouteQueryState,
 ) {
@@ -326,6 +450,10 @@ internal data class OriginGroupTapOutcome(
 )
 
 internal const val QUICK_DESTINATION_SECTION_TITLE = "Kiirvalikud"
+internal const val ORIGIN_SEARCH_ACTION_TEXT = "Otsi peatus..."
+internal const val ORIGIN_DIALOG_TITLE = "Vali lähtepeatus"
+internal const val ORIGIN_DIALOG_NO_RESULTS_TEXT = "Tulemusi ei leitud"
+internal const val ORIGIN_DIALOG_CANCEL_TEXT = "Tühista"
 
 internal fun feedStateTitle(feedState: FeedState): String =
     when (feedState) {
@@ -441,3 +569,49 @@ internal fun preferredOriginDisplayOrder(): List<String> =
         "Põhja",
         "Arkna tee",
     )
+
+internal fun filterOriginCandidateGroups(
+    candidates: List<OriginCandidateGroup>,
+    searchText: String,
+): List<OriginCandidateGroup> {
+    val query = searchText.trim()
+    val ordered = orderedOriginCandidateGroups(candidates)
+    if (query.isBlank()) return ordered
+    return ordered.filter { group ->
+        group.displayName.contains(query, ignoreCase = true)
+    }
+}
+
+internal fun originDialogOptionLabel(
+    option: OriginCandidateOption,
+    index: Int,
+): String {
+    val base = option.label.ifBlank { "Variant ${index + 1}" }
+    return if (option.routePatternCount > 0) {
+        "$base (${option.routePatternCount})"
+    } else {
+        base
+    }
+}
+
+internal fun handleOriginDialogOptionSelection(
+    option: OriginCandidateOption,
+    onOriginSelected: (StopPointId) -> Unit,
+    onDismiss: () -> Unit,
+) {
+    onOriginSelected(option.stopPointId)
+    onDismiss()
+}
+
+internal fun handleOriginDialogGroupSelection(
+    outcome: OriginGroupTapOutcome,
+    onOriginSelected: (StopPointId) -> Unit,
+    onDismiss: () -> Unit,
+): String? {
+    outcome.selectedStopPointId?.let { selected ->
+        onOriginSelected(selected)
+        onDismiss()
+        return null
+    }
+    return outcome.expandedGroupId
+}

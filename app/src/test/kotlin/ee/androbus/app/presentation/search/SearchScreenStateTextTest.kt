@@ -164,6 +164,44 @@ class SearchScreenStateTextTest {
     }
 
     @Test
+    fun `origin search action label is visible`() {
+        assertEquals("Otsi peatus...", ORIGIN_SEARCH_ACTION_TEXT)
+    }
+
+    @Test
+    fun `clicking origin search action opens dialog with expected title`() {
+        var showDialog = false
+        val onOpenDialog = { showDialog = true }
+
+        onOpenDialog()
+
+        assertTrue(showDialog)
+        assertEquals("Vali lähtepeatus", ORIGIN_DIALOG_TITLE)
+    }
+
+    @Test
+    fun `origin dialog search filters groups`() {
+        val filtered = filterOriginCandidateGroups(sampleOriginCandidateGroups(), "poli")
+        assertEquals(1, filtered.size)
+        assertEquals("Polikliinik", filtered.single().displayName)
+    }
+
+    @Test
+    fun `origin dialog empty result state is shown`() {
+        val filtered = filterOriginCandidateGroups(sampleOriginCandidateGroups(), "puudub")
+        assertTrue(filtered.isEmpty())
+        assertEquals("Tulemusi ei leitud", ORIGIN_DIALOG_NO_RESULTS_TEXT)
+    }
+
+    @Test
+    fun `single-option group selection resolves concrete stopPointId`() {
+        val singleGroup = sampleOriginCandidateGroups().first { it.displayName == "Polikliinik" }
+        val outcome = resolveOriginGroupTap(group = singleGroup, currentlyExpandedGroupId = null)
+        assertEquals(StopPointId("25482"), outcome.selectedStopPointId)
+        assertNull(outcome.expandedGroupId)
+    }
+
+    @Test
     fun `origin section shows runtime-backed preferred labels`() {
         val ordered = orderedOriginCandidateGroups(sampleOriginCandidateGroups())
         val labels = ordered.map { it.displayName }
@@ -189,6 +227,57 @@ class SearchScreenStateTextTest {
 
         assertEquals(StopPointId("25482"), outcome.selectedStopPointId)
         assertNull(outcome.expandedGroupId)
+    }
+
+    @Test
+    fun `multi-option dialog option click selects stopPointId and dismisses dialog`() {
+        val option =
+            sampleOriginCandidateGroups()
+                .first { it.displayName == "Rakvere bussijaam" }
+                .options
+                .first()
+
+        var selected: StopPointId? = null
+        var dismissed = false
+
+        handleOriginDialogOptionSelection(
+            option = option,
+            onOriginSelected = { selected = it },
+            onDismiss = { dismissed = true },
+        )
+
+        assertEquals(option.stopPointId, selected)
+        assertTrue(dismissed)
+    }
+
+    @Test
+    fun `single-option dialog group click selects stopPointId and dismisses dialog`() {
+        val singleGroup = sampleOriginCandidateGroups().first { it.displayName == "Polikliinik" }
+        val outcome = resolveOriginGroupTap(group = singleGroup, currentlyExpandedGroupId = null)
+
+        var selected: StopPointId? = null
+        var dismissed = false
+        val expanded =
+            handleOriginDialogGroupSelection(
+                outcome = outcome,
+                onOriginSelected = { selected = it },
+                onDismiss = { dismissed = true },
+            )
+
+        assertEquals(StopPointId("25482"), selected)
+        assertTrue(dismissed)
+        assertNull(expanded)
+    }
+
+    @Test
+    fun `dialog cancel hides dialog`() {
+        var visible = true
+        val onDismiss = { visible = false }
+
+        onDismiss()
+
+        assertFalse(visible)
+        assertEquals("Tühista", ORIGIN_DIALOG_CANCEL_TEXT)
     }
 
     @Test

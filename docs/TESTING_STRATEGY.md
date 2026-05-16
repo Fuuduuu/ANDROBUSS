@@ -388,7 +388,7 @@
   - quick-destination path remains label/query-text only,
   - no GPS/network/realtime/navigation/WorkManager expansion.
 
-## Runtime Origin Candidate Coverage (PASS_32 Candidate)
+## Runtime Origin Candidate Coverage (PASS_32 Accepted)
 
 - `SearchViewModelTest` now adds runtime-origin readiness checks:
   - `originCandidates` are empty when feed is not ready,
@@ -402,6 +402,21 @@
   - synthetic legacy origin labels are absent from preferred origin ordering,
   - multi-option origin groups require explicit option selection (no implicit first-stop auto-pick),
   - single-option group tap returns a concrete `StopPointId` selection event.
+
+## Origin Search Dialog Coverage (PASS_33 Candidate)
+
+- `SearchScreenStateTextTest` adds dialog-behavior checks:
+  - "Otsi peatus..." action label is present for opening origin search dialog,
+  - dialog title is `Vali lähtepeatus`,
+  - local search query filters origin groups by display name,
+  - empty filter result path is surfaced as `Tulemusi ei leitud`,
+  - single-option groups select concrete `OriginCandidateOption.stopPointId`,
+  - multi-option groups expand first and require explicit option-row selection,
+  - option-row click selects concrete `OriginCandidateOption.stopPointId` and dismisses dialog,
+  - cancel action (`Tühista`) dismisses dialog without selection.
+- PASS 33 keeps origin dialog state local to Compose UI:
+  - no `showOriginDialog` state was added to `SearchUiState`,
+  - no open/close dialog methods were added to `SearchViewModel`.
 
 ## Near-Term Test Gaps
 
