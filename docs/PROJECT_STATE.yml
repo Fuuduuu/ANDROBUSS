@@ -71,7 +71,7 @@ governance:
     - "PASS_32 runtime-backed origin candidates accepted"
     - "PASS_33 origin search dialog accepted"
   drift_check_rule: "Every 5 accepted pass/checkpoints, run a docs-only drift-check before the next large implementation pass."
-  drift_check_counter: "2 / 5 (PASS_32 and PASS_33 accepted after PASS_AUTO_07 reset; PASS_UI_02 is still candidate)"
+  drift_check_counter: "3 / 5 (PASS_32, PASS_33, and PASS_UI_02 accepted after PASS_AUTO_07 reset)"
   next_mandatory_drift_check: "Run next docs-only drift-check after 5 newly accepted checkpoints."
   drift_check_must_verify:
     - "CURRENT_STATE / ROADMAP / PROJECT_STATE alignment"
