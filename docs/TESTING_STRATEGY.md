@@ -341,14 +341,13 @@
 
 ## Rakvere Quick Destination Readiness Coverage (PASS_29A Accepted)
 
-- `RakvereQuickDestinationReadinessTest` validates readiness boundaries without UI changes:
-  - active runtime synthetic bootstrap asset stop names are limited to `Keskpeatus`, `Spordikeskus`, `Jaam`,
-  - proposed real Rakvere quick labels are absent from runtime synthetic asset,
-  - `SearchViewModel` resolves labels only when present in the active snapshot,
-  - labels absent from active snapshot do not resolve,
-  - real-derived Rakvere dev profile remains test-only and separate from runtime default asset.
+- `RakvereQuickDestinationReadinessTest` validates readiness boundaries and runtime-label policy:
+  - real static runtime baseline contains expected quick-label coverage (`Rakvere bussijaam`, `Polikliinik`, `Näpi`, `Keskväljak`, `Põhja`),
+  - `Tõrma` is absent from runtime stop display names,
+  - `SearchViewModel` resolves labels/query text only when present in active snapshot,
+  - anti-fabrication checks keep StopPoint identity ID-based, not label-derived.
 
-## Quick Destination Runtime Policy Gates (PASS_29C Candidate)
+## Quick Destination Runtime Policy Gates (PASS_29C Accepted)
 
 - Before any quick-destination UI implementation is accepted:
   - labels/query text must resolve through normal destination flow in the active runtime snapshot,
@@ -357,7 +356,7 @@
   - no UI constants may inject `StopPointId` directly,
   - test-only real profile fixtures must not be treated as runtime truth.
 
-## Real Static Runtime Baseline Coverage (PASS_30 Candidate)
+## Real Static Runtime Baseline Coverage (PASS_30 Accepted)
 
 - `FeedBootstrapLoaderTest` now covers runtime bootstrap primary/fallback behavior:
   - default bootstrap loads real static runtime asset (`rakvere_feed_20260428.json`),
@@ -369,6 +368,15 @@
   - runtime static profile contains real Rakvere labels,
   - `SearchViewModel` resolves `Rakvere bussijaam` against runtime-like snapshot,
   - synthetic fallback remains synthetic when loaded explicitly.
+
+## Quick Destinations UI Coverage (PASS_31 Candidate)
+
+- `SearchScreenStateTextTest` now covers quick-destination UI wiring:
+  - `Kiirvalikud` labels include `Rakvere bussijaam`, `Polikliinik`, `Näpi`, `Keskväljak`, `Põhjakeskus`,
+  - `Tõrma` is intentionally excluded,
+  - `Põhjakeskus` chip maps to query text `Põhja`,
+  - quick-destination selection calls destination resolver callback only,
+  - quick-destination click does not trigger route-search callback directly.
 
 ## Near-Term Test Gaps
 

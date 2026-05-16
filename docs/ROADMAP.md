@@ -105,43 +105,48 @@ Current policy pass:
 
 Current technical pass:
 
-47. PASS_30_REAL_RAKVERE_STATIC_RUNTIME_PROFILE_BASELINE (current candidate)
+47. PASS_30_REAL_RAKVERE_STATIC_RUNTIME_PROFILE_BASELINE (completed)
    - promote real-derived Rakvere static profile to runtime primary for internal/MVP use
    - keep synthetic runtime asset as fallback
    - keep public-production freshness solution explicitly unresolved
 
+48. PASS_31_RAKVERE_QUICK_DESTINATIONS_UI_ONLY (current candidate)
+   - add quick-destination UI chips in SearchScreen only
+   - use label/queryText resolver path only (no StopPointId shortcuts)
+   - keep SearchViewModel/SearchUiState and route-query logic unchanged
+
 Next recommended technical pass:
 
-48. PASS_31_RAKVERE_QUICK_DESTINATIONS_UI_ONLY_SCOPE_AUDIT (recommended next)
-   - scope quick-destination UI only, using query-text resolver path only
-   - keep direct StopPointId shortcuts forbidden
-   - no GPS/network/realtime/downloader scope expansion
+49. PASS_AUTO_07_DRIFT_AND_UI_BOUNDARY_CHECK (recommended next)
+   - docs-only drift reset and boundary verification after PASS 31
+   - confirm no GPS/network/realtime/navigation scope expansion
+   - reset drift counter before broader feature implementation
 
 Alternative next pass:
 
-49. PASS_FEED_01_DOWNLOADER_FRESHNESS_SCOPE_AUDIT
+50. PASS_FEED_01_DOWNLOADER_FRESHNESS_SCOPE_AUDIT
    - define downloader/update/freshness policy for public/freely distributed production
    - separate feed lifecycle policy from quick-destination UI pass
 
 Future scope candidates (not active next pass):
 
-50. PASS_29_ORIGIN_RESOLUTION_OR_SEARCH_UI_REFINEMENT
+51. PASS_29_ORIGIN_RESOLUTION_OR_SEARCH_UI_REFINEMENT
    - replace dev-only origin chips with proper origin resolution flow
    - refine first-screen UX states without opening realtime/network scope
 
-51. PASS_RT_01 - GTFS_REALTIME_SCOPE_LOCK_AND_IDENTITY_MODEL
+52. PASS_RT_01 - GTFS_REALTIME_SCOPE_LOCK_AND_IDENTITY_MODEL
    - lock realtime identity rules (`trip_id` + `stop_sequence`) before implementation
    - keep realtime/network/workmanager out until dedicated runtime pass approval
 
-52. PASS_CITY_PROFILE_01 - PEATUS_GRAPHQL_ROUTE_METADATA_DISCOVERY
+53. PASS_CITY_PROFILE_01 - PEATUS_GRAPHQL_ROUTE_METADATA_DISCOVERY
    - evaluate Peatus.ee / Digitransit GraphQL as city-route metadata helper
    - keep static GTFS as canonical routing identity source
 
 Likely following passes:
 
-53. PASS 30+ - DOWNLOADER_WORKMANAGER_REFRESH_LIFECYCLE
-54. PASS 31+ - FEED_FRESHNESS_HASH_VERSION_METADATA
-55. PASS UI-01 - DESTINATION_FIRST_HOME_AND_RESULT_CARDS_IMPLEMENTATION (after production feed/provider/query path is stable)
+54. PASS 30+ - DOWNLOADER_WORKMANAGER_REFRESH_LIFECYCLE
+55. PASS 31+ - FEED_FRESHNESS_HASH_VERSION_METADATA
+56. PASS UI-01 - DESTINATION_FIRST_HOME_AND_RESULT_CARDS_IMPLEMENTATION (after production feed/provider/query path is stable)
 
 Planning rule:
 - Any UI pass must align with `PASS UX-01` destination-first, list-first MVP blueprint.

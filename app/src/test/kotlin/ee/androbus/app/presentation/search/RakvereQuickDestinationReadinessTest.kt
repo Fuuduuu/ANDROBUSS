@@ -16,21 +16,20 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertIs
 import kotlin.test.assertNotEquals
-import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 class RakvereQuickDestinationReadinessTest {
     private val cityId = CityId("rakvere")
     private val runtimeSyntheticNames = setOf("Keskpeatus", "Spordikeskus", "Jaam")
-    private val proposedQuickLabels =
+    private val quickDestinationLabels =
         listOf(
             "Rakvere bussijaam",
             "Polikliinik",
-            "Põhjakeskus",
             "Näpi",
             "Keskväljak",
-            "Tõrma",
         )
+    private val pohjakeskusQueryText = "Põhja"
+    private val excludedLabel = "Tõrma"
 
     @Test
     fun `runtime real static asset contains expected Rakvere labels`() {
@@ -38,10 +37,11 @@ class RakvereQuickDestinationReadinessTest {
         val runtimeNames = runtime.stopPoints.map { it.displayName }.toSet()
 
         assertEquals("rakvere-v20260428", runtime.feedId)
-        assertTrue(runtimeNames.contains("Rakvere bussijaam"))
-        assertTrue(runtimeNames.contains("Polikliinik"))
-        assertTrue(runtimeNames.contains("Näpi"))
-        assertTrue(runtimeNames.contains("Keskväljak"))
+        quickDestinationLabels.forEach { label ->
+            assertTrue(runtimeNames.contains(label), "Runtime real static asset should contain: $label")
+        }
+        assertTrue(runtimeNames.contains(pohjakeskusQueryText))
+        assertFalse(runtimeNames.contains(excludedLabel))
     }
 
     @Test
@@ -107,18 +107,38 @@ class RakvereQuickDestinationReadinessTest {
 
         assertEquals("rakvere-bootstrap-v1", synthetic.feedId)
         assertEquals(runtimeSyntheticNames, syntheticNames)
-        proposedQuickLabels.forEach { label ->
+        quickDestinationLabels.forEach { label ->
             assertFalse(syntheticNames.contains(label), "Synthetic fallback unexpectedly contains: $label")
         }
+        assertFalse(syntheticNames.contains(pohjakeskusQueryText))
+        assertFalse(syntheticNames.contains(excludedLabel))
     }
 
     @Test
-    fun `runtime real static stop ids come from id fields not label text`() {
+    fun `runtime real static queryText Pohja resolves through normal destination flow`() {
+        val viewModel = createViewModel(loadRuntimeRealBootstrapDto().toDomainFeedSnapshot())
+
+        viewModel.onDestinationChanged(pohjakeskusQueryText)
+
+        val state = viewModel.uiState.value.destinationInput
+        assertTrue(
+            state is DestinationInputState.Resolved || state is DestinationInputState.Ambiguous,
+            "Expected resolvable destination state for queryText $pohjakeskusQueryText, got $state",
+        )
+    }
+
+    @Test
+    fun `runtime real static does not fabricate stop ids from quick destination labels`() {
         val runtime = loadRuntimeRealBootstrapDto()
         val snapshot = runtime.toDomainFeedSnapshot()
         val ids = snapshot.stopPoints.map { it.id.value }.toSet()
 
+        quickDestinationLabels.forEach { label ->
+            assertFalse(ids.contains(label), "StopPoint ids must not be label-derived: $label")
+        }
         assertTrue(ids.contains("152898"))
+        assertFalse(ids.contains(pohjakeskusQueryText))
+        assertFalse(ids.contains(excludedLabel))
         assertFalse(ids.contains("Jaam"))
         assertFalse(ids.contains("Rakvere bussijaam"))
         assertFalse(ids.contains("Polikliinik"))

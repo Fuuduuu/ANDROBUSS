@@ -4,7 +4,7 @@
 
 - Expected repo root: `C:\Users\Kasutaja\Desktop\ANDROBUSS`
 - Expected branch: `main`
-- Latest accepted HEAD: `936e3ec` (`PASS_29C_REAL_RUNTIME_FEED_POLICY_BEFORE_QUICK_DESTINATIONS`)
+- Latest accepted HEAD: `aa2a8e7` (`PASS_30_REAL_RAKVERE_STATIC_RUNTIME_PROFILE_BASELINE`)
 - Working tree must be clean before a new pass
 
 ## Latest Accepted Pass
@@ -14,6 +14,7 @@
 - `PASS_UI_01 — SEARCH_SCREEN_SMOKE_AND_POLISH` (accepted first-screen polish guard pass)
 - `PASS_29A — RAKVERE_QUICK_DESTINATION_RESOLUTION_READINESS` (accepted readiness evidence pass)
 - `PASS_29C — REAL_RUNTIME_FEED_POLICY_BEFORE_QUICK_DESTINATIONS` (accepted protected-surface policy gating pass)
+- `PASS_30 — REAL_RAKVERE_STATIC_RUNTIME_PROFILE_BASELINE` (accepted internal/MVP runtime primary profile pass)
 - Latest governance checkpoint pass: `PASS_AUTO_03 — DRIFT_AND_BOUNDARY_CHECK` (docs-only drift/boundary verification)
 - Latest docs-only governance/future-notes pass remains `PASS_G05 — GTFS_REALTIME_AND_PEATUS_GRAPHQL_FUTURE_NOTES`
 
@@ -120,7 +121,7 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Current Pass
 
-- `PASS_30 — REAL_RAKVERE_STATIC_RUNTIME_PROFILE_BASELINE`
+- `PASS_31 — RAKVERE_QUICK_DESTINATIONS_UI_ONLY`
 
 ## Lazy Context Note (PASS G03)
 
@@ -152,7 +153,7 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Next Technical Pass
 
-- `PASS_31_RAKVERE_QUICK_DESTINATIONS_UI_ONLY_SCOPE_AUDIT`
+- `PASS_AUTO_07_DRIFT_AND_UI_BOUNDARY_CHECK`
 - Alternative: `PASS_FEED_01_DOWNLOADER_FRESHNESS_SCOPE_AUDIT`
 - Public/freely distributed production still requires downloader/update/freshness policy.
 
@@ -164,5 +165,7 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 - This is not a public-production freshness solution.
 - Metadata alone still does not bypass resolver identity rules.
 - Verified routing identity must come from active runtime `StopPoint.id` resolution path, not UI-supplied IDs.
-- Quick-destination UI is still not implemented, but runtime label coverage is now available for a future UI-only pass.
+- PASS 31 now adds quick-destination chips using label/query-text pairs only.
+- `Põhjakeskus` chip is backed by query text `Põhja` in current runtime baseline.
+- `Tõrma` remains excluded pending metadata/alias policy pass.
 - Safe future path remains: quick label/query text -> `SearchViewModel.onDestinationChanged(queryText)` -> existing resolver flow.

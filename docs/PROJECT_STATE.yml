@@ -2,31 +2,28 @@ project:
   name: ANDROBUSS
   branch: main
   remote: https://github.com/Fuuduuu/ANDROBUSS.git
-  last_accepted_commit: 936e3ec5de39b45c5e91abbb9f4fa23a8399868a
-  last_known_good_commit: 936e3ec5de39b45c5e91abbb9f4fa23a8399868a
-  current_pass: PASS_30_REAL_RAKVERE_STATIC_RUNTIME_PROFILE_BASELINE
-  next_recommended_pass: PASS_31_RAKVERE_QUICK_DESTINATIONS_UI_ONLY_SCOPE_AUDIT
+  last_accepted_commit: aa2a8e73c30f883a727bd24f42a65839f80b438e
+  last_known_good_commit: aa2a8e73c30f883a727bd24f42a65839f80b438e
+  current_pass: PASS_31_RAKVERE_QUICK_DESTINATIONS_UI_ONLY
+  next_recommended_pass: PASS_FEED_01_DOWNLOADER_FRESHNESS_SCOPE_AUDIT
 
 scope:
-  current_goal: "Promote real-derived Rakvere static profile to app runtime baseline for internal/MVP use with synthetic fallback retained."
+  current_goal: "Add Rakvere quick-destination UI chips using existing destination resolution flow only."
   allowed_surfaces:
-    - app/src/main/assets/bootstrap/rakvere_feed_20260428.json
-    - app/src/main/assets/bootstrap/README.md
-    - app/src/main/kotlin/ee/androbus/app/bootstrap/FeedBootstrapLoader.kt
     - app/src/main/kotlin/ee/androbus/app/presentation/search/SearchScreen.kt
-    - app/src/test/kotlin/ee/androbus/app/bootstrap/FeedBootstrapLoaderTest.kt
+    - app/src/test/kotlin/ee/androbus/app/presentation/search/SearchScreenStateTextTest.kt
     - app/src/test/kotlin/ee/androbus/app/presentation/search/RakvereQuickDestinationReadinessTest.kt
     - docs/PROJECT_STATE.yml
     - docs/CURRENT_STATE.md
     - docs/ROADMAP.md
-    - docs/GTFS_PIPELINE.md
-    - docs/ANDROID_ARCHITECTURE.md
     - docs/AUDIT_INDEX.md
     - docs/TESTING_STRATEGY.md
-    - docs/audit/PASS_30_REAL_RAKVERE_STATIC_RUNTIME_PROFILE_BASELINE.md
+    - docs/audit/PASS_31_RAKVERE_QUICK_DESTINATIONS_UI_ONLY.md
   forbidden_surfaces:
+    - app/src/main/kotlin/ee/androbus/app/bootstrap/
     - app/src/main/kotlin/ee/androbus/app/presentation/search/SearchViewModel.kt
     - app/src/main/kotlin/ee/androbus/app/presentation/search/SearchUiState.kt
+    - app/src/main/assets/
     - core-domain/src/
     - core-gtfs/src/
     - core-routing/src/
@@ -39,6 +36,7 @@ scope:
     - feature-route-detail/src/
     - feature-favourites/src/
     - feature-alerts/src/
+    - app/src/test/kotlin/ee/androbus/app/bootstrap/
     - app/src/test/resources/bootstrap/rakvere_dev_profile_v1.json
     - build.gradle.kts
     - app/build.gradle.kts
@@ -66,8 +64,9 @@ governance:
     - "PASS_UI_01 search screen smoke and wording polish accepted"
     - "PASS_29A quick-destination readiness evidence accepted"
     - "PASS_29C real-runtime-feed policy gating accepted"
+    - "PASS_30 real static runtime baseline accepted"
   drift_check_rule: "Every 5 accepted pass/checkpoints, run a docs-only drift-check before the next large implementation pass."
-  drift_check_counter: "4 / 5 (PASS_UI_01, PASS_29A, PASS_29C accepted; PASS_30 runtime-baseline candidate)"
+  drift_check_counter: "5 / 5 (PASS_UI_01, PASS_29A, PASS_29C, PASS_30 accepted; PASS_31 quick-UI candidate)"
   next_mandatory_drift_check: "Run a docs-only drift-check after five new accepted checkpoints."
   drift_check_must_verify:
     - "CURRENT_STATE / ROADMAP / PROJECT_STATE alignment"
@@ -130,7 +129,8 @@ risks:
     - "Origin selection remains dev-only hardcoded chips; nearest-stop/GPS origin flow is not implemented."
     - "Runtime bootstrap now prefers a real static Rakvere profile, but this remains internal/MVP baseline only."
     - "Public production freshness/update policy is still unresolved without downloader/update lifecycle."
-    - "Quick-destination UI is still not implemented, even though runtime label coverage baseline is now improved."
+    - "Quick-destination UI must keep using query-text resolver path; direct StopPointId shortcuts are forbidden."
+    - "Tõrma remains excluded from quick chips until metadata/alias policy pass."
     - "Room schema/import baseline has no freshness/hash/version metadata yet."
     - "Docs are growing; docs hygiene should be a later explicit pass."
   deferred:

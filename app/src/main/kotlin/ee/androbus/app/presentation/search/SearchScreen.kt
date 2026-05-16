@@ -73,6 +73,17 @@ fun SearchContent(
             onRefreshFeed = onRefreshFeed,
         )
 
+        QuickDestinationSection(
+            onQuickDestinationSelected = { label, queryText ->
+                handleQuickDestinationSelection(
+                    label = label,
+                    queryText = queryText,
+                    setDestinationText = { destinationText = it },
+                    onDestinationSelect = onDestinationSelect,
+                )
+            },
+        )
+
         DestinationSection(
             destinationText = destinationText,
             onDestinationTextChanged = { destinationText = it },
@@ -103,6 +114,30 @@ fun SearchContent(
             text = "Bussiandmed: Ühistranspordiregister / Regionaal- ja Põllumajandusministeerium",
             style = MaterialTheme.typography.bodySmall,
         )
+    }
+}
+
+@Composable
+fun QuickDestinationSection(
+    onQuickDestinationSelected: (label: String, queryText: String) -> Unit,
+) {
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Column(
+            modifier = Modifier.padding(12.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            Text(QUICK_DESTINATION_SECTION_TITLE, style = MaterialTheme.typography.titleMedium)
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                quickDestinationOptions().forEach { option ->
+                    FilterChip(
+                        selected = false,
+                        modifier = Modifier.fillMaxWidth(),
+                        onClick = { onQuickDestinationSelected(option.label, option.queryText) },
+                        label = { Text(option.label) },
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -254,6 +289,13 @@ internal data class OriginOption(
     val stopPointId: StopPointId,
 )
 
+internal data class QuickDestinationOption(
+    val label: String,
+    val queryText: String,
+)
+
+internal const val QUICK_DESTINATION_SECTION_TITLE = "Kiirvalikud"
+
 internal fun feedStateTitle(feedState: FeedState): String =
     when (feedState) {
         FeedState.NotReady -> "Bussiandmeid laaditakse"
@@ -303,3 +345,23 @@ internal fun routeFoundSummaryLines(route: RouteFoundSummary): List<String> =
         "Vahepeatusi: ${route.segmentStopCount}",
         "(Täielikud peatusenimed ja sõiduajad on tulemas)",
     )
+
+internal fun quickDestinationOptions(): List<QuickDestinationOption> =
+    listOf(
+        QuickDestinationOption(label = "Rakvere bussijaam", queryText = "Rakvere bussijaam"),
+        QuickDestinationOption(label = "Polikliinik", queryText = "Polikliinik"),
+        QuickDestinationOption(label = "Näpi", queryText = "Näpi"),
+        QuickDestinationOption(label = "Keskväljak", queryText = "Keskväljak"),
+        // Põhjakeskus chip resolves via current runtime stop displayName "Põhja".
+        QuickDestinationOption(label = "Põhjakeskus", queryText = "Põhja"),
+    )
+
+internal fun handleQuickDestinationSelection(
+    label: String,
+    queryText: String,
+    setDestinationText: (String) -> Unit,
+    onDestinationSelect: (String) -> Unit,
+) {
+    setDestinationText(label)
+    onDestinationSelect(queryText)
+}

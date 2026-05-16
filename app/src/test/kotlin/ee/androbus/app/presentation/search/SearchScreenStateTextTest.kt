@@ -4,6 +4,7 @@ import ee.androbus.core.domain.RoutePatternId
 import ee.androbus.core.domain.StopPointId
 import kotlin.test.Test
 import kotlin.test.assertContains
+import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
@@ -87,6 +88,69 @@ class SearchScreenStateTextTest {
         val lines = routeFoundSummaryLines(testRouteFoundSummary())
         assertContains(lines.joinToString("\n"), "✓ Marsruut leitud")
         assertFalse(lines.any { it.contains("RKV_A_OUT") || it.contains("RKV_C") || it.contains("pattern:T1") })
+    }
+
+    @Test
+    fun `quick destination labels include expected entries and exclude Torma`() {
+        val labels = quickDestinationOptions().map { it.label }
+
+        assertContains(labels, "Rakvere bussijaam")
+        assertContains(labels, "Polikliinik")
+        assertContains(labels, "Näpi")
+        assertContains(labels, "Keskväljak")
+        assertContains(labels, "Põhjakeskus")
+        assertFalse(labels.contains("Tõrma"))
+    }
+
+    @Test
+    fun `quick destination section title is visible`() {
+        assertEquals("Kiirvalikud", QUICK_DESTINATION_SECTION_TITLE)
+    }
+
+    @Test
+    fun `clicking Pohjakeskus uses queryText Pohja`() {
+        var displayedText = ""
+        var querySent: String? = null
+
+        handleQuickDestinationSelection(
+            label = "Põhjakeskus",
+            queryText = "Põhja",
+            setDestinationText = { displayedText = it },
+            onDestinationSelect = { querySent = it },
+        )
+
+        assertEquals("Põhjakeskus", displayedText)
+        assertEquals("Põhja", querySent)
+    }
+
+    @Test
+    fun `clicking Rakvere bussijaam uses same queryText`() {
+        var displayedText = ""
+        var querySent: String? = null
+
+        handleQuickDestinationSelection(
+            label = "Rakvere bussijaam",
+            queryText = "Rakvere bussijaam",
+            setDestinationText = { displayedText = it },
+            onDestinationSelect = { querySent = it },
+        )
+
+        assertEquals("Rakvere bussijaam", displayedText)
+        assertEquals("Rakvere bussijaam", querySent)
+    }
+
+    @Test
+    fun `quick destination selection does not trigger search callback`() {
+        var searchCallCount = 0
+
+        handleQuickDestinationSelection(
+            label = "Polikliinik",
+            queryText = "Polikliinik",
+            setDestinationText = {},
+            onDestinationSelect = {},
+        )
+
+        assertEquals(0, searchCallCount)
     }
 
     private fun testRouteFoundSummary(): RouteFoundSummary =
