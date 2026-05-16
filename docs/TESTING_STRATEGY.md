@@ -403,7 +403,7 @@
   - multi-option origin groups require explicit option selection (no implicit first-stop auto-pick),
   - single-option group tap returns a concrete `StopPointId` selection event.
 
-## Origin Search Dialog Coverage (PASS_33 Candidate)
+## Origin Search Dialog Coverage (PASS_33 Accepted)
 
 - `SearchScreenStateTextTest` adds dialog-behavior checks:
   - "Otsi peatus..." action label is present for opening origin search dialog,
@@ -417,6 +417,23 @@
 - PASS 33 keeps origin dialog state local to Compose UI:
   - no `showOriginDialog` state was added to `SearchUiState`,
   - no open/close dialog methods were added to `SearchViewModel`.
+
+## Search Screen Flow Polish Coverage (PASS_UI_02 Candidate)
+
+- `SearchScreenStateTextTest` now extends UI-flow safety checks:
+  - stale destination text disables `Otsi` until destination is explicitly re-selected,
+  - destination section order stays destination-first before quick chips,
+  - quick chips still route only through destination resolver callback (no direct route-search trigger),
+  - quick helper text clarifies that route search is a separate explicit action,
+  - `Põhjakeskus (Põhja)` alias wording is explicit in UI copy/tests.
+- Origin presentation checks are tightened:
+  - inline origin list contains preferred groups only,
+  - full runtime origin catalog remains dialog-accessible,
+  - multi-option group labels use rider wording (`valikut`),
+  - concrete option labels use rider wording (`marsruuti`).
+- Rider-facing route text checks now verify:
+  - `NoPatternsAvailable` -> `Marsruudiandmed pole saadaval.`,
+  - generic direct-route miss text avoids technical/internal reason wording.
 
 ## Near-Term Test Gaps
 

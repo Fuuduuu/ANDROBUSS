@@ -4,7 +4,7 @@
 
 - Expected repo root: `C:\Users\Kasutaja\Desktop\ANDROBUSS`
 - Expected branch: `main`
-- Latest accepted HEAD: `cf7eb79` (`PASS_32_ORIGIN_PICKER_FROM_RUNTIME_STOPS_GROUP_AWARE`)
+- Latest accepted HEAD: `3b4a82e` (`PASS_33_ORIGIN_SEARCH_DIALOG`)
 - Working tree must be clean before a new pass
 
 ## Latest Accepted Pass
@@ -18,7 +18,8 @@
 - `PASS_31 — RAKVERE_QUICK_DESTINATIONS_UI_ONLY` (accepted quick-chip UI-only pass)
 - `PASS_AUTO_07 — DRIFT_AND_UI_BOUNDARY_CHECK` (accepted docs-only drift/boundary verification)
 - `PASS_32 — ORIGIN_PICKER_FROM_RUNTIME_STOPS_GROUP_AWARE` (accepted runtime-backed origin selection implementation)
-- Current technical pass: `PASS_33 — ORIGIN_SEARCH_DIALOG` (origin search dialog implementation)
+- `PASS_33 — ORIGIN_SEARCH_DIALOG` (accepted origin dialog implementation)
+- Current technical pass: `PASS_UI_02 — SEARCH_SCREEN_FLOW_POLISH` (UI/copy/state polish only)
 - Latest docs-only governance/future-notes pass remains `PASS_G05 — GTFS_REALTIME_AND_PEATUS_GRAPHQL_FUTURE_NOTES`
 
 PASS 21 added a parser-agnostic feed boundary and in-memory provider bootstrap.
@@ -104,11 +105,16 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
   - candidates are grouped by `stopGroupId`,
   - multi-stop groups require explicit concrete option selection (no implicit first-stop auto-pick),
   - old synthetic IDs (`RKV_A_OUT`, `RKV_A_IN`, `RKV_B`, `RKV_C`) are removed from app UI origin section.
-- PASS 33 candidate adds local UI origin search dialog behavior:
+- PASS 33 accepted state adds local UI origin search dialog behavior:
   - `OriginSearchDialog` uses local Compose state (no ViewModel dialog flags),
   - search filters existing runtime-backed `originCandidates` by group display name,
   - multi-option groups expand first and require explicit option selection,
   - option selection uses existing `OriginCandidateOption.stopPointId`.
+- PASS_UI_02 candidate polishes SearchScreen flow only:
+  - destination stale-text gating disables `Otsi` until destination is explicitly re-selected,
+  - destination input card is visually primary before quick chips,
+  - inline origins are reduced to preferred groups while full catalog remains in dialog,
+  - rider-facing copy is simplified without ViewModel/state/domain/data changes.
 - Governance/tooling guardrails accepted after PASS 25:
   - PASS G03 audit-index/read-order sync
   - PASS AUTO-01 detekt module-boundary checks
@@ -139,7 +145,7 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Current Pass
 
-- `PASS_33 — ORIGIN_SEARCH_DIALOG`
+- `PASS_UI_02 — SEARCH_SCREEN_FLOW_POLISH`
 
 ## Lazy Context Note (PASS G03)
 
@@ -171,9 +177,9 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Next Technical Pass
 
-- `PASS_34_ORIGIN_SELECTION_POLISH_SCOPE_AUDIT`
-- Alternative: `PASS_FEED_01_DOWNLOADER_FRESHNESS_SCOPE_AUDIT`
-- Alternative: `PASS_UI_02_SEARCH_SCREEN_POLISH_SCOPE_AUDIT`
+- `PASS_FEED_01_DOWNLOADER_FRESHNESS_SCOPE_AUDIT`
+- Alternative: `PASS_34_ORIGIN_SELECTION_POLISH_SCOPE_AUDIT`
+- Alternative: `PASS_UI_03_SEARCH_SCREEN_ACCESSIBILITY_SCOPE_AUDIT`
 - Public/freely distributed production still requires downloader/update/freshness policy.
 
 ## Runtime Feed Policy Note (PASS 30 Baseline Target)

@@ -18,6 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.collectAsState
@@ -55,7 +56,16 @@ fun SearchContent(
     onSearch: () -> Unit,
 ) {
     var destinationText by rememberSaveable { androidx.compose.runtime.mutableStateOf("") }
+    var lastSubmittedDestinationText by rememberSaveable { androidx.compose.runtime.mutableStateOf<String?>(null) }
+    var lastResolvedDestinationText by rememberSaveable { androidx.compose.runtime.mutableStateOf<String?>(null) }
     var showOriginDialog by rememberSaveable { androidx.compose.runtime.mutableStateOf(false) }
+    val normalizedDestinationText = destinationText.trim()
+
+    LaunchedEffect(uiState.destinationInput) {
+        if (uiState.destinationInput is DestinationInputState.Resolved) {
+            lastResolvedDestinationText = lastSubmittedDestinationText ?: normalizedDestinationText
+        }
+    }
 
     Column(
         modifier =
@@ -79,44 +89,71 @@ fun SearchContent(
             onRefreshFeed = onRefreshFeed,
         )
 
-        QuickDestinationSection(
-            onQuickDestinationSelected = { label, queryText ->
-                handleQuickDestinationSelection(
-                    label = label,
-                    queryText = queryText,
-                    setDestinationText = { destinationText = it },
-                    onDestinationSelect = onDestinationSelect,
-                )
-            },
-        )
+        searchContentSectionOrder().forEach { section ->
+            when (section) {
+                SearchContentSection.Destination -> {
+                    DestinationSection(
+                        destinationText = destinationText,
+                        onDestinationTextChanged = { destinationText = it },
+                        onDestinationSelect = {
+                            lastSubmittedDestinationText = normalizedDestinationText
+                            lastResolvedDestinationText = null
+                            onDestinationSelect(normalizedDestinationText)
+                        },
+                        destinationInputState = uiState.destinationInput,
+                        onAmbiguousOptionSelected = onAmbiguousOptionSelected,
+                    )
+                }
 
-        DestinationSection(
-            destinationText = destinationText,
-            onDestinationTextChanged = { destinationText = it },
-            onDestinationSelect = { onDestinationSelect(destinationText) },
-            destinationInputState = uiState.destinationInput,
-            onAmbiguousOptionSelected = onAmbiguousOptionSelected,
-        )
+                SearchContentSection.QuickDestinations -> {
+                    QuickDestinationSection(
+                        onQuickDestinationSelected = { label, queryText ->
+                            handleQuickDestinationSelection(
+                                label = label,
+                                queryText = queryText,
+                                setDestinationText = {
+                                    destinationText = it
+                                    lastSubmittedDestinationText = it.trim()
+                                    lastResolvedDestinationText = null
+                                },
+                                onDestinationSelect = onDestinationSelect,
+                            )
+                        },
+                    )
+                }
 
-        OriginSection(
-            originCandidates = uiState.originCandidates,
-            selectedOrigin = uiState.originStopPointId,
-            onOriginSelected = onOriginSelected,
-            onOpenOriginSearchDialog = { showOriginDialog = true },
-        )
+                SearchContentSection.Origin -> {
+                    OriginSection(
+                        originCandidates = inlinePreferredOriginCandidateGroups(uiState.originCandidates),
+                        selectedOrigin = uiState.originStopPointId,
+                        onOriginSelected = onOriginSelected,
+                        onOpenOriginSearchDialog = { showOriginDialog = true },
+                    )
+                }
 
-        Button(
-            onClick = onSearch,
-            enabled = isSearchButtonEnabled(uiState),
-            modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(vertical = 12.dp),
-        ) {
-            Text("Otsi")
+                SearchContentSection.SearchButton -> {
+                    Button(
+                        onClick = onSearch,
+                        enabled =
+                            isSearchButtonEnabled(
+                                uiState = uiState,
+                                destinationText = normalizedDestinationText,
+                                lastResolvedDestinationText = lastResolvedDestinationText,
+                            ),
+                        modifier = Modifier.fillMaxWidth(),
+                        contentPadding = PaddingValues(vertical = 12.dp),
+                    ) {
+                        Text("Otsi")
+                    }
+                }
+
+                SearchContentSection.Result -> {
+                    RouteResultSection(
+                        routeQueryState = uiState.routeQueryState,
+                    )
+                }
+            }
         }
-
-        RouteResultSection(
-            routeQueryState = uiState.routeQueryState,
-        )
 
         Text(
             text = "Bussiandmed: Ühistranspordiregister / Regionaal- ja Põllumajandusministeerium",
@@ -157,6 +194,14 @@ fun QuickDestinationSection(
                     )
                 }
             }
+            Text(
+                text = QUICK_DESTINATION_HELPER_TEXT,
+                style = MaterialTheme.typography.bodySmall,
+            )
+            Text(
+                text = QUICK_DESTINATION_ALIAS_HELPER_TEXT,
+                style = MaterialTheme.typography.bodySmall,
+            )
         }
     }
 }
@@ -248,7 +293,7 @@ fun OriginSection(
     onOpenOriginSearchDialog: () -> Unit,
 ) {
     var expandedGroupId by rememberSaveable { androidx.compose.runtime.mutableStateOf<String?>(null) }
-    val orderedGroups = orderedOriginCandidateGroups(originCandidates)
+    val inlineGroups = orderedOriginCandidateGroups(originCandidates)
 
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(
@@ -264,14 +309,14 @@ fun OriginSection(
             }
 
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                if (orderedGroups.isEmpty()) {
+                if (inlineGroups.isEmpty()) {
                     Text(
                         text = "Päritolu valikuid ei leitud aktiivsest andmestikust.",
                         style = MaterialTheme.typography.bodyMedium,
                     )
                 }
 
-                orderedGroups.forEach { group ->
+                inlineGroups.forEach { group ->
                     val isSelected = group.options.any { option -> option.stopPointId == selectedOrigin }
                     FilterChip(
                         selected = isSelected,
@@ -281,13 +326,7 @@ fun OriginSection(
                             expandedGroupId = outcome.expandedGroupId
                             outcome.selectedStopPointId?.let { onOriginSelected(it) }
                         },
-                        label = {
-                            if (group.options.size == 1) {
-                                Text(group.displayName)
-                            } else {
-                                Text("${group.displayName} (${group.options.size})")
-                            }
-                        },
+                        label = { Text(originGroupLabel(group)) },
                     )
 
                     if (group.options.size > 1 && expandedGroupId == group.groupId) {
@@ -295,12 +334,12 @@ fun OriginSection(
                             modifier = Modifier.padding(start = 12.dp),
                             verticalArrangement = Arrangement.spacedBy(6.dp),
                         ) {
-                            group.options.forEach { option ->
+                            group.options.forEachIndexed { index, option ->
                                 FilterChip(
                                     selected = selectedOrigin == option.stopPointId,
                                     modifier = Modifier.fillMaxWidth(),
                                     onClick = { onOriginSelected(option.stopPointId) },
-                                    label = { Text(originOptionLabel(option)) },
+                                    label = { Text(originOptionLabel(option, index)) },
                                 )
                             }
                         }
@@ -372,13 +411,7 @@ fun OriginSearchDialog(
                                         )
                                 },
                                 modifier = Modifier.fillMaxWidth(),
-                                label = {
-                                    if (group.options.size == 1) {
-                                        Text(group.displayName)
-                                    } else {
-                                        Text("${group.displayName} (${group.options.size})")
-                                    }
-                                },
+                                label = { Text(originGroupLabel(group)) },
                             )
 
                             if (group.options.size > 1 && expandedGroupId == group.groupId) {
@@ -450,6 +483,8 @@ internal data class OriginGroupTapOutcome(
 )
 
 internal const val QUICK_DESTINATION_SECTION_TITLE = "Kiirvalikud"
+internal const val QUICK_DESTINATION_HELPER_TEXT = "Kiirvalik valib sihtkoha. Marsruudi otsimiseks vali ka lähtepeatus ja vajuta „Otsi“."
+internal const val QUICK_DESTINATION_ALIAS_HELPER_TEXT = "Põhjakeskuse valik kasutab Põhja peatust."
 internal const val ORIGIN_SEARCH_ACTION_TEXT = "Otsi peatus..."
 internal const val ORIGIN_DIALOG_TITLE = "Vali lähtepeatus"
 internal const val ORIGIN_DIALOG_NO_RESULTS_TEXT = "Tulemusi ei leitud"
@@ -486,14 +521,25 @@ internal fun routeStateMessage(state: RouteQueryState): String =
         RouteQueryState.FeedNotAvailable -> "Bussiandmed pole veel valmis."
         RouteQueryState.DestinationNotReady -> "Vali esmalt sihtkoht."
         RouteQueryState.OriginNotProvided -> "Määra päritolu enne otsingut."
-        RouteQueryState.NoPatternsAvailable -> "Sõiduplaani mustrid puuduvad."
+        RouteQueryState.NoPatternsAvailable -> "Marsruudiandmed pole saadaval."
         is RouteQueryState.RouteFound -> "marsruut leitud"
-        is RouteQueryState.RouteNotFound -> "Marsruuti ei leitud antud valikuga."
+        is RouteQueryState.RouteNotFound -> "Otsemarsruuti ei leitud valitud peatuste vahel."
         is RouteQueryState.Error -> "Viga marsruudi otsingul: ${state.message}"
     }
 
-internal fun isSearchButtonEnabled(uiState: SearchUiState): Boolean =
-    uiState.destinationInput is DestinationInputState.Resolved && uiState.originStopPointId != null
+internal fun isSearchButtonEnabled(
+    uiState: SearchUiState,
+    destinationText: String,
+    lastResolvedDestinationText: String?,
+): Boolean {
+    val normalizedCurrent = destinationText.trim()
+    val normalizedResolved = lastResolvedDestinationText?.trim()
+    return uiState.destinationInput is DestinationInputState.Resolved &&
+        uiState.originStopPointId != null &&
+        normalizedCurrent.isNotBlank() &&
+        normalizedResolved != null &&
+        normalizedCurrent == normalizedResolved
+}
 
 internal fun shouldShowFeedStatusBanner(feedState: FeedState): Boolean =
     feedState != FeedState.Ready
@@ -512,7 +558,7 @@ internal fun quickDestinationOptions(): List<QuickDestinationOption> =
         QuickDestinationOption(label = "Näpi", queryText = "Näpi"),
         QuickDestinationOption(label = "Keskväljak", queryText = "Keskväljak"),
         // Põhjakeskus chip resolves via current runtime stop displayName "Põhja".
-        QuickDestinationOption(label = "Põhjakeskus", queryText = "Põhja"),
+        QuickDestinationOption(label = "Põhjakeskus (Põhja)", queryText = "Põhja"),
     )
 
 internal fun handleQuickDestinationSelection(
@@ -535,6 +581,13 @@ internal fun orderedOriginCandidateGroups(originCandidates: List<OriginCandidate
     )
 }
 
+internal fun inlinePreferredOriginCandidateGroups(originCandidates: List<OriginCandidateGroup>): List<OriginCandidateGroup> {
+    val preferredDisplayNames = preferredOriginDisplayOrder().toSet()
+    return orderedOriginCandidateGroups(originCandidates).filter { group ->
+        group.displayName in preferredDisplayNames
+    }
+}
+
 internal fun resolveOriginGroupTap(
     group: OriginCandidateGroup,
     currentlyExpandedGroupId: String?,
@@ -553,11 +606,22 @@ internal fun resolveOriginGroupTap(
     )
 }
 
-internal fun originOptionLabel(option: OriginCandidateOption): String {
-    return if (option.routePatternCount > 0) {
-        "${option.label} (${option.routePatternCount})"
+internal fun originGroupLabel(group: OriginCandidateGroup): String {
+    return if (group.options.size > 1) {
+        "${group.displayName} — ${group.options.size} valikut"
     } else {
-        option.label
+        group.displayName
+    }
+}
+
+internal fun originOptionLabel(
+    option: OriginCandidateOption,
+    index: Int,
+): String {
+    return if (option.routePatternCount > 0) {
+        "Valik ${index + 1} — ${option.routePatternCount} marsruuti"
+    } else {
+        "Valik ${index + 1}"
     }
 }
 
@@ -586,13 +650,25 @@ internal fun originDialogOptionLabel(
     option: OriginCandidateOption,
     index: Int,
 ): String {
-    val base = option.label.ifBlank { "Variant ${index + 1}" }
-    return if (option.routePatternCount > 0) {
-        "$base (${option.routePatternCount})"
-    } else {
-        base
-    }
+    return originOptionLabel(option, index)
 }
+
+internal enum class SearchContentSection {
+    Destination,
+    QuickDestinations,
+    Origin,
+    SearchButton,
+    Result,
+}
+
+internal fun searchContentSectionOrder(): List<SearchContentSection> =
+    listOf(
+        SearchContentSection.Destination,
+        SearchContentSection.QuickDestinations,
+        SearchContentSection.Origin,
+        SearchContentSection.SearchButton,
+        SearchContentSection.Result,
+    )
 
 internal fun handleOriginDialogOptionSelection(
     option: OriginCandidateOption,

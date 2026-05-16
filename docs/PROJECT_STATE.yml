@@ -2,13 +2,13 @@ project:
   name: ANDROBUSS
   branch: main
   remote: https://github.com/Fuuduuu/ANDROBUSS.git
-  last_accepted_commit: cf7eb798f4655748c83cbf5b7437c03bb8d97a26
-  last_known_good_commit: cf7eb798f4655748c83cbf5b7437c03bb8d97a26
-  current_pass: PASS_33_ORIGIN_SEARCH_DIALOG
-  next_recommended_pass: PASS_34_ORIGIN_SELECTION_POLISH_SCOPE_AUDIT
+  last_accepted_commit: 3b4a82e44bc9ae9c796335f81a3d6a87c98febaa
+  last_known_good_commit: 3b4a82e44bc9ae9c796335f81a3d6a87c98febaa
+  current_pass: PASS_UI_02_SEARCH_SCREEN_FLOW_POLISH
+  next_recommended_pass: PASS_FEED_01_DOWNLOADER_FRESHNESS_SCOPE_AUDIT
 
 scope:
-  current_goal: "Add origin search dialog over runtime-backed originCandidates without opening GPS/network/navigation scope."
+  current_goal: "Polish SearchScreen flow/copy/state gating only, without changing ViewModel/domain/data/runtime behavior."
   allowed_surfaces:
     - docs/PROJECT_STATE.yml
     - docs/CURRENT_STATE.md
@@ -17,7 +17,7 @@ scope:
     - docs/TESTING_STRATEGY.md
     - app/src/main/kotlin/ee/androbus/app/presentation/search/SearchScreen.kt
     - app/src/test/kotlin/ee/androbus/app/presentation/search/SearchScreenStateTextTest.kt
-    - docs/audit/PASS_33_ORIGIN_SEARCH_DIALOG.md
+    - docs/audit/PASS_UI_02_SEARCH_SCREEN_FLOW_POLISH.md
   forbidden_surfaces:
     - app/src/main/assets/
     - app/src/main/AndroidManifest.xml
@@ -69,8 +69,9 @@ governance:
     - "PASS_31 quick-destination chips UI-only accepted"
     - "PASS_AUTO_07 drift and UI boundary check accepted"
     - "PASS_32 runtime-backed origin candidates accepted"
+    - "PASS_33 origin search dialog accepted"
   drift_check_rule: "Every 5 accepted pass/checkpoints, run a docs-only drift-check before the next large implementation pass."
-  drift_check_counter: "1 / 5 (PASS_32 accepted after PASS_AUTO_07 reset; PASS_33 is still candidate)"
+  drift_check_counter: "2 / 5 (PASS_32 and PASS_33 accepted after PASS_AUTO_07 reset; PASS_UI_02 is still candidate)"
   next_mandatory_drift_check: "Run next docs-only drift-check after 5 newly accepted checkpoints."
   drift_check_must_verify:
     - "CURRENT_STATE / ROADMAP / PROJECT_STATE alignment"

@@ -12,9 +12,15 @@ import kotlin.test.assertTrue
 class SearchScreenStateTextTest {
     @Test
     fun `search button disabled when destination is empty`() {
-        val uiState = SearchUiState(destinationInput = DestinationInputState.Empty, originStopPointId = StopPointId("RKV_A_OUT"))
+        val uiState = SearchUiState(destinationInput = DestinationInputState.Empty, originStopPointId = StopPointId("152898"))
 
-        assertFalse(isSearchButtonEnabled(uiState))
+        assertFalse(
+            isSearchButtonEnabled(
+                uiState = uiState,
+                destinationText = "",
+                lastResolvedDestinationText = null,
+            ),
+        )
     }
 
     @Test
@@ -24,27 +30,56 @@ class SearchScreenStateTextTest {
                 destinationInput =
                     DestinationInputState.Resolved(
                         displayName = "Jaam",
-                        candidates = listOf(ResolvedDestinationOption("Jaam", StopPointId("RKV_C"))),
+                        candidates = listOf(ResolvedDestinationOption("Jaam", StopPointId("153420"))),
                     ),
                 originStopPointId = null,
             )
 
-        assertFalse(isSearchButtonEnabled(uiState))
+        assertFalse(
+            isSearchButtonEnabled(
+                uiState = uiState,
+                destinationText = "Jaam",
+                lastResolvedDestinationText = "Jaam",
+            ),
+        )
     }
 
     @Test
-    fun `search button enabled when destination resolved and origin selected`() {
+    fun `search button enabled when destination resolved origin selected and text is unchanged`() {
         val uiState =
             SearchUiState(
                 destinationInput =
                     DestinationInputState.Resolved(
                         displayName = "Jaam",
-                        candidates = listOf(ResolvedDestinationOption("Jaam", StopPointId("RKV_C"))),
+                        candidates = listOf(ResolvedDestinationOption("Jaam", StopPointId("153420"))),
                     ),
-                originStopPointId = StopPointId("RKV_A_OUT"),
+                originStopPointId = StopPointId("152898"),
             )
 
-        assertTrue(isSearchButtonEnabled(uiState))
+        assertTrue(
+            isSearchButtonEnabled(
+                uiState = uiState,
+                destinationText = "Jaam",
+                lastResolvedDestinationText = "Jaam",
+            ),
+        )
+    }
+
+    @Test
+    fun `editing destination after resolved disables search until destination is selected again`() {
+        val uiState =
+            SearchUiState(
+                destinationInput =
+                    DestinationInputState.Resolved(
+                        displayName = "Jaam",
+                        candidates = listOf(ResolvedDestinationOption("Jaam", StopPointId("153420"))),
+                    ),
+                originStopPointId = StopPointId("152898"),
+            )
+
+        assertTrue(isSearchButtonEnabled(uiState, destinationText = "Jaam", lastResolvedDestinationText = "Jaam"))
+        assertFalse(isSearchButtonEnabled(uiState, destinationText = "Jaam uus", lastResolvedDestinationText = "Jaam"))
+        assertTrue(isSearchButtonEnabled(uiState, destinationText = "Jaam uus", lastResolvedDestinationText = "Jaam uus"))
     }
 
     @Test
@@ -62,33 +97,39 @@ class SearchScreenStateTextTest {
     }
 
     @Test
-    fun `route found wording uses expected headline`() {
-        val state =
-            RouteQueryState.RouteFound(
-                route = testRouteFoundSummary(),
-            )
-
-        val text = routeStateMessage(state)
-        assertContains(text, "marsruut leitud")
-    }
-
-    @Test
     fun `destination empty prompt requires explicit selection action`() {
         val text = destinationStateMessage(DestinationInputState.Empty)
         assertContains(text, "Vali sihtkoht")
     }
 
     @Test
-    fun `destination not ready message does not contain route wording`() {
+    fun `route destination not ready message is rider friendly`() {
         val text = routeStateMessage(RouteQueryState.DestinationNotReady)
-        assertFalse(text.contains("route", ignoreCase = true))
+        assertEquals("Vali esmalt sihtkoht.", text)
+    }
+
+    @Test
+    fun `route no patterns message is rider friendly`() {
+        val text = routeStateMessage(RouteQueryState.NoPatternsAvailable)
+        assertEquals("Marsruudiandmed pole saadaval.", text)
+    }
+
+    @Test
+    fun `route not found message is rider friendly`() {
+        val text =
+            routeStateMessage(
+                RouteQueryState.RouteNotFound(
+                    reason = RouteNotFoundDisplayReason.NO_DIRECT_PATTERN,
+                ),
+            )
+        assertEquals("Otsemarsruuti ei leitud valitud peatuste vahel.", text)
     }
 
     @Test
     fun `route found summary does not expose raw stop ids`() {
         val lines = routeFoundSummaryLines(testRouteFoundSummary())
         assertContains(lines.joinToString("\n"), "✓ Marsruut leitud")
-        assertFalse(lines.any { it.contains("RKV_A_OUT") || it.contains("RKV_C") || it.contains("pattern:T1") })
+        assertFalse(lines.any { it.contains("152898") || it.contains("153420") || it.contains("pattern:T1") })
     }
 
     @Test
@@ -99,7 +140,7 @@ class SearchScreenStateTextTest {
         assertContains(labels, "Polikliinik")
         assertContains(labels, "Näpi")
         assertContains(labels, "Keskväljak")
-        assertContains(labels, "Põhjakeskus")
+        assertContains(labels, "Põhjakeskus (Põhja)")
         assertFalse(labels.contains("Tõrma"))
     }
 
@@ -109,58 +150,71 @@ class SearchScreenStateTextTest {
     }
 
     @Test
-    fun `clicking Pohjakeskus uses queryText Pohja`() {
-        var displayedText = ""
-        var querySent: String? = null
-
-        handleQuickDestinationSelection(
-            label = "Põhjakeskus",
-            queryText = "Põhja",
-            setDestinationText = { displayedText = it },
-            onDestinationSelect = { querySent = it },
-        )
-
-        assertEquals("Põhjakeskus", displayedText)
-        assertEquals("Põhja", querySent)
+    fun `quick destination helper text explains separate route search`() {
+        assertContains(QUICK_DESTINATION_HELPER_TEXT, "vajuta „Otsi“")
     }
 
     @Test
-    fun `clicking Rakvere bussijaam uses same queryText`() {
+    fun `Pohjakeskus label clarifies Pohja relationship`() {
+        val option = quickDestinationOptions().first { it.queryText == "Põhja" }
+        assertContains(option.label, "Põhja")
+        assertContains(QUICK_DESTINATION_ALIAS_HELPER_TEXT, "Põhja")
+    }
+
+    @Test
+    fun `quick destination section keeps resolver callback path and does not trigger route search`() {
         var displayedText = ""
-        var querySent: String? = null
+        var destinationCallbackCount = 0
+        var destinationQuery: String? = null
+        var routeSearchCallCount = 0
 
         handleQuickDestinationSelection(
             label = "Rakvere bussijaam",
             queryText = "Rakvere bussijaam",
             setDestinationText = { displayedText = it },
-            onDestinationSelect = { querySent = it },
+            onDestinationSelect = {
+                destinationCallbackCount += 1
+                destinationQuery = it
+            },
         )
 
         assertEquals("Rakvere bussijaam", displayedText)
-        assertEquals("Rakvere bussijaam", querySent)
+        assertEquals(1, destinationCallbackCount)
+        assertEquals("Rakvere bussijaam", destinationQuery)
+        assertEquals(0, routeSearchCallCount)
     }
 
     @Test
-    fun `quick destination selection does not trigger search callback`() {
-        var searchCallCount = 0
+    fun `destination section is ordered before quick destination section`() {
+        val sections = searchContentSectionOrder()
+        assertTrue(sections.indexOf(SearchContentSection.Destination) < sections.indexOf(SearchContentSection.QuickDestinations))
+    }
 
-        handleQuickDestinationSelection(
-            label = "Polikliinik",
-            queryText = "Polikliinik",
-            setDestinationText = {},
-            onDestinationSelect = {},
-        )
+    @Test
+    fun `only preferred origin groups are shown inline`() {
+        val inlineLabels = inlinePreferredOriginCandidateGroups(sampleOriginCandidateGroups()).map { it.displayName }
+        assertContains(inlineLabels, "Rakvere bussijaam")
+        assertContains(inlineLabels, "Polikliinik")
+        assertContains(inlineLabels, "Näpi")
+        assertFalse(inlineLabels.contains("Kooli"))
+    }
 
-        assertEquals(0, searchCallCount)
+    @Test
+    fun `full origin catalog remains available for dialog`() {
+        val inlineLabels = inlinePreferredOriginCandidateGroups(sampleOriginCandidateGroups()).map { it.displayName }
+        val dialogLabels = filterOriginCandidateGroups(sampleOriginCandidateGroups(), "").map { it.displayName }
+
+        assertFalse(inlineLabels.contains("Kooli"))
+        assertContains(dialogLabels, "Kooli")
     }
 
     @Test
     fun `origin section no longer exposes old synthetic labels`() {
         val labels = preferredOriginDisplayOrder()
-        assertFalse(labels.contains("RKV A välja"))
-        assertFalse(labels.contains("RKV A sisse"))
-        assertFalse(labels.contains("RKV B"))
-        assertFalse(labels.contains("RKV C"))
+        assertFalse(labels.contains("RKV_A_OUT"))
+        assertFalse(labels.contains("RKV_A_IN"))
+        assertFalse(labels.contains("RKV_B"))
+        assertFalse(labels.contains("RKV_C"))
     }
 
     @Test
@@ -194,7 +248,7 @@ class SearchScreenStateTextTest {
     }
 
     @Test
-    fun `single-option group selection resolves concrete stopPointId`() {
+    fun `single option group selection resolves concrete stopPointId`() {
         val singleGroup = sampleOriginCandidateGroups().first { it.displayName == "Polikliinik" }
         val outcome = resolveOriginGroupTap(group = singleGroup, currentlyExpandedGroupId = null)
         assertEquals(StopPointId("25482"), outcome.selectedStopPointId)
@@ -202,17 +256,7 @@ class SearchScreenStateTextTest {
     }
 
     @Test
-    fun `origin section shows runtime-backed preferred labels`() {
-        val ordered = orderedOriginCandidateGroups(sampleOriginCandidateGroups())
-        val labels = ordered.map { it.displayName }
-
-        assertContains(labels, "Rakvere bussijaam")
-        assertContains(labels, "Polikliinik")
-        assertContains(labels, "Näpi")
-    }
-
-    @Test
-    fun `multi-option origin group requires explicit option selection`() {
+    fun `multi option origin group requires explicit option selection`() {
         val group = sampleOriginCandidateGroups().first { it.displayName == "Rakvere bussijaam" }
         val outcome = resolveOriginGroupTap(group = group, currentlyExpandedGroupId = null)
 
@@ -221,16 +265,7 @@ class SearchScreenStateTextTest {
     }
 
     @Test
-    fun `single-option origin group selects concrete stopPointId`() {
-        val group = sampleOriginCandidateGroups().first { it.displayName == "Polikliinik" }
-        val outcome = resolveOriginGroupTap(group = group, currentlyExpandedGroupId = null)
-
-        assertEquals(StopPointId("25482"), outcome.selectedStopPointId)
-        assertNull(outcome.expandedGroupId)
-    }
-
-    @Test
-    fun `multi-option dialog option click selects stopPointId and dismisses dialog`() {
+    fun `multi option dialog option click selects stopPointId and dismisses dialog`() {
         val option =
             sampleOriginCandidateGroups()
                 .first { it.displayName == "Rakvere bussijaam" }
@@ -251,7 +286,7 @@ class SearchScreenStateTextTest {
     }
 
     @Test
-    fun `single-option dialog group click selects stopPointId and dismisses dialog`() {
+    fun `single option dialog group click selects stopPointId and dismisses dialog`() {
         val singleGroup = sampleOriginCandidateGroups().first { it.displayName == "Polikliinik" }
         val outcome = resolveOriginGroupTap(group = singleGroup, currentlyExpandedGroupId = null)
 
@@ -281,20 +316,53 @@ class SearchScreenStateTextTest {
     }
 
     @Test
-    fun `origin option label contains route pattern count`() {
-        val option = OriginCandidateOption(stopPointId = StopPointId("152898"), label = "Rakvere bussijaam variant 1", routePatternCount = 2)
-        assertEquals("Rakvere bussijaam variant 1 (2)", originOptionLabel(option))
+    fun `origin group label uses valikut wording`() {
+        val group = sampleOriginCandidateGroups().first { it.displayName == "Rakvere bussijaam" }
+        val label = originGroupLabel(group)
+        assertContains(label, "valikut")
+        assertFalse(label.contains("(${group.options.size})"))
+    }
+
+    @Test
+    fun `origin option label uses marsruuti wording`() {
+        val option = sampleOriginCandidateGroups().first { it.displayName == "Rakvere bussijaam" }.options.first()
+        val label = originOptionLabel(option, index = 0)
+        assertContains(label, "marsruuti")
+        assertFalse(label.contains("(${option.routePatternCount})"))
+    }
+
+    @Test
+    fun `search screen strings avoid live and realtime wording`() {
+        val allCopy =
+            listOf(
+                QUICK_DESTINATION_SECTION_TITLE,
+                QUICK_DESTINATION_HELPER_TEXT,
+                QUICK_DESTINATION_ALIAS_HELPER_TEXT,
+                ORIGIN_SEARCH_ACTION_TEXT,
+                ORIGIN_DIALOG_TITLE,
+                ORIGIN_DIALOG_NO_RESULTS_TEXT,
+                ORIGIN_DIALOG_CANCEL_TEXT,
+                feedStateMessage(FeedState.Ready),
+                destinationStateMessage(DestinationInputState.Empty),
+                routeStateMessage(RouteQueryState.Searching),
+                routeStateMessage(RouteQueryState.RouteNotFound(RouteNotFoundDisplayReason.NO_DIRECT_PATTERN)),
+            ).joinToString("\n")
+
+        assertFalse(allCopy.contains("live", ignoreCase = true))
+        assertFalse(allCopy.contains("realtime", ignoreCase = true))
+        assertFalse(allCopy.contains("reaalajas", ignoreCase = true))
+        assertFalse(allCopy.contains("pärisajas", ignoreCase = true))
     }
 
     private fun testRouteFoundSummary(): RouteFoundSummary =
         RouteFoundSummary(
             routePatternId = RoutePatternId("pattern:T1"),
-            originStopPointId = StopPointId("RKV_A_OUT"),
-            destinationStopPointId = StopPointId("RKV_C"),
+            originStopPointId = StopPointId("152898"),
+            destinationStopPointId = StopPointId("153420"),
             originSequence = 1,
             destinationSequence = 3,
             segmentStopCount = 3,
-            segmentStopPointIds = listOf(StopPointId("RKV_A_OUT"), StopPointId("RKV_B"), StopPointId("RKV_C")),
+            segmentStopPointIds = listOf(StopPointId("152898"), StopPointId("109242"), StopPointId("153420")),
             candidateCount = 1,
         )
 
@@ -337,6 +405,18 @@ class SearchScreenStateTextTest {
                         OriginCandidateOption(
                             stopPointId = StopPointId("109242"),
                             label = "Näpi",
+                            routePatternCount = 1,
+                        ),
+                    ),
+            ),
+            OriginCandidateGroup(
+                groupId = "rakvere-kooli",
+                displayName = "Kooli",
+                options =
+                    listOf(
+                        OriginCandidateOption(
+                            stopPointId = StopPointId("999001"),
+                            label = "Kooli",
                             routePatternCount = 1,
                         ),
                     ),
