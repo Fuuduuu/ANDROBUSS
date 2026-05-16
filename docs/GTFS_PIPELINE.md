@@ -176,14 +176,15 @@ Documented technical findings snapshot for planning (PASS 26 input baseline):
 
 - Real-derived Rakvere dev/test profile asset lives under:
   - `app/src/test/resources/bootstrap/rakvere_dev_profile_v1.json`
-- It is test-scope only and is not bundled into production APK main assets.
-- Runtime default remains:
-  - `app/src/main/assets/bootstrap/rakvere_bootstrap.json` (synthetic)
-- `FeedBootstrapLoader` default asset path must remain synthetic until explicit policy change pass.
+- PASS 30 promotes a real static runtime baseline for internal/MVP use:
+  - primary runtime asset: `app/src/main/assets/bootstrap/rakvere_feed_20260428.json`
+  - fallback runtime asset: `app/src/main/assets/bootstrap/rakvere_bootstrap.json` (synthetic)
+- This is not a public-production freshness solution.
+- Public/freely distributed production still requires downloader/update/freshness policy.
 - Raw `rakvere.zip` remains forbidden in repository commits.
 - Dev/test asset route-pattern IDs are representative GTFS `trip_id` values, not synthetic counter labels.
 - Dev/test asset stop IDs are GTFS `stop_id` values only.
-- This does not resolve production freshness/update policy for real asset runtime usage.
+- Runtime quick-destination identity must still resolve from active snapshot `StopPoint.id` values.
 
 ## Future GTFS Realtime and Route Metadata Notes
 

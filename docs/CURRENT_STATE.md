@@ -4,7 +4,7 @@
 
 - Expected repo root: `C:\Users\Kasutaja\Desktop\ANDROBUSS`
 - Expected branch: `main`
-- Latest accepted HEAD: `0fca2fc` (`PASS_29A_RAKVERE_QUICK_DESTINATION_RESOLUTION_READINESS`)
+- Latest accepted HEAD: `936e3ec` (`PASS_29C_REAL_RUNTIME_FEED_POLICY_BEFORE_QUICK_DESTINATIONS`)
 - Working tree must be clean before a new pass
 
 ## Latest Accepted Pass
@@ -13,6 +13,7 @@
 - `PASS_AUTO_06 — DRIFT_AND_UI_BASELINE_CHECK` (accepted docs-only drift + UI boundary verification)
 - `PASS_UI_01 — SEARCH_SCREEN_SMOKE_AND_POLISH` (accepted first-screen polish guard pass)
 - `PASS_29A — RAKVERE_QUICK_DESTINATION_RESOLUTION_READINESS` (accepted readiness evidence pass)
+- `PASS_29C — REAL_RUNTIME_FEED_POLICY_BEFORE_QUICK_DESTINATIONS` (accepted protected-surface policy gating pass)
 - Latest governance checkpoint pass: `PASS_AUTO_03 — DRIFT_AND_BOUNDARY_CHECK` (docs-only drift/boundary verification)
 - Latest docs-only governance/future-notes pass remains `PASS_G05 — GTFS_REALTIME_AND_PEATUS_GRAPHQL_FUTURE_NOTES`
 
@@ -51,7 +52,8 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 - Synthetic bundled bootstrap asset remains active; real Rakvere asset is not generated in repository state.
 - PASS 26A adds executable parser robustness fixture/tests for real-feed profile characteristics (quoted service IDs, unknown columns, optional-file absence, calendar exceptions, loop duplicate stops).
 - PASS 26B accepted state includes real-derived Rakvere dev/test profile asset under `app/src/test/resources` only.
-- Runtime default remains synthetic `app/src/main/assets/bootstrap/rakvere_bootstrap.json`.
+- PASS 30 candidate promotes `app/src/main/assets/bootstrap/rakvere_feed_20260428.json` as runtime primary baseline for internal/MVP use.
+- Synthetic `app/src/main/assets/bootstrap/rakvere_bootstrap.json` remains fallback asset.
 - PASS 27 accepted state introduces app-owned Hilt DI modules for:
   - `AppDatabase` / `FeedSnapshotDao`
   - `FeedSnapshotImporter`
@@ -87,7 +89,7 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
   - origin selector is MVP/dev-only hardcoded chip list (no GPS/permissions)
 - First visible UI now exists in app, but it remains minimal MVP/diagnostic baseline.
 - No navigation graph, GPS/map permissions, downloader/network, WorkManager, or realtime behavior has been opened.
-- Synthetic runtime bootstrap asset remains default; real Rakvere profile remains test-only.
+- Runtime bootstrap policy is moving to real-static primary + synthetic fallback while keeping production freshness unresolved.
 - Governance/tooling guardrails accepted after PASS 25:
   - PASS G03 audit-index/read-order sync
   - PASS AUTO-01 detekt module-boundary checks
@@ -118,7 +120,7 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Current Pass
 
-- `PASS_29C — REAL_RUNTIME_FEED_POLICY_BEFORE_QUICK_DESTINATIONS`
+- `PASS_30 — REAL_RAKVERE_STATIC_RUNTIME_PROFILE_BASELINE`
 
 ## Lazy Context Note (PASS G03)
 
@@ -150,15 +152,17 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Next Technical Pass
 
-- `PASS_30_REAL_RUNTIME_FEED_ENABLEMENT_SCOPE_AUDIT`
-- Quick-destination UI stays blocked until runtime feed + resolver policy unblock criteria are accepted.
+- `PASS_31_RAKVERE_QUICK_DESTINATIONS_UI_ONLY_SCOPE_AUDIT`
+- Alternative: `PASS_FEED_01_DOWNLOADER_FRESHNESS_SCOPE_AUDIT`
+- Public/freely distributed production still requires downloader/update/freshness policy.
 
-## Quick Destination Runtime Policy Note (PASS 29C)
+## Runtime Feed Policy Note (PASS 30 Baseline Target)
 
-- Current runtime bootstrap asset is synthetic (`Keskpeatus`, `Spordikeskus`, `Jaam`) and remains the production default.
-- Proposed real Rakvere quick labels (`Rakvere bussijaam`, `Polikliinik`, `Põhjakeskus`, `Näpi`, `Keskväljak`, `Tõrma`) are not runtime-ready through the current active snapshot.
-- Real-derived Rakvere profile stays test-only and must not be treated as runtime source.
-- Metadata alone does not unblock quick destinations while runtime snapshot is synthetic.
+- Current PASS 30 implementation target is real static runtime baseline for internal/MVP use:
+  - primary asset: `app/src/main/assets/bootstrap/rakvere_feed_20260428.json`
+  - fallback asset: `app/src/main/assets/bootstrap/rakvere_bootstrap.json`
+- This is not a public-production freshness solution.
+- Metadata alone still does not bypass resolver identity rules.
 - Verified routing identity must come from active runtime `StopPoint.id` resolution path, not UI-supplied IDs.
-- Production real runtime usage remains blocked until legal/source/attribution/freshness policy is explicitly accepted.
+- Quick-destination UI is still not implemented, but runtime label coverage is now available for a future UI-only pass.
 - Safe future path remains: quick label/query text -> `SearchViewModel.onDestinationChanged(queryText)` -> existing resolver flow.

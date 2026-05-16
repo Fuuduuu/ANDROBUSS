@@ -16,6 +16,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertIs
 import kotlin.test.assertNotEquals
+import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 class RakvereQuickDestinationReadinessTest {
@@ -32,48 +33,53 @@ class RakvereQuickDestinationReadinessTest {
         )
 
     @Test
-    fun `runtime synthetic asset contains only expected synthetic names and excludes proposed labels`() {
-        val runtime = loadRuntimeBootstrapDto()
+    fun `runtime real static asset contains expected Rakvere labels`() {
+        val runtime = loadRuntimeRealBootstrapDto()
         val runtimeNames = runtime.stopPoints.map { it.displayName }.toSet()
 
-        assertEquals(runtimeSyntheticNames, runtimeNames)
-        proposedQuickLabels.forEach { label ->
-            assertFalse(runtimeNames.contains(label), "Runtime synthetic asset unexpectedly contains: $label")
-        }
+        assertEquals("rakvere-v20260428", runtime.feedId)
+        assertTrue(runtimeNames.contains("Rakvere bussijaam"))
+        assertTrue(runtimeNames.contains("Polikliinik"))
+        assertTrue(runtimeNames.contains("Näpi"))
+        assertTrue(runtimeNames.contains("Keskväljak"))
     }
 
     @Test
-    fun `destination resolution works for labels present in active snapshot`() {
-        val viewModel = createViewModel(loadRuntimeBootstrapDto().toDomainFeedSnapshot())
+    fun `destination resolution works for labels present in real runtime-like snapshot`() {
+        val viewModel = createViewModel(loadRuntimeRealBootstrapDto().toDomainFeedSnapshot())
 
-        viewModel.onDestinationChanged("Jaam")
-        assertIs<DestinationInputState.Resolved>(viewModel.uiState.value.destinationInput)
+        viewModel.onDestinationChanged("Rakvere bussijaam")
+        val state = viewModel.uiState.value.destinationInput
+        val resolvedStopIds =
+            when (state) {
+                is DestinationInputState.Resolved -> state.candidates.map { it.stopPointId }
+                is DestinationInputState.Ambiguous -> state.options.map { it.stopPointId }
+                else -> emptyList()
+            }
 
-        viewModel.onDestinationChanged("Keskpeatus")
-        val ambiguous = assertIs<DestinationInputState.Ambiguous>(viewModel.uiState.value.destinationInput)
-        assertTrue(ambiguous.options.size >= 2)
+        assertTrue(
+            state is DestinationInputState.Resolved || state is DestinationInputState.Ambiguous,
+            "Expected resolvable destination state for Rakvere bussijaam, got $state",
+        )
+        assertTrue(resolvedStopIds.isNotEmpty())
+        assertFalse(resolvedStopIds.any { it == ee.androbus.core.domain.StopPointId("Rakvere bussijaam") })
     }
 
     @Test
     fun `destination resolution does not resolve labels absent from active runtime snapshot`() {
-        val viewModel = createViewModel(loadRuntimeBootstrapDto().toDomainFeedSnapshot())
+        val viewModel = createViewModel(loadRuntimeRealBootstrapDto().toDomainFeedSnapshot())
 
-        proposedQuickLabels.forEach { label ->
-            viewModel.onDestinationChanged(label)
-            assertIs<DestinationInputState.NotFound>(
-                viewModel.uiState.value.destinationInput,
-                "Proposed label should not resolve in runtime synthetic snapshot: $label",
-            )
-        }
+        viewModel.onDestinationChanged("Seda peatust ei ole")
+        assertIs<DestinationInputState.NotFound>(viewModel.uiState.value.destinationInput)
     }
 
     @Test
-    fun `real derived dev profile supports real labels but stays separate from runtime default`() {
-        val runtime = loadRuntimeBootstrapDto()
+    fun `real derived dev profile stays separate from runtime default identity`() {
+        val runtime = loadRuntimeRealBootstrapDto()
         val devProfile = loadDevProfileDto()
         val devNames = devProfile.stopPoints.map { it.displayName }.toSet()
 
-        assertEquals("rakvere-bootstrap-v1", runtime.feedId)
+        assertEquals("rakvere-v20260428", runtime.feedId)
         assertTrue(devProfile.feedId.contains("dev", ignoreCase = true) || devProfile.feedId.contains("profile", ignoreCase = true))
         assertNotEquals(runtime.feedId, devProfile.feedId)
 
@@ -94,7 +100,41 @@ class RakvereQuickDestinationReadinessTest {
             bridge = DirectRouteQueryBridge(DirectRouteSearch()),
         )
 
-    private fun loadRuntimeBootstrapDto(): BootstrapFeedDto =
+    @Test
+    fun `synthetic fallback asset remains synthetic when loaded explicitly`() {
+        val synthetic = loadSyntheticBootstrapDto()
+        val syntheticNames = synthetic.stopPoints.map { it.displayName }.toSet()
+
+        assertEquals("rakvere-bootstrap-v1", synthetic.feedId)
+        assertEquals(runtimeSyntheticNames, syntheticNames)
+        proposedQuickLabels.forEach { label ->
+            assertFalse(syntheticNames.contains(label), "Synthetic fallback unexpectedly contains: $label")
+        }
+    }
+
+    @Test
+    fun `runtime real static stop ids come from id fields not label text`() {
+        val runtime = loadRuntimeRealBootstrapDto()
+        val snapshot = runtime.toDomainFeedSnapshot()
+        val ids = snapshot.stopPoints.map { it.id.value }.toSet()
+
+        assertTrue(ids.contains("152898"))
+        assertFalse(ids.contains("Jaam"))
+        assertFalse(ids.contains("Rakvere bussijaam"))
+        assertFalse(ids.contains("Polikliinik"))
+    }
+
+    private fun loadRuntimeRealBootstrapDto(): BootstrapFeedDto =
+        decodeDto(
+            readRepoFile(
+                listOf(
+                    "app/src/main/assets/bootstrap/rakvere_feed_20260428.json",
+                    "src/main/assets/bootstrap/rakvere_feed_20260428.json",
+                ),
+            ),
+        )
+
+    private fun loadSyntheticBootstrapDto(): BootstrapFeedDto =
         decodeDto(
             readRepoFile(
                 listOf(

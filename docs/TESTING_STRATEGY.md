@@ -357,6 +357,19 @@
   - no UI constants may inject `StopPointId` directly,
   - test-only real profile fixtures must not be treated as runtime truth.
 
+## Real Static Runtime Baseline Coverage (PASS_30 Candidate)
+
+- `FeedBootstrapLoaderTest` now covers runtime bootstrap primary/fallback behavior:
+  - default bootstrap loads real static runtime asset (`rakvere_feed_20260428.json`),
+  - Room prepare for primary feed is attempted before any asset import,
+  - synthetic fallback (`rakvere_bootstrap.json`) is used when primary asset is missing,
+  - missing primary + missing fallback stays safe (`FeedNotReady` style no-crash result),
+  - anti-fabrication checks ensure stop IDs come from asset IDs, not display names.
+- `RakvereQuickDestinationReadinessTest` now validates runtime-like real label readiness:
+  - runtime static profile contains real Rakvere labels,
+  - `SearchViewModel` resolves `Rakvere bussijaam` against runtime-like snapshot,
+  - synthetic fallback remains synthetic when loaded explicitly.
+
 ## Near-Term Test Gaps
 
 - Production destination enrichment orchestration wiring into app/ViewModel flow (future).

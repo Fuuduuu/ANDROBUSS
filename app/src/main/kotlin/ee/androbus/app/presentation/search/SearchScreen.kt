@@ -98,6 +98,11 @@ fun SearchContent(
         RouteResultSection(
             routeQueryState = uiState.routeQueryState,
         )
+
+        Text(
+            text = "Bussiandmed: Ühistranspordiregister / Regionaal- ja Põllumajandusministeerium",
+            style = MaterialTheme.typography.bodySmall,
+        )
     }
 }
 

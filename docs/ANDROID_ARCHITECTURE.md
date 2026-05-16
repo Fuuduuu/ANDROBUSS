@@ -31,7 +31,7 @@ Architecture baseline and implementation status snapshot.
 - `feature-alerts`
 - `city-adapters`
 
-## Implementation Status (After PASS 28C Accepted)
+## Implementation Status (After PASS 29C Accepted)
 
 - Implemented pure Kotlin logic:
   - `core-domain`
@@ -44,12 +44,14 @@ Architecture baseline and implementation status snapshot.
 - Implemented Android baseline:
   - `data-local` scoped Room schema + DAO + mapper + load-then-serve provider baseline.
   - `app` bundled bootstrap baseline with Hilt DI wiring:
-    - synthetic bundled JSON snapshot asset
+    - real static Rakvere JSON snapshot primary asset (internal/MVP baseline)
+    - synthetic bundled JSON fallback asset
     - DTO -> `DomainFeedSnapshot` conversion
     - bootstrap lifecycle hardening:
       - check provider cache first
-      - if empty, call provider `prepare(cityId, feedId)` to load Room snapshot
-      - import bundled snapshot only when Room has no snapshot for bootstrap feed scope
+      - if empty, call provider `prepare(cityId, primaryFeedId)` to load Room snapshot
+      - import primary real-static snapshot only when Room has no primary-feed snapshot
+      - fallback to synthetic asset if primary asset is missing/unreadable
       - after import, call provider `prepare(...)` to populate cache
     - app-owned Hilt modules providing database/dao/importer/loader/provider/bootstrap-loader
     - `AppDatabase.create(context)` remains available as pre-Hilt/test utility
@@ -73,7 +75,7 @@ Architecture baseline and implementation status snapshot.
   - origin resolver replacement for dev-only chip selector.
   - dedicated search-screen polish and broader UI composition passes.
   - downloader/cache orchestration and feed refresh lifecycle.
-  - production real-Rakvere bundled asset generation/import path.
+  - public-production downloader/update/freshness lifecycle for freely distributed releases.
 
 ## Storage Identity Strategy (PASS 22A)
 
@@ -117,8 +119,9 @@ Test-only rule:
 | Step | Responsible component | Module layer | Trigger |
 | --- | --- | --- | --- |
 | Check cache + prepare Room snapshot | `FeedBootstrapLoader` | `app` | Cold start / process restart |
-| Read bundled feed asset (fallback only) | `FeedBootstrapLoader` | `app` | Room has no snapshot for bootstrap feed scope |
-| Call `FeedSnapshotImporter.import(...)` | `FeedBootstrapLoader` | `app` | After bundled asset read |
+| Read primary static runtime feed asset | `FeedBootstrapLoader` | `app` | Room has no snapshot for primary feed scope |
+| Read synthetic fallback feed asset | `FeedBootstrapLoader` | `app` | Primary asset missing/unreadable and Room has no primary snapshot |
+| Call `FeedSnapshotImporter.import(...)` | `FeedBootstrapLoader` | `app` | After primary or fallback asset read |
 | Call `RoomDomainFeedSnapshotProvider.prepare(...)` | `FeedBootstrapLoader` (startup baseline) | app/feature boundary | During startup bootstrap |
 | Use `getSnapshot(cityId)` | `DirectRouteQueryPreparationUseCase` caller | feature-search/app caller | Sync after `prepare(...)` |
 | Feed refresh | `data-remote` / WorkManager (future) | `data-remote` | Future background update |
@@ -128,9 +131,10 @@ Notes:
 - `AndrobussApplication.onCreate` is now a protected runtime wiring surface.
 - PASS 28A/28B ViewModel baseline exists.
 - PASS 28C adds first single-screen Compose wiring in `app`.
+- PASS 30 candidate moves runtime baseline to real-static primary + synthetic fallback for internal/MVP use.
 - No navigation graph / multi-screen wiring is implemented yet.
 - No GPS/nearest-stop/network/realtime route-query extensions are implemented.
-- No WorkManager/downloader is added until bundled bootstrap baseline works.
+- No WorkManager/downloader is added yet; public-production freshness remains unresolved.
 - `data-local` production code remains parser-agnostic.
 - `data-local` tests may use `core-gtfs`, but production must not import parser types.
 

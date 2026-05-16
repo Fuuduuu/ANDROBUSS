@@ -29,6 +29,10 @@ import kotlin.test.assertTrue
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [34])
 class FeedBootstrapLoaderTest {
+    private val cityId = CityId("rakvere")
+    private val primaryFeedId = FeedId("rakvere-v20260428")
+    private val fallbackFeedId = FeedId("rakvere-bootstrap-v1")
+
     private lateinit var database: AppDatabase
     private lateinit var provider: RoomDomainFeedSnapshotProvider
     private lateinit var importer: FeedSnapshotImporter
@@ -49,28 +53,30 @@ class FeedBootstrapLoaderTest {
     }
 
     @Test
-    fun `bootstrapIfNeeded loads snapshot from bundled asset`() =
+    fun `bootstrapIfNeeded loads real static runtime asset by default`() =
         runDb {
             val loader = FeedBootstrapLoader(context = context, importer = importer, provider = provider)
 
             loader.bootstrapIfNeeded()
-            val snapshot = assertNotNull(provider.getSnapshot(CityId("rakvere")))
-            assertTrue(snapshot.stopPoints.isNotEmpty())
-            assertTrue(snapshot.routePatterns.isNotEmpty())
+            val snapshot = assertNotNull(provider.getSnapshot(cityId))
+            assertEquals(98, snapshot.stopPoints.size)
+            assertEquals(7, snapshot.routePatterns.size)
+            assertTrue(snapshot.stopPoints.any { it.displayName == "Rakvere bussijaam" })
         }
 
     @Test
-    fun `bootstrap preserves explicit stop ids and never uses display names as ids`() =
+    fun `bootstrap preserves stop ids from asset and never uses display names as ids`() =
         runDb {
             val loader = FeedBootstrapLoader(context = context, importer = importer, provider = provider)
 
             loader.bootstrapIfNeeded()
-            val snapshot = assertNotNull(provider.getSnapshot(CityId("rakvere")))
+            val snapshot = assertNotNull(provider.getSnapshot(cityId))
 
             val ids = snapshot.stopPoints.map { it.id }
-            assertTrue(ids.contains(StopPointId("RKV_A_OUT")))
-            assertTrue(ids.contains(StopPointId("RKV_C")))
+            assertTrue(ids.contains(StopPointId("152898")))
             assertFalse(ids.any { it == StopPointId("Jaam") })
+            assertFalse(ids.any { it == StopPointId("Rakvere bussijaam") })
+            assertFalse(ids.any { it == StopPointId("Polikliinik") })
         }
 
     @Test
@@ -81,22 +87,22 @@ class FeedBootstrapLoaderTest {
             loader.bootstrapIfNeeded()
             loader.bootstrapIfNeeded()
 
-            val snapshot = assertNotNull(provider.getSnapshot(CityId("rakvere")))
-            assertEquals(4, snapshot.stopPoints.size)
-            assertEquals(2, snapshot.routePatterns.size)
+            val snapshot = assertNotNull(provider.getSnapshot(cityId))
+            assertEquals(98, snapshot.stopPoints.size)
+            assertEquals(7, snapshot.routePatterns.size)
 
             val dao = database.feedSnapshotDao()
-            assertEquals(4, dao.getStopPoints(cityId = "rakvere", feedId = "rakvere-bootstrap-v1").size)
-            assertEquals(2, dao.getRoutePatterns(cityId = "rakvere", feedId = "rakvere-bootstrap-v1").size)
+            assertEquals(98, dao.getStopPoints(cityId = "rakvere", feedId = "rakvere-v20260428").size)
+            assertEquals(7, dao.getRoutePatterns(cityId = "rakvere", feedId = "rakvere-v20260428").size)
         }
 
     @Test
     fun `bootstrapIfNeeded prepares existing Room snapshot before asset fallback`() =
         runDb {
-            val snapshot = loadBundledSnapshot()
+            val snapshot = loadSnapshot("bootstrap/rakvere_feed_20260428.json")
             importer.import(
-                cityId = CityId("rakvere"),
-                feedId = FeedId("rakvere-bootstrap-v1"),
+                cityId = cityId,
+                feedId = primaryFeedId,
                 snapshot = snapshot,
             )
 
@@ -106,39 +112,62 @@ class FeedBootstrapLoaderTest {
                     context = context,
                     importer = importer,
                     provider = freshProvider,
+                    primaryAssetPath = "bootstrap/missing-real.json",
                     assetPath = "bootstrap/missing.json",
                 )
 
             loader.bootstrapIfNeeded()
 
-            val loaded = assertNotNull(freshProvider.getSnapshot(CityId("rakvere")))
+            val loaded = assertNotNull(freshProvider.getSnapshot(cityId))
             assertEquals(snapshot.stopPoints.size, loaded.stopPoints.size)
             assertEquals(snapshot.routePatterns.size, loaded.routePatterns.size)
         }
 
     @Test
-    fun `missing asset is safe FeedNotReady style result`() =
+    fun `fallback synthetic asset works when primary asset is missing`() =
         runDb {
             val loader =
                 FeedBootstrapLoader(
                     context = context,
                     importer = importer,
                     provider = provider,
+                    primaryAssetPath = "bootstrap/missing-real.json",
+                )
+
+            loader.bootstrapIfNeeded()
+            val snapshot = assertNotNull(provider.getSnapshot(cityId))
+            assertEquals(4, snapshot.stopPoints.size)
+            assertEquals(2, snapshot.routePatterns.size)
+
+            val dao = database.feedSnapshotDao()
+            assertEquals(4, dao.getStopPoints(cityId = "rakvere", feedId = fallbackFeedId.value).size)
+            assertEquals(2, dao.getRoutePatterns(cityId = "rakvere", feedId = fallbackFeedId.value).size)
+        }
+
+    @Test
+    fun `room empty and both assets missing is safe FeedNotReady style result`() =
+        runDb {
+            val loader =
+                FeedBootstrapLoader(
+                    context = context,
+                    importer = importer,
+                    provider = provider,
+                    primaryAssetPath = "bootstrap/missing-real.json",
                     assetPath = "bootstrap/missing.json",
                 )
 
             loader.bootstrapIfNeeded()
 
-            assertNull(provider.getSnapshot(CityId("rakvere")))
+            assertNull(provider.getSnapshot(cityId))
         }
 
     private fun runDb(block: suspend () -> Unit) {
         runBlocking(Dispatchers.IO) { block() }
     }
 
-    private fun loadBundledSnapshot(): DomainFeedSnapshot {
+    private fun loadSnapshot(assetPath: String): DomainFeedSnapshot {
         val dtoText =
-            context.assets.open("bootstrap/rakvere_bootstrap.json").use { stream ->
+            context.assets.open(assetPath).use { stream ->
                 stream.bufferedReader().readText()
             }
         val dto = Json.decodeFromString<BootstrapFeedDto>(dtoText)
