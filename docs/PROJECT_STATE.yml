@@ -2,23 +2,27 @@ project:
   name: ANDROBUSS
   branch: main
   remote: https://github.com/Fuuduuu/ANDROBUSS.git
-  last_accepted_commit: 08c02a1b8e6bca6a77ae2f0def81c10ec2212db1
-  last_known_good_commit: 08c02a1b8e6bca6a77ae2f0def81c10ec2212db1
-  current_pass: PASS_FEED_01_FEED_FRESHNESS_AND_UPDATE_ARCHITECTURE_DOCS
-  next_recommended_pass: PASS_FEED_02_ROOM_SCHEMA_MIGRATION_AND_FEED_METADATA_ENTITY
+  last_accepted_commit: 7913eb5a318244da5f988734b327847b38ab4097
+  last_known_good_commit: 7913eb5a318244da5f988734b327847b38ab4097
+  current_pass: PASS_FEED_02_ROOM_SCHEMA_EXPORT_AND_FEED_METADATA_ENTITY
+  next_recommended_pass: PASS_FEED_03_MANUAL_FEED_DOWNLOADER_AND_IMPORT_PIPELINE
 
 scope:
-  current_goal: "Document feed freshness/update architecture and protected boundaries before any downloader/WorkManager implementation."
+  current_goal: "Add Room v2 feed metadata schema foundation with schema export and explicit migration, without downloader/WorkManager."
   allowed_surfaces:
+    - data-local/build.gradle.kts
+    - data-local/src/main/kotlin/ee/androbus/data/local/database/AppDatabase.kt
+    - data-local/src/main/kotlin/ee/androbus/data/local/database/Migrations.kt
+    - data-local/src/main/kotlin/ee/androbus/data/local/entity/FeedMetadataEntity.kt
+    - data-local/src/main/kotlin/ee/androbus/data/local/dao/FeedMetadataDao.kt
+    - data-local/src/test/kotlin/ee/androbus/data/local/dao/FeedMetadataDaoTest.kt
+    - data-local/src/test/kotlin/ee/androbus/data/local/database/AppDatabaseMigrationTest.kt
+    - data-local/schemas/
     - docs/PROJECT_STATE.yml
-    - docs/GTFS_PIPELINE.md
-    - docs/ANDROID_ARCHITECTURE.md
-    - docs/TRUTH_INDEX.md
-    - docs/PROTECTED_SURFACES.md
-    - docs/ROADMAP.md
     - docs/CURRENT_STATE.md
+    - docs/ROADMAP.md
     - docs/AUDIT_INDEX.md
-    - docs/audit/PASS_FEED_01_FEED_FRESHNESS_AND_UPDATE_ARCHITECTURE_DOCS.md
+    - docs/audit/PASS_FEED_02_ROOM_SCHEMA_EXPORT_AND_FEED_METADATA_ENTITY.md
   forbidden_surfaces:
     - app/src/
     - app/src/main/assets/
@@ -27,7 +31,9 @@ scope:
     - core-gtfs/src/
     - core-routing/src/
     - city-adapters/src/
-    - data-local/src/
+    - data-local/src/main/kotlin/ee/androbus/data/local/importer/
+    - data-local/src/main/kotlin/ee/androbus/data/local/provider/
+    - data-local/src/main/kotlin/ee/androbus/data/local/mapping/
     - data-remote/src/
     - feature-search/src/
     - feature-map/src/
@@ -67,8 +73,9 @@ governance:
     - "PASS_32 runtime-backed origin candidates accepted"
     - "PASS_33 origin search dialog accepted"
     - "PASS_UI_02 search screen flow polish accepted"
+    - "PASS_FEED_01 feed freshness/update architecture docs accepted"
   drift_check_rule: "Every 5 accepted pass/checkpoints, run a docs-only drift-check before the next large implementation pass."
-  drift_check_counter: "3 / 5 (PASS_32, PASS_33, and PASS_UI_02 accepted after PASS_AUTO_07 reset; PASS_FEED_01 is current candidate)"
+  drift_check_counter: "4 / 5 (PASS_32, PASS_33, PASS_UI_02, and PASS_FEED_01 accepted after PASS_AUTO_07 reset; PASS_FEED_02 is current candidate)"
   next_mandatory_drift_check: "Run next docs-only drift-check after 5 newly accepted checkpoints."
   drift_check_must_verify:
     - "CURRENT_STATE / ROADMAP / PROJECT_STATE alignment"
@@ -134,7 +141,7 @@ risks:
     - "Quick-destination UI must keep using query-text resolver path; direct StopPointId shortcuts are forbidden."
     - "Tõrma remains excluded from quick chips until metadata/alias policy pass."
     - "Room schema/import baseline has no freshness/hash/version metadata yet."
-    - "Downloader/update/freshness lifecycle is not implemented; PASS_FEED_01 is architecture-only documentation."
+    - "Downloader/update/freshness lifecycle is not implemented yet; FEED-02 adds only Room metadata schema foundation."
     - "Docs are growing; docs hygiene should be a later explicit pass."
   deferred:
     - "Production feed downloader."

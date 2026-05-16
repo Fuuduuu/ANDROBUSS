@@ -25,6 +25,12 @@ android {
     testOptions {
         unitTests.isIncludeAndroidResources = true
     }
+
+    sourceSets {
+        getByName("test") {
+            assets.srcDir("$projectDir/schemas")
+        }
+    }
 }
 
 detekt {
@@ -33,6 +39,10 @@ detekt {
         "$rootDir/config/detekt/detekt-data-local.yml",
     )
     buildUponDefaultConfig = false
+}
+
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
 }
 
 tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {

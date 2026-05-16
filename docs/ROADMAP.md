@@ -143,20 +143,20 @@ Current technical pass:
 
 Current technical pass:
 
-53. PASS_FEED_01_FEED_FRESHNESS_AND_UPDATE_ARCHITECTURE_DOCS (current candidate)
+53. PASS_FEED_01_FEED_FRESHNESS_AND_UPDATE_ARCHITECTURE_DOCS (completed)
    - docs-only feed freshness/update architecture decision before implementation
    - lock metadata location, activation/swap policy, and boundary responsibilities
    - keep downloader/WorkManager/Room schema changes out of scope
 
-Next recommended technical pass:
+Current technical pass:
 
-54. PASS_FEED_02_ROOM_SCHEMA_MIGRATION_AND_FEED_METADATA_ENTITY
+54. PASS_FEED_02_ROOM_SCHEMA_EXPORT_AND_FEED_METADATA_ENTITY (current candidate)
    - add Room metadata persistence model and migration tests
    - keep downloader/WorkManager out of scope
 
-Following feed-update pass:
+Next recommended technical pass:
 
-55. PASS_FEED_03_MANUAL_DOWNLOADER_AND_CANDIDATE_IMPORT_PIPELINE
+55. PASS_FEED_03_MANUAL_FEED_DOWNLOADER_AND_IMPORT_PIPELINE
    - implement manual foreground downloader/import flow
    - preserve last-known-good active feed on failures
 

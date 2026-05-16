@@ -1,0 +1,221 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "459f153ba54741f3cd8226f61159dbce",
+    "entities": [
+      {
+        "tableName": "stop_points",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`cityId` TEXT NOT NULL, `feedId` TEXT NOT NULL, `stopId` TEXT NOT NULL, `stopGroupId` TEXT NOT NULL, `displayName` TEXT NOT NULL, `latitude` REAL NOT NULL, `longitude` REAL NOT NULL, `platformCode` TEXT, PRIMARY KEY(`cityId`, `feedId`, `stopId`))",
+        "fields": [
+          {
+            "fieldPath": "cityId",
+            "columnName": "cityId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "feedId",
+            "columnName": "feedId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "stopId",
+            "columnName": "stopId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "stopGroupId",
+            "columnName": "stopGroupId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "displayName",
+            "columnName": "displayName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "latitude",
+            "columnName": "latitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "longitude",
+            "columnName": "longitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "platformCode",
+            "columnName": "platformCode",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "cityId",
+            "feedId",
+            "stopId"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_stop_points_cityId_feedId",
+            "unique": false,
+            "columnNames": [
+              "cityId",
+              "feedId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_stop_points_cityId_feedId` ON `${TABLE_NAME}` (`cityId`, `feedId`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "route_patterns",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`cityId` TEXT NOT NULL, `feedId` TEXT NOT NULL, `patternId` TEXT NOT NULL, `routeLineId` TEXT NOT NULL, `displayName` TEXT NOT NULL, PRIMARY KEY(`cityId`, `feedId`, `patternId`))",
+        "fields": [
+          {
+            "fieldPath": "cityId",
+            "columnName": "cityId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "feedId",
+            "columnName": "feedId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "patternId",
+            "columnName": "patternId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "routeLineId",
+            "columnName": "routeLineId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "displayName",
+            "columnName": "displayName",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "cityId",
+            "feedId",
+            "patternId"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_route_patterns_cityId_feedId",
+            "unique": false,
+            "columnNames": [
+              "cityId",
+              "feedId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_route_patterns_cityId_feedId` ON `${TABLE_NAME}` (`cityId`, `feedId`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "pattern_stops",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`cityId` TEXT NOT NULL, `feedId` TEXT NOT NULL, `patternId` TEXT NOT NULL, `sequence` INTEGER NOT NULL, `stopId` TEXT NOT NULL, PRIMARY KEY(`cityId`, `feedId`, `patternId`, `sequence`), FOREIGN KEY(`cityId`, `feedId`, `patternId`) REFERENCES `route_patterns`(`cityId`, `feedId`, `patternId`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "cityId",
+            "columnName": "cityId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "feedId",
+            "columnName": "feedId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "patternId",
+            "columnName": "patternId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sequence",
+            "columnName": "sequence",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "stopId",
+            "columnName": "stopId",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "cityId",
+            "feedId",
+            "patternId",
+            "sequence"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_pattern_stops_cityId_feedId_patternId",
+            "unique": false,
+            "columnNames": [
+              "cityId",
+              "feedId",
+              "patternId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_pattern_stops_cityId_feedId_patternId` ON `${TABLE_NAME}` (`cityId`, `feedId`, `patternId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "route_patterns",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "cityId",
+              "feedId",
+              "patternId"
+            ],
+            "referencedColumns": [
+              "cityId",
+              "feedId",
+              "patternId"
+            ]
+          }
+        ]
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '459f153ba54741f3cd8226f61159dbce')"
+    ]
+  }
+}

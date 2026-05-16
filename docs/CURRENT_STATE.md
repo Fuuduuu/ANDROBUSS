@@ -4,7 +4,7 @@
 
 - Expected repo root: `C:\Users\Kasutaja\Desktop\ANDROBUSS`
 - Expected branch: `main`
-- Latest accepted HEAD: `08c02a1` (`docs(governance): fix UI-02 drift counter`)
+- Latest accepted HEAD: `7913eb5` (`docs(feed): define feed freshness and update architecture`)
 - Working tree must be clean before a new pass
 
 ## Latest Accepted Pass
@@ -20,7 +20,8 @@
 - `PASS_32 — ORIGIN_PICKER_FROM_RUNTIME_STOPS_GROUP_AWARE` (accepted runtime-backed origin selection implementation)
 - `PASS_33 — ORIGIN_SEARCH_DIALOG` (accepted origin dialog implementation)
 - `PASS_UI_02 — SEARCH_SCREEN_FLOW_POLISH` (accepted UI/copy/state polish pass)
-- Current technical pass: `PASS_FEED_01 — FEED_FRESHNESS_AND_UPDATE_ARCHITECTURE_DOCS` (docs-only architecture decision pass)
+- `PASS_FEED_01 — FEED_FRESHNESS_AND_UPDATE_ARCHITECTURE_DOCS` (accepted docs-only architecture decision pass)
+- Current technical pass: `PASS_FEED_02 — ROOM_SCHEMA_EXPORT_AND_FEED_METADATA_ENTITY` (Room metadata foundation pass)
 - Latest docs-only governance/future-notes pass remains `PASS_G05 — GTFS_REALTIME_AND_PEATUS_GRAPHQL_FUTURE_NOTES`
 
 PASS 21 added a parser-agnostic feed boundary and in-memory provider bootstrap.
@@ -116,12 +117,19 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
   - destination input card is visually primary before quick chips,
   - inline origins are reduced to preferred groups while full catalog remains in dialog,
   - rider-facing copy is simplified without ViewModel/state/domain/data changes.
-- PASS_FEED_01 current candidate is docs-only and defines feed freshness/update architecture before implementation:
+- PASS_FEED_01 accepted state defines feed freshness/update architecture before implementation:
   - 7-day hard freshness limit for public production mode
   - metadata outside `DomainFeedSnapshot`
   - validate/import-first and atomic activation swap policy
   - downloader/WorkManager deferred until later feed passes
   - public freshness implementation remains pending FEED-02/03/04
+- PASS_FEED_02 current candidate adds Room metadata foundation in `data-local` only:
+  - `FeedMetadataEntity` + `FeedMetadataDao`
+  - Room `AppDatabase` v2 + `MIGRATION_1_2`
+  - `exportSchema = true` + `room.schemaLocation`
+  - generated `data-local/schemas` JSON for versions 1 and 2
+  - DAO + migration tests
+  - no downloader/WorkManager/data-remote/app-bootstrap behavior changes
 - Governance/tooling guardrails accepted after PASS 25:
   - PASS G03 audit-index/read-order sync
   - PASS AUTO-01 detekt module-boundary checks
@@ -153,7 +161,7 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Current Pass
 
-- `PASS_FEED_01 — FEED_FRESHNESS_AND_UPDATE_ARCHITECTURE_DOCS`
+- `PASS_FEED_02 — ROOM_SCHEMA_EXPORT_AND_FEED_METADATA_ENTITY`
 
 ## Lazy Context Note (PASS G03)
 
@@ -185,8 +193,8 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Next Technical Pass
 
-- `PASS_FEED_02_ROOM_SCHEMA_MIGRATION_AND_FEED_METADATA_ENTITY`
-- Alternative: `PASS_FEED_03_MANUAL_DOWNLOADER_AND_CANDIDATE_IMPORT_PIPELINE`
+- `PASS_FEED_03_MANUAL_FEED_DOWNLOADER_AND_IMPORT_PIPELINE`
+- Alternative: `PASS_FEED_04_WORKMANAGER_PERIODIC_UPDATE`
 - Alternative: `PASS_34_ORIGIN_SELECTION_POLISH_SCOPE_AUDIT`
 - Public/freely distributed production still requires downloader/update/freshness policy.
 
