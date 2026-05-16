@@ -369,7 +369,7 @@
   - `SearchViewModel` resolves `Rakvere bussijaam` against runtime-like snapshot,
   - synthetic fallback remains synthetic when loaded explicitly.
 
-## Quick Destinations UI Coverage (PASS_31 Candidate)
+## Quick Destinations UI Coverage (PASS_31 Accepted)
 
 - `SearchScreenStateTextTest` now covers quick-destination UI wiring:
   - `Kiirvalikud` labels include `Rakvere bussijaam`, `Polikliinik`, `Näpi`, `Keskväljak`, `Põhjakeskus`,
@@ -377,6 +377,16 @@
   - `Põhjakeskus` chip maps to query text `Põhja`,
   - quick-destination selection calls destination resolver callback only,
   - quick-destination click does not trigger route-search callback directly.
+
+## Drift/UI Boundary Verification (PASS_AUTO_07 Candidate)
+
+- Post-PASS-31 governance checkpoint verifies:
+  - no parser type leakage in app/data-local production code,
+  - no `@Serializable` in `core-domain`,
+  - no `allowMainThreadQueries` in `data-local`,
+  - no Hilt annotation leaks to `core-*`/`feature-search`,
+  - quick-destination path remains label/query-text only,
+  - no GPS/network/realtime/navigation/WorkManager expansion.
 
 ## Near-Term Test Gaps
 

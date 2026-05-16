@@ -2,28 +2,25 @@ project:
   name: ANDROBUSS
   branch: main
   remote: https://github.com/Fuuduuu/ANDROBUSS.git
-  last_accepted_commit: aa2a8e73c30f883a727bd24f42a65839f80b438e
-  last_known_good_commit: aa2a8e73c30f883a727bd24f42a65839f80b438e
-  current_pass: PASS_31_RAKVERE_QUICK_DESTINATIONS_UI_ONLY
-  next_recommended_pass: PASS_FEED_01_DOWNLOADER_FRESHNESS_SCOPE_AUDIT
+  last_accepted_commit: bcf62983d06edd6bf77a22cb1b24ba91392f6e88
+  last_known_good_commit: bcf62983d06edd6bf77a22cb1b24ba91392f6e88
+  current_pass: PASS_AUTO_07_DRIFT_AND_UI_BOUNDARY_CHECK
+  next_recommended_pass: PASS_32_ORIGIN_SELECTION_IMPROVEMENT_SCOPE_AUDIT
 
 scope:
-  current_goal: "Add Rakvere quick-destination UI chips using existing destination resolution flow only."
+  current_goal: "Docs-only drift/state sync and UI boundary verification after PASS 31 quick-destination chips."
   allowed_surfaces:
-    - app/src/main/kotlin/ee/androbus/app/presentation/search/SearchScreen.kt
-    - app/src/test/kotlin/ee/androbus/app/presentation/search/SearchScreenStateTextTest.kt
-    - app/src/test/kotlin/ee/androbus/app/presentation/search/RakvereQuickDestinationReadinessTest.kt
     - docs/PROJECT_STATE.yml
     - docs/CURRENT_STATE.md
     - docs/ROADMAP.md
     - docs/AUDIT_INDEX.md
     - docs/TESTING_STRATEGY.md
-    - docs/audit/PASS_31_RAKVERE_QUICK_DESTINATIONS_UI_ONLY.md
+    - docs/CODEBASE_IMPACT_MAP.md
+    - docs/ANDROID_ARCHITECTURE.md
+    - docs/UX_PRINCIPLES.md
+    - docs/audit/PASS_AUTO_07_DRIFT_AND_UI_BOUNDARY_CHECK.md
   forbidden_surfaces:
-    - app/src/main/kotlin/ee/androbus/app/bootstrap/
-    - app/src/main/kotlin/ee/androbus/app/presentation/search/SearchViewModel.kt
-    - app/src/main/kotlin/ee/androbus/app/presentation/search/SearchUiState.kt
-    - app/src/main/assets/
+    - app/src/
     - core-domain/src/
     - core-gtfs/src/
     - core-routing/src/
@@ -36,8 +33,8 @@ scope:
     - feature-route-detail/src/
     - feature-favourites/src/
     - feature-alerts/src/
-    - app/src/test/kotlin/ee/androbus/app/bootstrap/
-    - app/src/test/resources/bootstrap/rakvere_dev_profile_v1.json
+    - app/src/main/assets/
+    - app/src/test/
     - build.gradle.kts
     - app/build.gradle.kts
     - gradle/libs.versions.toml
@@ -65,9 +62,10 @@ governance:
     - "PASS_29A quick-destination readiness evidence accepted"
     - "PASS_29C real-runtime-feed policy gating accepted"
     - "PASS_30 real static runtime baseline accepted"
+    - "PASS_31 quick-destination chips UI-only accepted"
   drift_check_rule: "Every 5 accepted pass/checkpoints, run a docs-only drift-check before the next large implementation pass."
-  drift_check_counter: "5 / 5 (PASS_UI_01, PASS_29A, PASS_29C, PASS_30 accepted; PASS_31 quick-UI candidate)"
-  next_mandatory_drift_check: "Run a docs-only drift-check after five new accepted checkpoints."
+  drift_check_counter: "0 / 5 (reset by PASS_AUTO_07 after PASS_31 acceptance)"
+  next_mandatory_drift_check: "Run next docs-only drift-check after 5 newly accepted checkpoints."
   drift_check_must_verify:
     - "CURRENT_STATE / ROADMAP / PROJECT_STATE alignment"
     - "AUDIT_INDEX includes recent passes"

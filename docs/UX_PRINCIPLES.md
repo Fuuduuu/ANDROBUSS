@@ -4,7 +4,7 @@
 
 - Main question and CTA: `Kuhu soovid minna?`
 - Home starts with a large, high-contrast destination search field.
-- Home includes 2-4 large quick destination buttons.
+- Home includes a small set of large quick destination buttons (typically 2-6).
 - Riders must not be forced into stop-first, line-first, or timetable-first flow.
 - Nearby departures are secondary context, not the primary task.
 
@@ -81,10 +81,14 @@ Out of MVP scope:
 - Current location is an origin coordinate seed until explicit stop-point resolution/nearest-stop logic is implemented.
 - Live vehicle map remains future-only until data freshness semantics are proven.
 
-## Current Implementation Alignment (After PASS 28C)
+## Current Implementation Alignment (After PASS 31)
 
 - Core routing and candidate pipeline logic exists in pure Kotlin modules.
 - First app-level Compose search screen baseline exists (single-screen, MVP/diagnostic).
+- Quick destination chips are implemented in search screen UI:
+  - `Rakvere bussijaam`, `Polikliinik`, `Näpi`, `Keskväljak`, `Põhjakeskus`
+  - `Põhjakeskus` currently resolves via query text `Põhja`
+  - `Tõrma` remains excluded pending metadata/alias pass
 - No navigation graph, GPS/map permissions, network/downloader, or realtime behavior is implemented.
 - No Room cache, network downloader, realtime integration, or nearest-stop geospatial resolution exists yet.
 - Additional UI passes remain required before production-ready rider flow.

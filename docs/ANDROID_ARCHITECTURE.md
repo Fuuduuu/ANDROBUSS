@@ -31,7 +31,7 @@ Architecture baseline and implementation status snapshot.
 - `feature-alerts`
 - `city-adapters`
 
-## Implementation Status (After PASS 29C Accepted)
+## Implementation Status (After PASS 31 Accepted)
 
 - Implemented pure Kotlin logic:
   - `core-domain`
@@ -68,6 +68,11 @@ Architecture baseline and implementation status snapshot.
     - route query is triggered only by explicit "Otsi" press
     - origin selection is MVP/dev-only hardcoded stop chips (temporary)
     - no navigation graph and no multi-screen setup
+  - PASS 31 accepted quick-destination UI layer:
+    - `Kiirvalikud` chips are wired in `SearchScreen`
+    - chips route through destination query text (`onDestinationChanged(queryText)`)
+    - no `StopPointId` shortcuts in quick-chip path
+    - quick-chip click does not trigger route search directly
 - Skeleton/future:
   - `data-remote`, UI `feature-*` runtime wiring.
 - Not implemented yet:
@@ -131,7 +136,7 @@ Notes:
 - `AndrobussApplication.onCreate` is now a protected runtime wiring surface.
 - PASS 28A/28B ViewModel baseline exists.
 - PASS 28C adds first single-screen Compose wiring in `app`.
-- PASS 30 candidate moves runtime baseline to real-static primary + synthetic fallback for internal/MVP use.
+- PASS 30 accepted baseline uses real-static primary + synthetic fallback for internal/MVP use.
 - No navigation graph / multi-screen wiring is implemented yet.
 - No GPS/nearest-stop/network/realtime route-query extensions are implemented.
 - No WorkManager/downloader is added yet; public-production freshness remains unresolved.

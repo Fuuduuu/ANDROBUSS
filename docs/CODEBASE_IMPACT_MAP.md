@@ -1,6 +1,6 @@
 # CODEBASE_IMPACT_MAP
 
-State synchronized for `PASS_AUTO_06` docs-only drift/UI-boundary verification candidate.
+State synchronized for `PASS_AUTO_07` docs-only drift/UI-boundary verification candidate.
 
 ## Module Responsibilities
 
@@ -123,6 +123,15 @@ State synchronized for `PASS_AUTO_06` docs-only drift/UI-boundary verification c
   - origin is temporary dev-only chip selection (no GPS permissions)
 - No navigation graph/multi-screen runtime was introduced.
 - No network/downloader/realtime/WorkManager scope was introduced.
+
+## PASS 31 Impact
+
+- `app` search screen gained Rakvere quick-destination chips (UI-only):
+  - chips use label/query-text mapping through existing destination resolution path,
+  - no `StopPointId` constants are introduced in quick-chip UI path,
+  - quick-chip clicks do not trigger route-query execution directly.
+- `SearchViewModel`, `SearchUiState`, feature-search/core/data modules remain unchanged by PASS 31.
+- No GPS/navigation/network/realtime/WorkManager scope was introduced by PASS 31.
 
 ## Feature-Search Snapshot
 

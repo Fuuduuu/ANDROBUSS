@@ -4,7 +4,7 @@
 
 - Expected repo root: `C:\Users\Kasutaja\Desktop\ANDROBUSS`
 - Expected branch: `main`
-- Latest accepted HEAD: `aa2a8e7` (`PASS_30_REAL_RAKVERE_STATIC_RUNTIME_PROFILE_BASELINE`)
+- Latest accepted HEAD: `bcf6298` (`PASS_31_RAKVERE_QUICK_DESTINATIONS_UI_ONLY`)
 - Working tree must be clean before a new pass
 
 ## Latest Accepted Pass
@@ -15,7 +15,8 @@
 - `PASS_29A — RAKVERE_QUICK_DESTINATION_RESOLUTION_READINESS` (accepted readiness evidence pass)
 - `PASS_29C — REAL_RUNTIME_FEED_POLICY_BEFORE_QUICK_DESTINATIONS` (accepted protected-surface policy gating pass)
 - `PASS_30 — REAL_RAKVERE_STATIC_RUNTIME_PROFILE_BASELINE` (accepted internal/MVP runtime primary profile pass)
-- Latest governance checkpoint pass: `PASS_AUTO_03 — DRIFT_AND_BOUNDARY_CHECK` (docs-only drift/boundary verification)
+- `PASS_31 — RAKVERE_QUICK_DESTINATIONS_UI_ONLY` (accepted quick-chip UI-only pass)
+- Current governance checkpoint pass: `PASS_AUTO_07 — DRIFT_AND_UI_BOUNDARY_CHECK` (docs-only drift/boundary verification)
 - Latest docs-only governance/future-notes pass remains `PASS_G05 — GTFS_REALTIME_AND_PEATUS_GRAPHQL_FUTURE_NOTES`
 
 PASS 21 added a parser-agnostic feed boundary and in-memory provider bootstrap.
@@ -53,7 +54,7 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 - Synthetic bundled bootstrap asset remains active; real Rakvere asset is not generated in repository state.
 - PASS 26A adds executable parser robustness fixture/tests for real-feed profile characteristics (quoted service IDs, unknown columns, optional-file absence, calendar exceptions, loop duplicate stops).
 - PASS 26B accepted state includes real-derived Rakvere dev/test profile asset under `app/src/test/resources` only.
-- PASS 30 candidate promotes `app/src/main/assets/bootstrap/rakvere_feed_20260428.json` as runtime primary baseline for internal/MVP use.
+- PASS 30 accepted promotion keeps `app/src/main/assets/bootstrap/rakvere_feed_20260428.json` as runtime primary baseline for internal/MVP use.
 - Synthetic `app/src/main/assets/bootstrap/rakvere_bootstrap.json` remains fallback asset.
 - PASS 27 accepted state introduces app-owned Hilt DI modules for:
   - `AppDatabase` / `FeedSnapshotDao`
@@ -90,7 +91,12 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
   - origin selector is MVP/dev-only hardcoded chip list (no GPS/permissions)
 - First visible UI now exists in app, but it remains minimal MVP/diagnostic baseline.
 - No navigation graph, GPS/map permissions, downloader/network, WorkManager, or realtime behavior has been opened.
-- Runtime bootstrap policy is moving to real-static primary + synthetic fallback while keeping production freshness unresolved.
+- Runtime bootstrap policy uses real-static primary + synthetic fallback while keeping production freshness unresolved.
+- PASS 31 accepted state adds quick-destination chips in Compose search screen:
+  - chips pass label/query-text only into `onDestinationChanged(queryText)`,
+  - no `StopPointId` shortcuts are used in quick-chip path,
+  - quick-chip clicks do not call `searchRoute()` directly,
+  - ambiguity handling remains unchanged (no auto-selection).
 - Governance/tooling guardrails accepted after PASS 25:
   - PASS G03 audit-index/read-order sync
   - PASS AUTO-01 detekt module-boundary checks
@@ -121,7 +127,7 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Current Pass
 
-- `PASS_31 — RAKVERE_QUICK_DESTINATIONS_UI_ONLY`
+- `PASS_AUTO_07 — DRIFT_AND_UI_BOUNDARY_CHECK`
 
 ## Lazy Context Note (PASS G03)
 
@@ -153,8 +159,9 @@ PASS 22A confirms storage-identity strategy for future Room baseline:
 
 ## Next Technical Pass
 
-- `PASS_AUTO_07_DRIFT_AND_UI_BOUNDARY_CHECK`
+- `PASS_32_ORIGIN_SELECTION_IMPROVEMENT_SCOPE_AUDIT`
 - Alternative: `PASS_FEED_01_DOWNLOADER_FRESHNESS_SCOPE_AUDIT`
+- Alternative: `PASS_UI_02_SEARCH_SCREEN_POLISH_SCOPE_AUDIT`
 - Public/freely distributed production still requires downloader/update/freshness policy.
 
 ## Runtime Feed Policy Note (PASS 30 Baseline Target)
