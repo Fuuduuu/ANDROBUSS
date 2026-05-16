@@ -256,6 +256,117 @@ Explicit non-scope:
 - Discovery output is used only for metadata hints (`preferredStopGroupNames`), not parser/runtime behavior.
 - Downloaded ZIP/data files remain outside the repository and must not be committed.
 
+## Feed Freshness and Update Architecture (PASS_FEED_01)
+
+### Freshness policy
+
+- Public production must not present GTFS data as current when it is older than 7 days from successful download/import.
+- Official daily update cadence means stale-warning UX may appear earlier, but 7 days is the hard technical limit.
+- `rakvere_feed_20260428.json` is an internal/MVP static baseline, not long-term public-production freshness truth.
+- Synthetic fallback asset is fallback/demo only and must not silently masquerade as current public data.
+- Public mode should prefer last-known-good real feed when still valid.
+- If no valid real feed exists, app should show stale/unavailable state instead of silently switching to synthetic truth.
+
+### Metadata model decision
+
+- Freshness/provenance fields are infrastructure metadata, not routing-domain model fields.
+- `DomainFeedSnapshot` remains pure routing snapshot with:
+  - `cityId`
+  - `stopPoints`
+  - `routePatterns`
+- Do not add `downloadedAt`, `sourceUrl`, `feedHash`, or similar fields into `DomainFeedSnapshot`.
+- Future persistence target is `data-local` metadata record (for example `FeedMetadataEntity`) linked to `cityId + feedId`.
+- Planned metadata fields:
+  - `cityId`
+  - `feedId`
+  - `sourceUrl`
+  - `sourceLicense` or `licenseUrl`
+  - `publisher` or `feedPublisherName`
+  - `attributionText`
+  - `downloadedAt`
+  - `importedAt`
+  - `feedHash`
+  - `feedVersion`
+  - `validFrom`
+  - `validUntil`
+  - `staleAfter`
+  - `isActive`
+  - optional activation status field
+
+### Candidate import and activation policy
+
+- Candidate feed must not overwrite current active feed directly.
+- Required lifecycle:
+  1. download candidate
+  2. unzip/read candidate
+  3. parse candidate
+  4. validate candidate
+  5. import under new scoped `feedId`
+  6. activate only after validation/import success
+- Activation must be atomic from reader perspective.
+- Any failed download/import/validation keeps current active snapshot unchanged.
+- Previous active feed remains last-known-good until replacement is verified.
+- Feed identity remains scoped by `cityId + feedId + localId`.
+- Rakvere city feed and broader county/context feed remain separate `feedId` scopes until dedicated merge/namespacing pass.
+
+### Minimum candidate validation
+
+- download integrity / transport success
+- unzip/read success
+- parser completion
+- routing-critical files present and readable
+- `stops` / `routes` / `trips` / `stop_times` non-empty
+- `calendar` / `calendar_dates` produce usable service window
+- `feed_info` parsed when present
+- `validUntil` / feed-end is not already expired when available
+- attribution/source metadata captured
+- deterministic `feedHash` calculated
+- incomplete import can be rolled back or ignored without replacing active feed
+
+### data-remote / data-local / app boundary
+
+- `data-remote` future boundary:
+  - source request
+  - HTTP download
+  - ZIP handling
+  - basic integrity checks
+  - parser orchestration handoff for candidate feed
+- `data-local` future boundary:
+  - Room persistence
+  - scoped feed storage tables
+  - feed metadata persistence
+  - active feed selection/activation
+  - provider prepare/load from active feed scope
+- `app` future boundary:
+  - manual refresh trigger
+  - later WorkManager scheduling trigger
+  - stale/unavailable user-state wiring
+  - user-visible refresh/update notification
+- Boundary rules:
+  - `data-remote` must not create UI state
+  - `data-local` must not depend on `feature-search`
+  - `core-domain` stays Android-free
+  - `DomainFeedSnapshot` stays metadata-free
+
+### Room migration policy
+
+- Feed metadata persistence requires a dedicated Room schema migration pass (`PASS_FEED_02`).
+- Migration from current schema to metadata-enabled schema is a protected surface and must be explicit + tested.
+- PASS_FEED_01 does not change entities/DAO/database versions.
+- Room migration must not be bundled together with downloader or WorkManager implementation.
+- `allowMainThreadQueries` remains forbidden.
+
+### Update trigger roadmap
+
+- `PASS_FEED_01` (current): docs-only architecture decision.
+- `PASS_FEED_02`: Room migration + metadata entity + tests.
+- `PASS_FEED_03`: manual/foreground downloader + candidate import pipeline.
+- `PASS_FEED_04`: WorkManager periodic update scheduling.
+- Later:
+  - county/city feed merge-namespacing pass if required
+  - user-facing freshness UI polish
+  - official source URL refresh if data portal changes
+
 ## Expected Full Pipeline (Future)
 
 1. Discover/select feed set by city mapping metadata.

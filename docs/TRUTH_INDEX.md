@@ -86,6 +86,13 @@ Truth hierarchy (highest to lowest for decision-making):
 - `FeedSnapshotImporter` writes Room data only; it does not read assets or parse GTFS.
 - `RoomDomainFeedSnapshotProvider` prepares/serves snapshots only; it does not import or download feeds.
 - Network refresh/downloader/WorkManager remain future, not MVP baseline.
+- Freshness/provenance metadata must remain outside `DomainFeedSnapshot`.
+- `DomainFeedSnapshot` remains pure routing/domain snapshot (`cityId`, `stopPoints`, `routePatterns`).
+- Public production freshness has a hard 7-day validity limit from successful download/import.
+- Feed activation must follow validate/import-first and atomic swap semantics.
+- Failed candidate feed import/validation must never replace currently active feed.
+- WorkManager scheduling is deferred until manual downloader/import flow is proven.
+- Raw GTFS ZIP files (including `rakvere.zip`) must not be committed.
 - Unknown GTFS columns must be tolerated.
 - Google Transit extension columns are not MVP dependencies.
 - PASS 23 integration tests prove parser fixture output can flow through:

@@ -37,6 +37,10 @@ Protected surfaces (high change-control sensitivity):
   - `PatternStopEntity`
   - `FeedSnapshotDao`
   - `AppDatabase`
+- Feed freshness metadata persistence model (future):
+  - metadata entity/schema shape
+  - activation flags / active-feed metadata semantics
+  - migration strategy from current Room schema
 - Stop-candidate enrichment boundary in `feature-search`:
   - `StopCandidateEnricher` must copy IDs only from verified stop-point candidates
   - `StopCandidateEnrichmentResult` success/failure semantics
@@ -73,6 +77,22 @@ Protected decisions:
 - any change from bundled-asset bootstrap to downloader-first bootstrap
 
 Changing these decisions requires a dedicated protected-surface review pass.
+
+## Feed Activation And Room Migration Boundary
+
+Protected decisions:
+- candidate feed validation gate before activation
+- atomic active-feed swap behavior
+- rollback/preserve policy when candidate import fails
+- Room schema migration for feed metadata (`v1 -> v2` and later)
+- DAO/entity/database changes for metadata persistence
+
+Change-control requirements:
+- use dedicated pass only
+- include explicit Room migration plan
+- include migration + activation tests
+- do not combine schema migration with WorkManager scheduling pass
+- failed candidate imports must leave active feed unchanged
 
 ## Future GTFS Realtime / Remote Data Boundary
 

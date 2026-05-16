@@ -143,6 +143,33 @@ Notes:
 - `data-local` production code remains parser-agnostic.
 - `data-local` tests may use `core-gtfs`, but production must not import parser types.
 
+## Feed Freshness And Update Boundary (PASS_FEED_01)
+
+- PASS_FEED_01 is docs-only architecture locking; no downloader/WorkManager code is implemented in this pass.
+- Freshness metadata stays outside `DomainFeedSnapshot` and belongs to `data-local` infrastructure metadata storage.
+- Future responsibilities are split as follows:
+  - `data-remote`:
+    - source URL request
+    - HTTP download
+    - ZIP handling
+    - basic integrity checks
+    - candidate feed handoff/orchestration boundary
+  - `data-local`:
+    - scoped feed persistence
+    - feed metadata persistence
+    - active feed selection/activation
+    - Room-backed provider prepare/load from active feed scope
+  - `app`:
+    - manual refresh trigger wiring
+    - stale/unavailable UI state wiring
+    - later WorkManager scheduling trigger
+    - user-visible notification when active feed changes
+- Candidate feed activation policy:
+  - validate/import under new `feedId` first
+  - activate only after successful validation/import
+  - failed candidate never replaces active snapshot
+- WorkManager is explicitly deferred until manual downloader/import path is proven in a dedicated later pass.
+
 Forbidden coupling:
 - `data-remote` must not directly depend on `city-adapters`.
 - `city-adapters` must not directly depend on `data-remote`.

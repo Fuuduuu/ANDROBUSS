@@ -136,48 +136,66 @@ Current technical pass:
    - preserve explicit multi-option selection (no silent first-stop selection)
    - keep ViewModel/state model unchanged unless option-level candidates are missing
 
-52. PASS_UI_02_SEARCH_SCREEN_FLOW_POLISH (current candidate)
+52. PASS_UI_02_SEARCH_SCREEN_FLOW_POLISH (completed)
    - UI-only flow/copy/state polish in SearchScreen
    - keep quick chips on resolver path only, keep full origin catalog in dialog
    - no ViewModel/domain/data/runtime behavior changes
 
+Current technical pass:
+
+53. PASS_FEED_01_FEED_FRESHNESS_AND_UPDATE_ARCHITECTURE_DOCS (current candidate)
+   - docs-only feed freshness/update architecture decision before implementation
+   - lock metadata location, activation/swap policy, and boundary responsibilities
+   - keep downloader/WorkManager/Room schema changes out of scope
+
 Next recommended technical pass:
 
-53. PASS_FEED_01_DOWNLOADER_FRESHNESS_SCOPE_AUDIT
-   - define downloader/update/freshness policy for public/freely distributed production
-   - separate feed lifecycle policy from UI polish passes
+54. PASS_FEED_02_ROOM_SCHEMA_MIGRATION_AND_FEED_METADATA_ENTITY
+   - add Room metadata persistence model and migration tests
+   - keep downloader/WorkManager out of scope
+
+Following feed-update pass:
+
+55. PASS_FEED_03_MANUAL_DOWNLOADER_AND_CANDIDATE_IMPORT_PIPELINE
+   - implement manual foreground downloader/import flow
+   - preserve last-known-good active feed on failures
+
+Following feed-update pass:
+
+56. PASS_FEED_04_WORKMANAGER_PERIODIC_UPDATE
+   - add periodic scheduling only after manual downloader/import path is proven
 
 Alternative next pass:
 
-54. PASS_34_ORIGIN_SELECTION_POLISH_SCOPE_AUDIT
+57. PASS_34_ORIGIN_SELECTION_POLISH_SCOPE_AUDIT
    - scope audit for additional origin UX polish after dialog baseline
    - keep GPS/nearest-stop and navigation out unless explicitly opened
 
 Alternative UI scope-audit pass:
 
-55. PASS_UI_03_SEARCH_SCREEN_ACCESSIBILITY_SCOPE_AUDIT
+58. PASS_UI_03_SEARCH_SCREEN_ACCESSIBILITY_SCOPE_AUDIT
    - scope-audit only for accessibility and copy polish follow-up
    - no runtime/feed/network expansion
 
 Future scope candidates (not active next pass):
 
-56. PASS_29_ORIGIN_RESOLUTION_OR_SEARCH_UI_REFINEMENT
+59. PASS_29_ORIGIN_RESOLUTION_OR_SEARCH_UI_REFINEMENT
    - replace dev-only origin chips with proper origin resolution flow
    - refine first-screen UX states without opening realtime/network scope
 
-57. PASS_RT_01 - GTFS_REALTIME_SCOPE_LOCK_AND_IDENTITY_MODEL
+60. PASS_RT_01 - GTFS_REALTIME_SCOPE_LOCK_AND_IDENTITY_MODEL
    - lock realtime identity rules (`trip_id` + `stop_sequence`) before implementation
    - keep realtime/network/workmanager out until dedicated runtime pass approval
 
-58. PASS_CITY_PROFILE_01 - PEATUS_GRAPHQL_ROUTE_METADATA_DISCOVERY
+61. PASS_CITY_PROFILE_01 - PEATUS_GRAPHQL_ROUTE_METADATA_DISCOVERY
    - evaluate Peatus.ee / Digitransit GraphQL as city-route metadata helper
    - keep static GTFS as canonical routing identity source
 
 Likely following passes:
 
-59. PASS 30+ - DOWNLOADER_WORKMANAGER_REFRESH_LIFECYCLE
-60. PASS 31+ - FEED_FRESHNESS_HASH_VERSION_METADATA
-61. PASS UI-01 - DESTINATION_FIRST_HOME_AND_RESULT_CARDS_IMPLEMENTATION (after production feed/provider/query path is stable)
+62. PASS 30+ - DOWNLOADER_WORKMANAGER_REFRESH_LIFECYCLE
+63. PASS 31+ - FEED_FRESHNESS_HASH_VERSION_METADATA
+64. PASS UI-01 - DESTINATION_FIRST_HOME_AND_RESULT_CARDS_IMPLEMENTATION (after production feed/provider/query path is stable)
 
 Planning rule:
 - Any UI pass must align with `PASS UX-01` destination-first, list-first MVP blueprint.
